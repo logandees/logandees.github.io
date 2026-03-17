@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Short n' Sweet Slots - Game Info Pages</title>
+  <style>
+    :root {
+      --panel: rgba(24, 8, 34, 0.94);
+      --panel-2: rgba(39, 16, 54, 0.94);
+      --line: rgba(255,255,255,0.10);
+      --pink: #ff66c4;
+      --pink-2: #ff8ed7;
+      --gold: #ffd45f;
+      --text: #fff7fc;
+      --muted: #ead9e6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #0a0510;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      padding: 24px;
+      display: grid;
+      gap: 28px;
+      justify-content: center;
+    }
+
+    .page {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: radial-gradient(circle at top, #4a2156 0%, #22102b 38%, #120818 100%);
+      border: 2px solid rgba(255,255,255,0.08);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+      isolation: isolate;
+    }
+
+    .sparkles,
+    .sparkles::before,
+    .sparkles::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.24) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,212,95,0.14) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,102,196,0.16) 0 1px, transparent 1.5px);
+      background-size: 120px 120px, 170px 170px, 220px 220px;
+      background-position: 0 0, 30px 60px, 80px 30px;
+      opacity: 0.34;
+      z-index: 0;
+    }
+
+    .sparkles::before { opacity: 0.18; transform: scale(1.05); }
+    .sparkles::after { opacity: 0.14; transform: scale(1.1); }
+
+    .header {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      top: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+      z-index: 2;
+    }
+
+    .title-wrap {
+      max-width: 1180px;
+      padding-top: 4px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: var(--gold);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 80px;
+      line-height: 0.96;
+      color: var(--pink);
+      text-shadow: 4px 4px 0 #000;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      margin-top: 16px;
+      font-size: 28px;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.28;
+      max-width: 1080px;
+    }
+
+    .page-badge {
+      min-width: 170px;
+      text-align: center;
+      padding: 18px 24px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,102,196,0.25), rgba(255,102,196,0.12));
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 2px 2px 0 #000;
+      flex: 0 0 auto;
+      margin-top: 6px;
+    }
+
+    .content {
+      position: absolute;
+      left: 66px;
+      right: 66px;
+      top: 250px;
+      bottom: 78px;
+      display: grid;
+      gap: 24px;
+      z-index: 2;
+    }
+
+    .page-1 .content {
+      grid-template-columns: 1.02fr 0.98fr;
+    }
+
+    .page-2 .content {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 24px 26px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 40px;
+      color: var(--gold);
+      text-shadow: 2px 2px 0 #000;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+
+    .panel p,
+    .panel li,
+    .panel div {
+      font-size: 23px;
+      line-height: 1.38;
+      color: var(--text);
+    }
+
+    .panel p { margin: 0 0 12px; }
+    .panel ul {
+      margin: 10px 0 0 22px;
+      padding: 0;
+    }
+    .panel li { margin: 8px 0; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .pay-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .pay-card,
+    .symbol-card,
+    .tip-card,
+    .rule {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 16px 18px 14px;
+    }
+
+    .symbol-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .symbol {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 24px;
+      color: #1b0713;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      flex: 0 0 auto;
+    }
+
+    .sym-a5 { background: #ff3296; }
+    .sym-a4 { background: #ff4da8; }
+    .sym-a3 { background: #ff66b8; }
+    .sym-a2 { background: #ff79c8; }
+    .sym-a1 { background: #ff8cd8; }
+    .sym-k  { background: #ffb56b; }
+    .sym-q  { background: #d395ff; }
+    .sym-j  { background: #96b4ff; }
+    .sym-10 { background: #7fc8ff; }
+    .sym-w  { background: #ffd54f; }
+    .sym-s  { background: #72f2b8; }
+    .sym-b  { background: #ffe18b; }
+
+    .pay-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--pink-2);
+      text-shadow: 2px 2px 0 #000;
+      line-height: 1.1;
+    }
+
+    .pay-lines {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.28;
+    }
+
+    .rule-strip {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .rule .label {
+      font-size: 21px;
+      color: var(--gold);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+
+    .bonus-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .footer-note {
+      position: absolute;
+      left: 70px;
+      right: 70px;
+      bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      font-size: 18px;
+      color: #f1d8ec;
+      z-index: 2;
+      opacity: 0.96;
+    }
+
+    .footer-note .brand {
+      color: var(--pink);
+      font-weight: 900;
+      text-shadow: 2px 2px 0 #000;
+      white-space: nowrap;
+    }
+
+    .footer-note .note {
+      text-align: right;
+      line-height: 1.25;
+    }
+  </style>
+</head>
+<body>
+  <section class="page page-1">
+    <div class="sparkles"></div>
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="eyebrow">Game Information</div>
+        <h1 class="title">How to Play</h1>
+        <div class="subtitle">Everything you need to know about reel wins, special symbols, and triggering bonus features.</div>
+      </div>
+      <div class="page-badge">PAGE 1</div>
+    </div>
+
+    <div class="content">
+      <div class="panel">
+        <h2>Base Game Rules</h2>
+        <p>This is a 5-reel, 3-row video slot. Select your denomination and total bet, then press <strong>SPIN</strong> to play.</p>
+
+        <div class="rule-strip">
+          <div class="rule">
+            <div class="label">Line Wins</div>
+            <div>Winning symbol combinations start on the <strong>leftmost reel</strong> and pay from left to right across adjacent reels.</div>
+          </div>
+          <div class="rule">
+            <div class="label">Scatter Wins</div>
+            <div>Scatter symbols pay in any position on the screen and also award Free Games when 3 or more land.</div>
+          </div>
+          <div class="rule">
+            <div class="label">Wild Symbol</div>
+            <div>Wild substitutes for all regular paying symbols to help complete line wins. Wild does not substitute for Scatter or the bonus symbol.</div>
+          </div>
+          <div class="rule">
+            <div class="label">Bonus Symbol</div>
+            <div>The 1x1 symbol triggers the Lock-In bonus. Landing 6 or more on one base or free spin starts the feature.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Special Symbols</h2>
+        <div class="grid-2">
+          <div class="symbol-card">
+            <div class="symbol-row">
+              <div class="symbol sym-w">W</div>
+              <div class="pay-title">Wild</div>
+            </div>
+            <div>Substitutes for regular paying symbols to complete higher line wins.</div>
+          </div>
+          <div class="symbol-card">
+            <div class="symbol-row">
+              <div class="symbol sym-s">S</div>
+              <div class="pay-title">Scatter</div>
+            </div>
+            <div>Pays anywhere and awards Free Games on 3, 4, or 5 symbols.</div>
+          </div>
+          <div class="symbol-card">
+            <div class="symbol-row">
+              <div class="symbol sym-b">1x1</div>
+              <div class="pay-title">Lock-In Symbol</div>
+            </div>
+            <div>Collect 6 or more to trigger the Lock-In bonus feature.</div>
+          </div>
+          <div class="symbol-card">
+            <div class="symbol-row">
+              <div class="symbol sym-a5">A5</div>
+              <div class="pay-title">Top Symbol</div>
+            </div>
+            <div>Your highest regular paying symbol. Five on a line awards the best standard line payout.</div>
+          </div>
+        </div>
+
+        <h2 style="margin-top:18px;">Free Games Trigger</h2>
+        <p><strong>3 Scatters</strong> award 5 Free Games.</p>
+        <p><strong>4 Scatters</strong> award 10 Free Games.</p>
+        <p><strong>5 Scatters</strong> award 15 Free Games.</p>
+        <p>During Free Games, additional Scatters can award more spins.</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <div class="brand">Short n’ Sweet Slots</div>
+      <div class="note">See PAGE 2 for paytable details and bonus explanations.</div>
+    </div>
+  </section>
+
+  <section class="page page-2">
+    <div class="sparkles"></div>
+
+    <div class="header">
+      <div class="title-wrap">
+        <div class="eyebrow">Game Information</div>
+        <h1 class="title">Paytable &amp; Bonuses</h1>
+        <div class="subtitle">Symbol values are multiplied by your current total bet. Bonus features can lead to larger wins.</div>
+      </div>
+      <div class="page-badge">PAGE 2</div>
+    </div>
+
+    <div class="content">
+      <div class="panel">
+        <h2>Regular Symbol Paytable</h2>
+        <div class="pay-grid">
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-a5">A5</div><div class="pay-title">AAAAA</div></div>
+            <div class="pay-lines"><div>5 on a line = 5.0x bet</div><div>4 on a line = 2.0x bet</div><div>3 on a line = 0.4x bet</div></div>
+          </div>
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-a4">A4</div><div class="pay-title">AAAA</div></div>
+            <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.5x bet</div><div>3 on a line = 0.2x bet</div></div>
+          </div>
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-a3">A3</div><div class="pay-title">AAA</div></div>
+            <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.0x bet</div><div>3 on a line = 0.2x bet</div></div>
+          </div>
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-a2">A2</div><div class="pay-title">AA</div></div>
+            <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.0x bet</div><div>3 on a line = 0.2x bet</div></div>
+          </div>
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-a1">A</div><div class="pay-title">A</div></div>
+            <div class="pay-lines"><div>5 on a line = 2.5x bet</div><div>4 on a line = 0.8x bet</div><div>3 on a line = 0.2x bet</div></div>
+          </div>
+          <div class="pay-card">
+            <div class="symbol-row"><div class="symbol sym-k">K</div><div class="pay-title">K / Q / J / 10</div></div>
+            <div class="pay-lines"><div>5 on a line = 2.0x bet</div><div>4 on a line = 0.4x bet</div><div>3 on a line = 0.2x bet</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Bonus Features</h2>
+        <div class="bonus-stack">
+          <div class="tip-card">
+            <div class="symbol-row"><div class="symbol sym-s">S</div><div class="pay-title">Free Games</div></div>
+            <div>3, 4, or 5 Scatters award Free Games. During the feature, more Scatters can add extra Free Games.</div>
+          </div>
+          <div class="tip-card">
+            <div class="symbol-row"><div class="symbol sym-b">1x1</div><div class="pay-title">Lock-In Bonus</div></div>
+            <div>Land 6 or more 1x1 symbols to trigger the Lock-In feature. New 1x1 symbols reset the spin counter. Filled spaces can merge into larger blocks for bigger awards.</div>
+          </div>
+          <div class="tip-card">
+            <div class="pay-title">Lock-In Awards</div>
+            <div>Every collected block awards a prize based on block size. Larger merged blocks have a chance to award Mini, Minor, Major, or Grand jackpots.</div>
+          </div>
+          <div class="tip-card">
+            <div class="pay-title">Important Notes</div>
+            <ul>
+              <li>All line wins are multiplied by your selected total bet.</li>
+              <li>Scatter wins are paid in addition to line wins.</li>
+              <li>Only the highest win for each line is paid.</li>
+              <li>Values shown here are displayed as bet multipliers for clarity.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <div class="brand">Short n’ Sweet Slots</div>
+      <div class="note">Good luck and enjoy the bonus features.</div>
+    </div>
+  </section>
+</body>
+</html>
