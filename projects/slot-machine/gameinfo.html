@@ -182,317 +182,505 @@
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.85%;
+      gap: 1%;
     }
 
-    .pay-grid {
+    .symbol-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8%;
-      margin-top: 0.5%;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8vw;
+      margin-top: 0.9%;
     }
 
-    .pay-card,
-    .symbol-card,
-    .tip-card,
-    .rule {
+    .symbol-card {
       background: rgba(255,255,255,0.045);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 22px;
-      padding: 0.9% 1%;
-    }
-
-    .symbol-row {
+      padding: 0.8vw 0.7vw;
       display: flex;
-      align-items: center;
-      gap: 0.65vw;
-      margin-bottom: 0.55vw;
-    }
-
-    .symbol {
-      width: 2.9vw;
-      height: 2.9vw;
-      border-radius: 16px;
-      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-weight: 900;
-      font-size: 1.3vw;
-      color: #1b0713;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
-      flex: 0 0 auto;
+      min-height: 8vw;
+      text-align: center;
     }
 
-    .sym-a5 { background: #ff3296; }
-    .sym-a4 { background: #ff4da8; }
-    .sym-a3 { background: #ff66b8; }
-    .sym-a2 { background: #ff79c8; }
-    .sym-a1 { background: #ff8cd8; }
-    .sym-k  { background: #ffb56b; }
-    .sym-q  { background: #d395ff; }
-    .sym-j  { background: #96b4ff; }
-    .sym-10 { background: #7fc8ff; }
-    .sym-w  { background: #ffd54f; }
-    .sym-s  { background: #72f2b8; }
-    .sym-b  { background: #ffe18b; }
+    .symbol-card img {
+      width: 3.8vw;
+      height: 3.8vw;
+      object-fit: contain;
+      margin-bottom: 0.45vw;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
+    }
 
-    .pay-title {
-      font-size: 1.4vw;
-      font-weight: 900;
+    .symbol-name {
+      font-size: 1.02vw;
+      font-weight: 800;
       color: var(--pink-2);
-      text-shadow: 2px 2px 0 #000;
-      line-height: 1.1;
-    }
-
-    .pay-lines {
-      display: grid;
-      gap: 0.2vw;
-      color: var(--muted);
-      font-size: 1.08vw;
-      line-height: 1.28;
-    }
-
-    .rule-strip {
-      display: grid;
-      gap: 0.65%;
-      margin-top: 0.55%;
-    }
-
-    .rule .label {
-      font-size: 1.08vw;
-      color: var(--gold);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
       margin-bottom: 0.2vw;
-      line-height: 1.1;
     }
 
-    .bonus-stack {
+    .symbol-desc {
+      font-size: 0.94vw;
+      line-height: 1.22;
+      color: var(--muted);
+    }
+
+    .highlight-box {
+      background: rgba(255,212,95,0.08);
+      border: 1px solid rgba(255,212,95,0.22);
+      border-radius: 22px;
+      padding: 0.9vw 1vw;
+      margin-top: 0.9%;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6vw;
+      margin-top: 0.75%;
+    }
+
+    .pill {
+      padding: 0.42vw 0.8vw;
+      border-radius: 999px;
+      background: rgba(255,102,196,0.12);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 0.92vw;
+      font-weight: 800;
+    }
+
+    .paytable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.8%;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .paytable th,
+    .paytable td {
+      padding: 0.6vw 0.55vw;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 1.02vw;
+    }
+
+    .paytable th {
+      color: var(--gold);
+      background: rgba(255,255,255,0.04);
+      font-size: 1vw;
+      font-weight: 900;
+    }
+
+    .paytable td:first-child,
+    .paytable th:first-child {
+      text-align: left;
+      padding-left: 0.8vw;
+    }
+
+    .pay-row-label {
+      display: flex;
+      align-items: center;
+      gap: 0.55vw;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .pay-row-label img {
+      width: 2vw;
+      height: 2vw;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+    }
+
+    .note {
+      margin-top: 0.7%;
+      color: var(--muted);
+      font-size: 0.95vw;
+    }
+
+    .feature-list {
       display: grid;
-      gap: 0.65%;
-      margin-top: 0.35%;
+      gap: 0.8vw;
+      margin-top: 0.7%;
     }
 
-    .footer-note {
+    .feature-item {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 0.85vw 0.95vw;
+    }
+
+    .feature-item strong {
+      display: block;
+      color: var(--pink-2);
+      margin-bottom: 0.28vw;
+      font-size: 1.06vw;
+    }
+
+    .footer {
       position: absolute;
-      left: 3.6%;
-      right: 3.6%;
-      bottom: 1.65%;
+      left: 3.8%;
+      right: 3.8%;
+      bottom: 2%;
+      z-index: 2;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1.2%;
-      font-size: 0.95vw;
-      color: #f1d8ec;
-      z-index: 2;
-      opacity: 0.96;
-    }
-
-    .footer-note .brand {
-      color: var(--pink);
-      font-weight: 900;
-      text-shadow: 2px 2px 0 #000;
-      white-space: nowrap;
-    }
-
-    .footer-note .note {
-      text-align: right;
-      line-height: 1.25;
-    }
-
-    .nav-hint {
-      position: absolute;
-      right: 3.6%;
-      bottom: 4.6%;
-      z-index: 3;
-      color: rgba(255,255,255,0.7);
-      font-size: 0.95vw;
+      gap: 1vw;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.9vw;
       font-weight: 700;
+    }
+
+    .footer .left,
+    .footer .right {
+      background: rgba(0,0,0,0.16);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 999px;
+      padding: 0.42vw 0.9vw;
     }
   </style>
 </head>
 <body>
   <div class="viewport">
-    <!-- PAGE 1 -->
-    <section class="page page-1" id="page1">
+    <section class="page page-1 active" id="page1">
       <div class="sparkles"></div>
 
       <div class="header">
         <div class="title-wrap">
-          <div class="eyebrow">Game Information</div>
-          <h1 class="title">How to Play</h1>
-          <div class="subtitle">Everything you need to know about reel wins, special symbols, and triggering bonus features.</div>
+          <div class="eyebrow">Game Info</div>
+          <h1 class="title">Short n' Sweet Slots</h1>
+          <div class="subtitle">
+            Match sweet symbols across 20 fixed lines, trigger free games with Scatters, and land oversized Lock It In symbols for bigger line wins and jackpot-style bonus moments.
+          </div>
         </div>
         <div class="page-badge">PAGE 1</div>
       </div>
 
       <div class="content">
         <div class="panel">
-          <h2>Base Game Rules</h2>
-          <p>This is a 5-reel, 3-row video slot. Select your denomination and total bet, then press <strong>SPIN</strong> to play.</p>
+          <h2>How To Play</h2>
+          <p>Set your denomination, adjust your bet, and press <strong>SPIN</strong> to start the reels.</p>
+          <ul>
+            <li>All wins pay from left to right on active fixed paylines.</li>
+            <li>Only the highest win per payline is paid.</li>
+            <li>Wins are multiplied by your current total bet denomination value.</li>
+            <li>Wilds substitute for all regular paying symbols unless otherwise noted.</li>
+          </ul>
 
-          <div class="rule-strip">
-            <div class="rule">
-              <div class="label">Line Wins</div>
-              <div>Winning symbol combinations start on the <strong>leftmost reel</strong> and pay from left to right across adjacent reels.</div>
+          <div class="highlight-box">
+            <div><strong>Free Games:</strong> 3 or more Scatter symbols award free spins.</div>
+            <div><strong>Lock It In:</strong> Large linked symbols can create oversized winning blocks and special bonus payouts.</div>
+          </div>
+
+          <div class="pill-row">
+            <div class="pill">20 Fixed Lines</div>
+            <div class="pill">Left To Right Pays</div>
+            <div class="pill">Wild Substitutes</div>
+            <div class="pill">Scatter Free Games</div>
+            <div class="pill">Oversized Symbols</div>
+          </div>
+
+          <h2 style="margin-top:1.2%;">Special Symbols</h2>
+          <div class="symbol-grid">
+            <div class="symbol-card">
+              <img src="Assets/BaseSymbols/Wild.png" alt="Wild" />
+              <div class="symbol-name">Wild</div>
+              <div class="symbol-desc">Substitutes for regular symbols to help complete line wins.</div>
             </div>
-            <div class="rule">
-              <div class="label">Scatter Wins</div>
-              <div>Scatter symbols pay in any position on the screen and also award Free Games when 3 or more land.</div>
+
+            <div class="symbol-card">
+              <img src="Assets/BaseSymbols/Scatter.png" alt="Scatter" />
+              <div class="symbol-name">Scatter</div>
+              <div class="symbol-desc">3 or more award free games regardless of line position.</div>
             </div>
-            <div class="rule">
-              <div class="label">Wild Symbol</div>
-              <div>Wild substitutes for all regular paying symbols to help complete line wins. Wild does not substitute for Scatter or the bonus symbol.</div>
+
+            <div class="symbol-card">
+              <img src="Assets/LockinPlaceSymbols/1x1.png" alt="Lock It In" />
+              <div class="symbol-name">Lock It In</div>
+              <div class="symbol-desc">Can expand into linked shapes and create larger win areas.</div>
             </div>
-            <div class="rule">
-              <div class="label">Bonus Symbol</div>
-              <div>The 1x1 symbol triggers the Lock-In bonus. Landing 6 or more on one base or free spin starts the feature.</div>
+
+            <div class="symbol-card">
+              <img src="Assets/BaseSymbols/AAAAA.png" alt="Top Symbol" />
+              <div class="symbol-name">Top Premium</div>
+              <div class="symbol-desc">Highest regular premium symbol on the reels.</div>
+            </div>
+
+            <div class="symbol-card">
+              <img src="Assets/BaseSymbols/AAA.png" alt="Mid Symbol" />
+              <div class="symbol-name">Premium</div>
+              <div class="symbol-desc">Premium symbols pay more than card rank symbols.</div>
+            </div>
+
+            <div class="symbol-card">
+              <img src="Assets/BaseSymbols/A.png" alt="Low Symbol" />
+              <div class="symbol-name">Card Rank</div>
+              <div class="symbol-desc">Lower-value regular symbols used in standard line wins.</div>
             </div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Special Symbols</h2>
-          <div class="grid-2">
-            <div class="symbol-card">
-              <div class="symbol-row">
-                <div class="symbol sym-w">W</div>
-                <div class="pay-title">Wild</div>
-              </div>
-              <div>Substitutes for regular paying symbols to complete higher line wins.</div>
+          <h2>Feature Details</h2>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <strong>Free Games Feature</strong>
+              Land 3 or more Scatter symbols to trigger free games. Additional Scatters during the feature may award more free spins depending on your reel result configuration.
             </div>
 
-            <div class="symbol-card">
-              <div class="symbol-row">
-                <div class="symbol sym-s">S</div>
-                <div class="pay-title">Scatter</div>
-              </div>
-              <div>Pays anywhere and awards Free Games on 3, 4, or 5 symbols.</div>
+            <div class="feature-item">
+              <strong>Wild Symbol</strong>
+              The Wild symbol substitutes for regular pay symbols to improve your chances of completing winning combinations on paylines.
             </div>
 
-            <div class="symbol-card">
-              <div class="symbol-row">
-                <div class="symbol sym-b">1x1</div>
-                <div class="pay-title">Lock-In Symbol</div>
-              </div>
-              <div>Collect 6 or more to trigger the Lock-In bonus feature.</div>
+            <div class="feature-item">
+              <strong>Lock It In Bonus</strong>
+              Oversized linked symbol shapes may appear and can merge into larger blocks. These can create stronger line coverage and also feed special bonus-style payouts.
             </div>
 
-            <div class="symbol-card">
-              <div class="symbol-row">
-                <div class="symbol sym-a5">A5</div>
-                <div class="pay-title">Top Symbol</div>
-              </div>
-              <div>Your highest regular paying symbol. Five on a line awards the best standard line payout.</div>
+            <div class="feature-item">
+              <strong>Jackpot-Style Awards</strong>
+              Certain Lock It In outcomes can award Mini, Minor, Major, or Grand-style prizes based on the achieved block and result tier.
             </div>
           </div>
 
-          <h2 style="margin-top:1.05vw;">Free Games Trigger</h2>
-          <p><strong>3 Scatters</strong> award 5 Free Games.</p>
-          <p><strong>4 Scatters</strong> award 10 Free Games.</p>
-          <p><strong>5 Scatters</strong> award 15 Free Games.</p>
-          <p>During Free Games, additional Scatters can award more spins.</p>
+          <h2 style="margin-top:1.15%;">General Rules</h2>
+          <div class="grid-2">
+            <div class="highlight-box">
+              <div><strong>Bet Handling</strong></div>
+              <div>Your total bet is based on the selected denomination and current credit step.</div>
+            </div>
+            <div class="highlight-box">
+              <div><strong>Game Flow</strong></div>
+              <div>During features, press SPIN to continue when prompted or let the game proceed automatically where supported.</div>
+            </div>
+          </div>
+
+          <p style="margin-top:1.05%;">
+            In free games, special reel behavior and feature pacing may differ from base game spins. Any special overlays, celebratory animations, and feature prompts are part of the themed presentation.
+          </p>
         </div>
       </div>
 
-      <div class="footer-note">
-        <div class="brand">Short n’ Sweet Slots</div>
-        <div class="note">See PAGE 2 for paytable details and bonus explanations.</div>
+      <div class="footer">
+        <div class="left">Use the in-game NEXT PAGE button to view the paytable.</div>
+        <div class="right">Short n' Sweet Slots</div>
       </div>
     </section>
 
-    <!-- PAGE 2 -->
     <section class="page page-2" id="page2">
       <div class="sparkles"></div>
 
       <div class="header">
         <div class="title-wrap">
-          <div class="eyebrow">Game Information</div>
-          <h1 class="title">Paytable &amp; Bonuses</h1>
-          <div class="subtitle">Symbol values are multiplied by your current total bet. Bonus features can lead to larger wins.</div>
+          <div class="eyebrow">Paytable</div>
+          <h1 class="title">Winning Combinations</h1>
+          <div class="subtitle">
+            The paytable below shows example line win values in credits. Final awarded amounts are scaled by your active denomination and bet configuration.
+          </div>
         </div>
         <div class="page-badge">PAGE 2</div>
       </div>
 
       <div class="content">
         <div class="panel">
-          <h2>Regular Symbol Paytable</h2>
-          <div class="pay-grid">
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-a5">A5</div><div class="pay-title">AAAAA</div></div>
-              <div class="pay-lines"><div>5 on a line = 5.0x bet</div><div>4 on a line = 2.0x bet</div><div>3 on a line = 0.4x bet</div></div>
-            </div>
+          <h2>Regular Symbol Pays</h2>
 
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-a4">A4</div><div class="pay-title">AAAA</div></div>
-              <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.5x bet</div><div>3 on a line = 0.2x bet</div></div>
-            </div>
+          <table class="paytable">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>5 of a Kind</th>
+                <th>4 of a Kind</th>
+                <th>3 of a Kind</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/AAAAA.png" alt="AAAAA" />
+                    <span>AAAAA</span>
+                  </div>
+                </td>
+                <td>100</td>
+                <td>40</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/AAAA.png" alt="AAAA" />
+                    <span>AAAA</span>
+                  </div>
+                </td>
+                <td>75</td>
+                <td>30</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/AAA.png" alt="AAA" />
+                    <span>AAA</span>
+                  </div>
+                </td>
+                <td>50</td>
+                <td>20</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/AA.png" alt="AA" />
+                    <span>AA</span>
+                  </div>
+                </td>
+                <td>40</td>
+                <td>15</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/A.png" alt="A" />
+                    <span>A</span>
+                  </div>
+                </td>
+                <td>30</td>
+                <td>10</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/K.png" alt="K" />
+                    <span>K</span>
+                  </div>
+                </td>
+                <td>25</td>
+                <td>8</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/Q.png" alt="Q" />
+                    <span>Q</span>
+                  </div>
+                </td>
+                <td>20</td>
+                <td>6</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/J.png" alt="J" />
+                    <span>J</span>
+                  </div>
+                </td>
+                <td>15</td>
+                <td>5</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="pay-row-label">
+                    <img src="Assets/BaseSymbols/10.png" alt="10" />
+                    <span>10</span>
+                  </div>
+                </td>
+                <td>10</td>
+                <td>4</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+          </table>
 
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-a3">A3</div><div class="pay-title">AAA</div></div>
-              <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.0x bet</div><div>3 on a line = 0.2x bet</div></div>
-            </div>
-
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-a2">A2</div><div class="pay-title">AA</div></div>
-              <div class="pay-lines"><div>5 on a line = 4.0x bet</div><div>4 on a line = 1.0x bet</div><div>3 on a line = 0.2x bet</div></div>
-            </div>
-
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-a1">A</div><div class="pay-title">A</div></div>
-              <div class="pay-lines"><div>5 on a line = 2.5x bet</div><div>4 on a line = 0.8x bet</div><div>3 on a line = 0.2x bet</div></div>
-            </div>
-
-            <div class="pay-card">
-              <div class="symbol-row"><div class="symbol sym-k">K</div><div class="pay-title">K / Q / J / 10</div></div>
-              <div class="pay-lines"><div>5 on a line = 2.0x bet</div><div>4 on a line = 0.4x bet</div><div>3 on a line = 0.2x bet</div></div>
-            </div>
+          <div class="note">
+            Wild symbols substitute for regular symbols. Scatter awards are typically paid by count and do not need to land on paylines.
           </div>
         </div>
 
         <div class="panel">
-          <h2>Bonus Features</h2>
-          <div class="bonus-stack">
-            <div class="tip-card">
-              <div class="symbol-row"><div class="symbol sym-s">S</div><div class="pay-title">Free Games</div></div>
-              <div>3, 4, or 5 Scatters award Free Games. During the feature, more Scatters can add extra Free Games.</div>
+          <h2>Feature Pays & Notes</h2>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <strong>Scatter Pays / Free Games Trigger</strong>
+              3 or more Scatter symbols can trigger free games. Scatter behavior is evaluated independently of standard line wins.
             </div>
 
-            <div class="tip-card">
-              <div class="symbol-row"><div class="symbol sym-b">1x1</div><div class="pay-title">Lock-In Bonus</div></div>
-              <div>Land 6 or more 1x1 symbols to trigger the Lock-In feature. New 1x1 symbols reset the spin counter. Filled spaces can merge into larger blocks for bigger awards.</div>
+            <div class="feature-item">
+              <strong>Lock It In Large Symbols</strong>
+              Linked shapes can cover multiple reel positions. These may count across several paylines at once depending on the final merged shape.
             </div>
 
-            <div class="tip-card">
-              <div class="pay-title">Lock-In Awards</div>
-              <div>Every collected block awards a prize based on block size. Larger merged blocks have a chance to award Mini, Minor, Major, or Grand jackpots.</div>
+            <div class="feature-item">
+              <strong>Mini / Minor / Major / Grand</strong>
+              Special Lock It In outcomes may award jackpot-style prizes, scaled to the current denomination level.
             </div>
 
-            <div class="tip-card">
-              <div class="pay-title">Important Notes</div>
-              <ul>
-                <li>All line wins are multiplied by your selected total bet.</li>
-                <li>Scatter wins are paid in addition to line wins.</li>
-                <li>Only the highest win for each line is paid.</li>
-                <li>Values shown here are displayed as bet multipliers for clarity.</li>
-              </ul>
+            <div class="feature-item">
+              <strong>Only Highest Line Win Per Line</strong>
+              If more than one win could occur on the same payline, only the highest win is awarded for that line.
             </div>
           </div>
+
+          <h2 style="margin-top:1.15%;">Example Jackpot Scale</h2>
+          <div class="grid-2">
+            <div class="highlight-box">
+              <div><strong>Mini</strong></div>
+              <div>Small bonus-style jackpot award.</div>
+            </div>
+            <div class="highlight-box">
+              <div><strong>Minor</strong></div>
+              <div>Mid-tier bonus-style jackpot award.</div>
+            </div>
+            <div class="highlight-box">
+              <div><strong>Major</strong></div>
+              <div>High-tier feature jackpot-style award.</div>
+            </div>
+            <div class="highlight-box">
+              <div><strong>Grand</strong></div>
+              <div>Top-tier feature jackpot-style award.</div>
+            </div>
+          </div>
+
+          <p style="margin-top:1.05%;">
+            All listed values on this page are presentation values for the current build and can be adjusted to match the exact intended payout math for your final version.
+          </p>
         </div>
       </div>
 
-      <div class="footer-note">
-        <div class="brand">Short n’ Sweet Slots</div>
-        <div class="note">Good luck and enjoy the bonus features.</div>
+      <div class="footer">
+        <div class="left">Page 2 displays the paytable and feature notes.</div>
+        <div class="right">Short n' Sweet Slots</div>
       </div>
     </section>
   </div>
 
   <script>
-    function showPageFromHash() {
+    function getRequestedPage() {
       const hash = window.location.hash.toLowerCase();
-      const page = hash === "#page2" ? "page2" : "page1";
+      if (hash === "#page2") return "page2";
+
+      const params = new URLSearchParams(window.location.search);
+      const pageParam = (params.get("page") || "").toLowerCase();
+      if (pageParam === "2" || pageParam === "page2") return "page2";
+
+      return "page1";
+    }
+
+    function showRequestedPage() {
+      const page = getRequestedPage();
 
       document.querySelectorAll(".page").forEach((el) => {
         el.classList.remove("active");
@@ -502,8 +690,9 @@
       if (target) target.classList.add("active");
     }
 
-    window.addEventListener("hashchange", showPageFromHash);
-    showPageFromHash();
+    window.addEventListener("hashchange", showRequestedPage);
+    window.addEventListener("DOMContentLoaded", showRequestedPage);
+    showRequestedPage();
   </script>
 </body>
 </html>
