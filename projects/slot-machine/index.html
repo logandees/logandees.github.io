@@ -231,15 +231,15 @@
       position: absolute;
       inset: 0;
       display: none;
+      align-items: center;
+      justify-content: center;
       background: rgba(0,0,0,0.72);
       z-index: 30;
       pointer-events: auto;
     }
 
     .info-content {
-      position: absolute;
-      left: 5%;
-      top: 5%;
+      position: relative;
       width: 90%;
       height: 90%;
       background: rgba(15,8,20,0.94);
@@ -259,7 +259,7 @@
       background: #120714;
     }
 
-    .info-fallback {
+    .fallback-wrap {
       position: absolute;
       inset: 0;
       display: none;
@@ -268,118 +268,117 @@
       background: #120714;
     }
 
-    .info-fallback img {
+    .fallback-wrap img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      background: #120714;
     }
 
-    .modal-close, .modal-toggle {
+    .modal-controls {
       position: absolute;
-      padding: 10px 16px;
-      border-radius: 14px;
+      right: 16px;
+      top: 16px;
+      display: flex;
+      gap: 10px;
+      z-index: 32;
+    }
+
+    .modal-btn {
       border: 0;
-      background: rgba(45,16,57,0.90);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.55);
       color: #fff;
       font-weight: 800;
       cursor: pointer;
-      z-index: 3;
+      backdrop-filter: blur(4px);
     }
-
-    .modal-close { top: 14px; right: 14px; }
-    .modal-toggle { bottom: 18px; left: 50%; transform: translateX(-50%); }
 
     .toast {
-      position: fixed;
+      position: absolute;
       left: 50%;
-      bottom: 18px;
+      top: 6%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.84);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 16px;
-      padding: 14px 18px;
-      text-align: center;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.76);
+      color: #fff;
       font-weight: 700;
-      min-width: min(800px, 90vw);
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      font-size: clamp(14px, 1.1vw, 18px);
+      display: none;
       z-index: 40;
-      pointer-events: none;
+      text-align: center;
+      max-width: 72%;
     }
-
-    .toast.show { opacity: 1; }
 
     .asset-warning {
-      position: absolute;
-      top: 1.2%;
-      right: 1.2%;
-      max-width: 28%;
-      background: rgba(0,0,0,0.82);
-      border: 1px solid rgba(255,99,132,0.35);
-      border-radius: 14px;
-      padding: 10px 12px;
-      z-index: 30;
-      display: none;
-      font-size: 12px;
-      line-height: 1.35;
-      color: #ffd7e5;
-      pointer-events: none;
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      max-width: min(700px, 90vw);
       white-space: pre-wrap;
-    }
-
-    .asset-warning strong {
-      color: #ff8fbf;
-      display: block;
-      margin-bottom: 6px;
+      background: rgba(0,0,0,0.85);
+      color: #ffd5d5;
+      border: 1px solid rgba(255,120,120,0.4);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: 12px/1.35 monospace;
+      z-index: 9999;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="app" id="app">
+  <div class="app">
     <div class="screen-wrap" id="screenWrap">
-      <img class="bg-layer" id="mainBg" src="Assets/Ui/MainBackground.png" alt="" />
-      <img class="jackpot-bg" id="jackpotBg" src="Assets/Ui/JackpotBackground.png" alt="" />
+      <img class="bg-layer" id="mainBg" src="Assets/Ui/FinalBackground.png" alt="Background" />
+      <video class="transition-layer" id="transitionVideo" preload="auto" playsinline muted></video>
 
       <div class="reels-region" id="reelsRegion">
-        <img class="reels-bg" id="reelsBg" src="Assets/Ui/ReelsBackground.png" alt="" />
-        <canvas class="reels-canvas" id="reelsCanvas" width="1200" height="720"></canvas>
-        <img class="reels-fg" id="reelsFg" src="Assets/Ui/ReelsForeground.png" alt="" />
+        <img class="reels-bg" id="reelsBg" src="Assets/Ui/BackgroundCover.png" alt="" />
+        <canvas class="reels-canvas" id="reelsCanvas"></canvas>
+        <video class="luck-video" id="luckVideo" preload="auto" playsinline muted>
+          <source src="Assets/TransitionOverlaysVideos/LuckHasArrived.mp4" type="video/mp4" />
+        </video>
+        <img class="reels-fg" id="reelsFg" src="Assets/Ui/ForegroundCover.png" alt="" />
       </div>
 
-      <video class="luck-video" id="luckVideo" preload="auto" playsinline muted>
-        <source src="Assets/TransitionOverlaysVideos/LuckHasArrived.mp4" type="video/mp4" />
-      </video>
+      <img class="reels-border" id="reelsBorder" src="Assets/Ui/SpinBackgroundNoReels.png" alt="" />
+      <img class="jackpot-bg" id="jackpotBg" src="Assets/Ui/JackpotBackground.png" alt="" />
 
-      <img class="reels-border" id="reelsBorder" src="Assets/Ui/ReelsBorderLines.png" alt="" />
+      <div class="hud">
+        <div class="pink-text" style="position:absolute; left:77.5%; top:9.4%; font-size:clamp(16px,1.2vw,22px);">GRAND</div>
+        <div class="value-box" id="grandAmount" style="left:77.2%; top:13.8%; width:14.8%; height:5.1%; font-size:clamp(18px,1.4vw,24px);"></div>
 
-      <div class="hud" id="hud">
-        <div class="value-box pink-text" style="left:31.25%; top:0%; width:18.75%; height:5.556%; font-size:clamp(18px,2vw,34px);" id="winBox">WIN $0.00</div>
+        <div class="pink-text" style="position:absolute; left:77.5%; top:22.8%; font-size:clamp(16px,1.2vw,22px);">MAJOR</div>
+        <div class="value-box" id="majorAmount" style="left:77.2%; top:27.2%; width:14.8%; height:5.1%; font-size:clamp(18px,1.4vw,24px);"></div>
 
-        <div class="value-box pink-text" style="left:9.375%; top:83.333%; width:12.5%; height:5.556%; font-size:clamp(14px,1.2vw,22px);">BET</div>
-        <button class="btn small-btn" id="betMinusBtn" style="left:9.375%; top:88.889%; width:3.125%; height:5.556%;">-</button>
-        <div class="value-box" id="betAmount" style="left:12.5%; top:88.889%; width:6.25%; height:5.556%; font-size:clamp(14px,1.3vw,22px);">$0.50</div>
-        <button class="btn small-btn" id="betPlusBtn" style="left:18.75%; top:88.889%; width:3.125%; height:5.556%;">+</button>
+        <div class="pink-text" style="position:absolute; left:77.5%; top:36.2%; font-size:clamp(16px,1.2vw,22px);">MINOR</div>
+        <div class="value-box" id="minorAmount" style="left:77.2%; top:40.6%; width:14.8%; height:5.1%; font-size:clamp(18px,1.4vw,24px);"></div>
 
-        <div class="value-box pink-text" style="left:25%; top:83.333%; width:12.5%; height:5.556%; font-size:clamp(14px,1.2vw,22px);">BALANCE</div>
-        <div class="value-box" id="balanceAmount" style="left:25%; top:88.889%; width:12.5%; height:5.556%; font-size:clamp(14px,1.3vw,22px);">$100.00</div>
+        <div class="pink-text" style="position:absolute; left:77.5%; top:49.7%; font-size:clamp(16px,1.2vw,22px);">MINI</div>
+        <div class="value-box" id="miniAmount" style="left:77.2%; top:54%; width:14.8%; height:5.1%; font-size:clamp(18px,1.4vw,24px);"></div>
 
-        <button class="btn small-btn" id="gameInfoBtn" style="left:40.625%; top:83.333%; width:12.5%; height:5.556%;">GAME INFO</button>
-        <button class="btn small-btn" id="paytableBtn" style="left:40.625%; top:88.889%; width:12.5%; height:5.556%;">PAYTABLE</button>
-        <button class="btn small-btn" id="linesBtn" style="left:56.25%; top:83.333%; width:12.5%; height:5.556%;">LINES</button>
-        <button class="btn small-btn" id="collectBtn" style="left:56.25%; top:88.889%; width:12.5%; height:5.556%;">COLLECT</button>
+        <div class="pink-text" style="position:absolute; left:11.8%; top:82.2%; font-size:clamp(14px,1.1vw,20px);">BALANCE</div>
+        <div class="value-box" id="balanceAmount" style="left:9.4%; top:85.6%; width:12.8%; height:5.1%; font-size:clamp(18px,1.5vw,26px);"></div>
 
-        <button class="btn spin-btn" id="spinBtn" style="left:78.125%; top:66.667%; width:15.625%; height:16.667%;">SPIN</button>
-        <button class="btn small-btn" id="denomBtn" style="left:93.75%; top:88.889%; width:6.25%; height:11.111%;">1¢</button>
+        <div class="pink-text" style="position:absolute; left:26.2%; top:82.2%; font-size:clamp(14px,1.1vw,20px);">BET</div>
+        <div class="value-box" id="betAmount" style="left:23.8%; top:85.6%; width:12.8%; height:5.1%; font-size:clamp(18px,1.5vw,26px);"></div>
 
-        <div class="value-box pink-text" style="left:78.125%; top:11.111%; width:12.5%; height:5.556%; font-size:clamp(18px,1.4vw,26px);">GRAND</div>
-        <div class="value-box" id="grandAmount" style="left:78.125%; top:16.667%; width:12.5%; height:5.556%; font-size:clamp(16px,1.35vw,24px);"></div>
-        <div class="value-box pink-text" style="left:78.125%; top:22.222%; width:12.5%; height:5.556%; font-size:clamp(18px,1.4vw,26px);">MAJOR</div>
-        <div class="value-box" id="majorAmount" style="left:78.125%; top:27.778%; width:12.5%; height:5.556%; font-size:clamp(16px,1.35vw,24px);"></div>
-        <div class="value-box pink-text" style="left:78.125%; top:33.333%; width:12.5%; height:5.556%; font-size:clamp(18px,1.4vw,26px);">MINOR</div>
-        <div class="value-box" id="minorAmount" style="left:78.125%; top:38.889%; width:12.5%; height:5.556%; font-size:clamp(16px,1.35vw,24px);"></div>
-        <div class="value-box pink-text" style="left:78.125%; top:44.444%; width:12.5%; height:5.556%; font-size:clamp(18px,1.4vw,26px);">MINI</div>
-        <div class="value-box" id="miniAmount" style="left:78.125%; top:50%; width:12.5%; height:5.556%; font-size:clamp(16px,1.35vw,24px);"></div>
+        <div class="pink-text" style="position:absolute; left:41.6%; top:82.2%; font-size:clamp(14px,1.1vw,20px);">WIN</div>
+        <div class="value-box" id="winBox" style="left:38.8%; top:85.6%; width:16%; height:5.1%; font-size:clamp(18px,1.5vw,26px);"></div>
+
+        <button class="btn small-btn" id="denomBtn" style="left:56.8%; top:84%; width:8.5%; height:6.5%;">DENOM</button>
+        <button class="btn small-btn" id="betMinusBtn" style="left:66.2%; top:84%; width:4.8%; height:6.5%;">-</button>
+        <button class="btn small-btn" id="betPlusBtn" style="left:71.7%; top:84%; width:4.8%; height:6.5%;">+</button>
+
+        <button class="btn small-btn" id="gameInfoBtn" style="left:77.2%; top:63.8%; width:14.8%; height:5.8%;">GAME INFO</button>
+        <button class="btn small-btn" id="paytableBtn" style="left:77.2%; top:70.6%; width:14.8%; height:5.8%;">PAYTABLE</button>
+
+        <button class="btn small-btn" id="collectBtn" style="left:6.9%; top:92.5%; width:11%; height:5.5%;">COLLECT</button>
+        <button class="btn small-btn" id="linesBtn" style="left:20.4%; top:92.5%; width:11%; height:5.5%;">LINES</button>
+        <button class="btn spin-btn" id="spinBtn" style="left:72.5%; top:91.4%; width:19.5%; height:6.2%;">SPIN</button>
       </div>
 
       <div class="message-banner" id="messageBanner"></div>
@@ -391,39 +390,24 @@
         </div>
       </div>
 
-      <!-- GAME INFO / PAYTABLE MODAL -->
       <div class="info-modal" id="infoModal">
         <div class="info-content">
-          <button class="modal-close" id="modalCloseBtn">Close</button>
-          <button class="modal-toggle" id="modalToggleBtn">Next Page</button>
-
-          <iframe
-            id="gameInfoFrame"
-            class="info-frame"
-            src="gameinfo.html#page1"
-            title="Game Information">
-          </iframe>
-
-          <div id="gameInfoFallback" class="info-fallback">
-            <img id="fallbackPageImage" src="Assets/Ui/GameInfo1.png" alt="Game Info Fallback" />
+          <div class="modal-controls">
+            <button class="modal-btn" id="modalToggleBtn">NEXT PAGE</button>
+            <button class="modal-btn" id="modalCloseBtn">CLOSE</button>
+          </div>
+          <iframe class="info-frame" id="gameInfoFrame" title="Game Information"></iframe>
+          <div class="fallback-wrap" id="gameInfoFallback">
+            <img id="fallbackPageImage" src="Assets/Ui/GameInfo1.png" alt="Game information" />
           </div>
         </div>
       </div>
 
-      <video class="transition-layer" id="transitionVideo" preload="auto" playsinline></video>
-      <div class="asset-warning" id="assetWarning"></div>
+      <div class="toast" id="toast"></div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
-  <audio id="sndDing" preload="auto" src="Assets/Sounds/ding.wav"></audio>
-  <audio id="sndDun" preload="auto" src="Assets/Sounds/dun.wav"></audio>
-  <audio id="sndRing" preload="auto" src="Assets/Sounds/ring.wav"></audio>
-  <audio id="sndTryThis" preload="auto" src="Assets/Sounds/HaveYouEverTriedThisOne.wav"></audio>
-  <audio id="sndOhBoy" preload="auto" src="Assets/Sounds/ohboy.wav"></audio>
-  <audio id="sndOhHey" preload="auto" src="Assets/Sounds/OhHEY.wav"></audio>
-  <audio id="sndTakeACouple" preload="auto" src="Assets/Sounds/TakeACoupleBucks.wav"></audio>
+  <div class="asset-warning" id="assetWarning"></div>
 
   <script src="slot.js"></script>
 </body>
