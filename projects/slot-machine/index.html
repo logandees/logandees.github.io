@@ -19,12 +19,14 @@
       overflow-x: hidden;
     }
     body { min-height: 100vh; }
+
     .app {
       position: relative;
       width: 100vw;
       min-height: 100vh;
       background: #120714 center/cover no-repeat;
     }
+
     .screen-wrap {
       position: relative;
       width: min(100vw, 1920px);
@@ -33,6 +35,7 @@
       overflow: hidden;
       background: #120714;
     }
+
     .bg-layer, .overlay-layer, .transition-layer {
       position: absolute;
       inset: 0;
@@ -40,14 +43,17 @@
       height: 100%;
       pointer-events: none;
     }
+
     .bg-layer { object-fit: cover; }
     .overlay-layer { object-fit: contain; }
+
     .transition-layer {
       object-fit: cover;
       display: none;
       z-index: 20;
       background: transparent;
     }
+
     .reels-region {
       position: absolute;
       left: 9.375%;
@@ -57,6 +63,7 @@
       overflow: hidden;
       z-index: 4;
     }
+
     .luck-video {
       position: absolute;
       left: 9.375%;
@@ -68,6 +75,7 @@
       z-index: 8;
       pointer-events: none;
     }
+
     .reels-bg, .reels-fg {
       position: absolute;
       inset: 0;
@@ -76,7 +84,9 @@
       object-fit: fill;
       pointer-events: none;
     }
+
     .reels-fg { z-index: 9; }
+
     .reels-canvas {
       position: absolute;
       inset: 0;
@@ -84,6 +94,7 @@
       height: 100%;
       z-index: 6;
     }
+
     .reels-border {
       position: absolute;
       left: 6.25%;
@@ -94,6 +105,7 @@
       z-index: 10;
       pointer-events: none;
     }
+
     .jackpot-bg {
       position: absolute;
       left: 75%;
@@ -104,12 +116,14 @@
       z-index: 3;
       pointer-events: none;
     }
+
     .hud {
       position: absolute;
       inset: 0;
       z-index: 12;
       pointer-events: none;
     }
+
     .hud * { pointer-events: auto; }
 
     .pink-text {
@@ -118,6 +132,7 @@
       text-shadow: 2px 2px 0 #000;
       user-select: none;
     }
+
     .value-box {
       position: absolute;
       display: flex;
@@ -129,6 +144,7 @@
       user-select: none;
       text-align: center;
     }
+
     .btn {
       position: absolute;
       border: 0;
@@ -142,14 +158,17 @@
       transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
       backdrop-filter: blur(3px);
     }
+
     .btn:hover { filter: brightness(1.08); }
     .btn:active { transform: scale(0.985); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
     .spin-btn {
       background: linear-gradient(180deg, #ff66c4, #b72e7f);
       color: #180713;
       font-size: clamp(18px, 2vw, 34px);
     }
+
     .small-btn { font-size: clamp(12px, 1.1vw, 20px); }
 
     .message-banner {
@@ -172,7 +191,6 @@
       pointer-events: none;
     }
 
-    /* Fixed: visible overlay but does NOT block clicking SPIN */
     .fullscreen-overlay {
       position: absolute;
       inset: 0;
@@ -183,6 +201,7 @@
       z-index: 18;
       pointer-events: none;
     }
+
     .overlay-card {
       background: rgba(19, 7, 27, 0.92);
       border: 2px solid rgba(255,213,79,0.45);
@@ -193,6 +212,7 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.35);
       pointer-events: none;
     }
+
     .overlay-card .big {
       font-size: clamp(28px, 3vw, 52px);
       color: #ff66c4;
@@ -200,6 +220,7 @@
       text-shadow: 2px 2px 0 #000;
       margin-bottom: 8px;
     }
+
     .overlay-card .small {
       font-size: clamp(16px, 1.4vw, 26px);
       font-weight: 700;
@@ -210,42 +231,61 @@
       position: absolute;
       inset: 0;
       display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.6);
-      z-index: 25;
+      background: rgba(0,0,0,0.72);
+      z-index: 30;
       pointer-events: auto;
     }
+
     .info-content {
-      position: relative;
-      width: min(1200px, 84vw);
-      height: min(760px, 70vh);
-      background: rgba(15,8,20,0.92);
+      position: absolute;
+      left: 5%;
+      top: 5%;
+      width: 90%;
+      height: 90%;
+      background: rgba(15,8,20,0.94);
       border-radius: 26px;
       border: 2px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
     }
-    .info-image {
-      max-width: 100%;
-      max-height: 100%;
+
+    .info-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #120714;
+    }
+
+    .info-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #120714;
+    }
+
+    .info-fallback img {
+      width: 100%;
+      height: 100%;
       object-fit: contain;
     }
+
     .modal-close, .modal-toggle {
       position: absolute;
       padding: 10px 16px;
       border-radius: 14px;
       border: 0;
-      background: rgba(45,16,57,0.86);
+      background: rgba(45,16,57,0.90);
       color: #fff;
       font-weight: 800;
       cursor: pointer;
-      z-index: 2;
+      z-index: 3;
     }
+
     .modal-close { top: 14px; right: 14px; }
     .modal-toggle { bottom: 18px; left: 50%; transform: translateX(-50%); }
 
@@ -267,6 +307,7 @@
       z-index: 40;
       pointer-events: none;
     }
+
     .toast.show { opacity: 1; }
 
     .asset-warning {
@@ -286,6 +327,7 @@
       pointer-events: none;
       white-space: pre-wrap;
     }
+
     .asset-warning strong {
       color: #ff8fbf;
       display: block;
@@ -349,16 +391,26 @@
         </div>
       </div>
 
+      <!-- GAME INFO / PAYTABLE MODAL -->
       <div class="info-modal" id="infoModal">
         <div class="info-content">
           <button class="modal-close" id="modalCloseBtn">Close</button>
           <button class="modal-toggle" id="modalToggleBtn">Next Page</button>
-          <img class="info-image" id="infoImage" src="Assets/Ui/GameInfo1.png" alt="" />
+
+          <iframe
+            id="gameInfoFrame"
+            class="info-frame"
+            src="gameinfo.html#page1"
+            title="Game Information">
+          </iframe>
+
+          <div id="gameInfoFallback" class="info-fallback">
+            <img id="fallbackPageImage" src="Assets/Ui/GameInfo1.png" alt="Game Info Fallback" />
+          </div>
         </div>
       </div>
 
       <video class="transition-layer" id="transitionVideo" preload="auto" playsinline></video>
-      <img class="overlay-layer" id="bonusStill" src="Assets/TransitionOverlays/Pictures/Bonusin.png" alt="" style="display:none; z-index:19;" />
       <div class="asset-warning" id="assetWarning"></div>
     </div>
   </div>
