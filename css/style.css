@@ -1,0 +1,17 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+  margin: 40px;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+.project {
+  border: 1px solid #444;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
