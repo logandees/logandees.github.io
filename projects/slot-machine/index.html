@@ -33,7 +33,7 @@
       overflow: hidden;
       background: #120714;
     }
-    .bg-layer, .ui-layer, .overlay-layer, .transition-layer {
+    .bg-layer, .overlay-layer, .transition-layer {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -41,7 +41,6 @@
       pointer-events: none;
     }
     .bg-layer { object-fit: cover; }
-    .ui-layer { object-fit: fill; }
     .overlay-layer { object-fit: contain; }
     .transition-layer {
       object-fit: cover;
@@ -112,6 +111,7 @@
       pointer-events: none;
     }
     .hud * { pointer-events: auto; }
+
     .pink-text {
       color: #ff66c4;
       font-weight: 800;
@@ -151,6 +151,7 @@
       font-size: clamp(18px, 2vw, 34px);
     }
     .small-btn { font-size: clamp(12px, 1.1vw, 20px); }
+
     .message-banner {
       position: absolute;
       left: 50%;
@@ -168,7 +169,10 @@
       display: none;
       z-index: 16;
       text-shadow: 2px 2px 0 #000;
+      pointer-events: none;
     }
+
+    /* Fixed: visible overlay but does NOT block clicking SPIN */
     .fullscreen-overlay {
       position: absolute;
       inset: 0;
@@ -177,7 +181,7 @@
       justify-content: center;
       background: rgba(0,0,0,0.55);
       z-index: 18;
-      pointer-events: auto;
+      pointer-events: none;
     }
     .overlay-card {
       background: rgba(19, 7, 27, 0.92);
@@ -187,6 +191,7 @@
       text-align: center;
       max-width: min(900px, 90vw);
       box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      pointer-events: none;
     }
     .overlay-card .big {
       font-size: clamp(28px, 3vw, 52px);
@@ -200,6 +205,7 @@
       font-weight: 700;
       text-shadow: 2px 2px 0 #000;
     }
+
     .info-modal {
       position: absolute;
       inset: 0;
@@ -242,6 +248,7 @@
     }
     .modal-close { top: 14px; right: 14px; }
     .modal-toggle { bottom: 18px; left: 50%; transform: translateX(-50%); }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -261,6 +268,29 @@
       pointer-events: none;
     }
     .toast.show { opacity: 1; }
+
+    .asset-warning {
+      position: absolute;
+      top: 1.2%;
+      right: 1.2%;
+      max-width: 28%;
+      background: rgba(0,0,0,0.82);
+      border: 1px solid rgba(255,99,132,0.35);
+      border-radius: 14px;
+      padding: 10px 12px;
+      z-index: 30;
+      display: none;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #ffd7e5;
+      pointer-events: none;
+      white-space: pre-wrap;
+    }
+    .asset-warning strong {
+      color: #ff8fbf;
+      display: block;
+      margin-bottom: 6px;
+    }
   </style>
 </head>
 <body>
@@ -329,6 +359,7 @@
 
       <video class="transition-layer" id="transitionVideo" preload="auto" playsinline></video>
       <img class="overlay-layer" id="bonusStill" src="Assets/TransitionOverlays/Pictures/Bonusin.png" alt="" style="display:none; z-index:19;" />
+      <div class="asset-warning" id="assetWarning"></div>
     </div>
   </div>
 
