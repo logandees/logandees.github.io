@@ -1,17 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Logan Dees Portfolio</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Logan Dees | Engineering Portfolio</title>
+
+<style>
+
+body{
+font-family: Arial, Helvetica, sans-serif;
+margin:0;
+background:#0e0a12;
+color:white;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+header{
+text-align:center;
+margin-bottom:60px;
+}
+
+header h1{
+font-size:48px;
+margin-bottom:10px;
+color:#ff66c4;
+}
+
+header p{
+font-size:20px;
+color:#c9b6cc;
+}
+
+.section-title{
+margin-top:60px;
+margin-bottom:20px;
+font-size:28px;
+border-bottom:2px solid #ff66c4;
+padding-bottom:10px;
+}
+
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.project{
+background:#1b1420;
+padding:25px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.08);
+transition:transform .15s ease, box-shadow .15s ease;
+}
+
+.project:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.project h3{
+margin-top:0;
+color:#ff66c4;
+}
+
+.project p{
+color:#d6c7d9;
+line-height:1.5;
+}
+
+.project a{
+display:inline-block;
+margin-top:15px;
+padding:10px 16px;
+background:#ff66c4;
+color:#120714;
+font-weight:bold;
+border-radius:6px;
+text-decoration:none;
+}
+
+.project a:hover{
+background:#ff8fd7;
+}
+
+footer{
+margin-top:80px;
+text-align:center;
+color:#9b8aa0;
+font-size:14px;
+}
+
+</style>
 </head>
+
 
 <body>
 
+<div class="container">
+
+<header>
 <h1>Logan Dees</h1>
 <p>Mechanical & Robotics Engineering Student</p>
+</header>
 
-<h2>Featured Projects</h2>
+
+<h2 class="section-title">Featured Projects</h2>
+
+<div class="projects">
 
 <div class="project">
 <h3>Mechanical Engineering Capstone</h3>
@@ -22,35 +124,53 @@ Includes CAD design, prototyping, and system development.
 <a href="projects/mech-capstone/">View Project</a>
 </div>
 
+
 <div class="project">
 <h3>Robotics Engineering Capstone</h3>
 <p>
-Robotics systems project involving automation, sensors, and control systems.  
+Robotics systems project involving automation, sensors, and control systems.
 Designed and built a working robotic system integrating hardware and software.
 </p>
 <a href="projects/robo-capstone/">View Project</a>
 </div>
 
-<h2>Additional Projects</h2>
+</div>
+
+
+
+<h2 class="section-title">Additional Projects</h2>
+
+<div class="projects">
 
 <div class="project">
 <h3>Elevator Automation System</h3>
 <p>
-Stepper motor powered elevator using Arduino Mega, CNC shield, and lead screw.
-Implements floor prioritization and automated door control.
+Stepper motor powered elevator using an Arduino Mega, CNC shield, and lead screw.
+Implements floor prioritization and automated door control using a servo mechanism.
 </p>
 <a href="projects/elevator-system/">View Project</a>
 </div>
 
+
 <div class="project">
-<h3>Slot Machine Simulator</h3>
+<h3>Short n' Sweet Slot Machine</h3>
 <p>
-Casino-style slot machine originally built with Python and Pygame.  
-Currently rebuilding a browser-playable version using JavaScript.
+Custom casino-style slot machine originally built in Python using Pygame.
+Features reel logic, paylines, scatter bonuses, animated transitions, and a
+JavaScript web version so the project can be played directly in the browser.
 </p>
-<a href="projects/slot-machine/">View Project</a>
+<a href="projects/slot-machine-project/">View Project</a>
+</div>
+
+</div>
+
+
+<footer>
+<p>© 2026 Logan Dees</p>
+</footer>
+
+
 </div>
 
 </body>
-
 </html>
