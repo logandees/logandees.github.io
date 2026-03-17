@@ -257,7 +257,9 @@ class SlotGameWebAssets {
     this.overlayBig = document.getElementById("overlayBig");
     this.overlaySmall = document.getElementById("overlaySmall");
     this.infoModal = document.getElementById("infoModal");
-    this.infoImage = document.getElementById("infoImage");
+    this.gameInfoFrame = document.getElementById("gameInfoFrame");
+    this.gameInfoFallback = document.getElementById("gameInfoFallback");
+    this.fallbackPageImage = document.getElementById("fallbackPageImage");
     this.toast = document.getElementById("toast");
 
     this.balanceEl = document.getElementById("balanceAmount");
@@ -281,6 +283,9 @@ class SlotGameWebAssets {
     this.totalFreeSpins = 0;
     this.freeSpinsLeft = 0;
     this.freeFeatureTotal = 0;
+
+    this.gameInfoPage = 1;
+    this.usingInfoFallback = false;
 
     this.baseStrips = Array.from({ length: REELS }, () => [...BASE_STRIP]);
     this.freeStrips = Array.from({ length: REELS }, () => [...FREE_STRIP]);
@@ -316,7 +321,6 @@ class SlotGameWebAssets {
 
     this.lockinBoard = null;
     this.lockinFromState = null;
-
     this.lockinSpinResults = null;
     this.lockinPayouts = [];
     this.lockinPayoutIndex = 0;
@@ -344,8 +348,6 @@ class SlotGameWebAssets {
     this.lockinOldBlocks = [];
     this.lockinNewBlocks = [];
 
-    this.infoPage = 1;
-
     this.bindStaticAssetErrorChecks();
     this.bindUI();
     this.resizeCanvas();
@@ -364,7 +366,7 @@ class SlotGameWebAssets {
   }
 
   bindStaticAssetErrorChecks() {
-    ["mainBg","jackpotBg","reelsBg","reelsFg","reelsBorder","infoImage"].forEach((id) => {
+    ["mainBg","jackpotBg","reelsBg","reelsFg","reelsBorder"].forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
       const src = el.getAttribute("src");
@@ -425,27 +427,77 @@ class SlotGameWebAssets {
       this.showToast("This feature is only available with the Python version of this game.");
     });
 
-    document.getElementById("paytableBtn").addEventListener("click", () => this.openPaytable());
-    document.getElementById("gameInfoBtn").addEventListener("click", () => this.openInfo());
+    document.getElementById("gameInfoBtn").addEventListener("click", () => this.openGameInfo(1));
+    document.getElementById("paytableBtn").addEventListener("click", () => this.openGameInfo(2));
 
-    document.getElementById("modalCloseBtn").addEventListener("click", () => this.closeInfo());
-    document.getElementById("modalToggleBtn").addEventListener("click", () => this.toggleInfoPage());
+    document.getElementById("modalCloseBtn").addEventListener("click", () => this.closeGameInfo());
+    document.getElementById("modalToggleBtn").addEventListener("click", () => this.nextGameInfoPage());
 
     this.infoModal.addEventListener("click", (e) => {
-      if (e.target === this.infoModal) this.closeInfo();
+      if (e.target === this.infoModal) this.closeGameInfo();
     });
 
     this.transitionVideo.addEventListener("ended", () => this.finishTransition());
+
+    this.gameInfoFrame.addEventListener("error", () => this.activateInfoFallback());
+    this.gameInfoFrame.addEventListener("load", () => {
+      if (!this.usingInfoFallback) {
+        this.gameInfoFrame.style.display = "block";
+        this.gameInfoFallback.style.display = "none";
+      }
+    });
+
+    this.fallbackPageImage.addEventListener("error", () => {
+      this.reportMissingAsset(this.fallbackPageImage.getAttribute("src"));
+    });
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         e.preventDefault();
         this.onSpinButton();
       }
-      if (e.key === "Escape") this.closeInfo();
+      if (e.key === "Escape") this.closeGameInfo();
     });
 
     this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
+  }
+
+  openGameInfo(page = 1) {
+    this.gameInfoPage = page;
+    this.usingInfoFallback = false;
+
+    this.gameInfoFallback.style.display = "none";
+    this.gameInfoFrame.style.display = "block";
+
+    this.gameInfoFrame.src = `gameinfo.html#page${this.gameInfoPage}`;
+    this.infoModal.style.display = "block";
+  }
+
+  activateInfoFallback() {
+    this.usingInfoFallback = true;
+    this.gameInfoFrame.style.display = "none";
+    this.gameInfoFallback.style.display = "flex";
+    this.updateFallbackPage();
+  }
+
+  updateFallbackPage() {
+    this.fallbackPageImage.src = this.gameInfoPage === 1
+      ? "Assets/Ui/GameInfo1.png"
+      : "Assets/Ui/GameInfo2.png";
+  }
+
+  nextGameInfoPage() {
+    this.gameInfoPage = this.gameInfoPage === 1 ? 2 : 1;
+
+    if (this.usingInfoFallback) {
+      this.updateFallbackPage();
+    } else {
+      this.gameInfoFrame.src = `gameinfo.html#page${this.gameInfoPage}`;
+    }
+  }
+
+  closeGameInfo() {
+    this.infoModal.style.display = "none";
   }
 
   resizeCanvas() {
@@ -609,118 +661,6 @@ class SlotGameWebAssets {
 
   hideOverlay() {
     this.fullscreenOverlay.style.display = "none";
-  }
-
-  closePaytableDynamic() {
-    const content = this.infoModal.querySelector(".info-content");
-    const oldDynamic = content.querySelector(".dynamic-paytable");
-    if (oldDynamic) oldDynamic.remove();
-    this.infoImage.style.display = "block";
-    document.getElementById("modalToggleBtn").style.display = "block";
-  }
-
-  openPaytable() {
-    this.closePaytableDynamic();
-
-    const wrap = document.createElement("div");
-    wrap.className = "dynamic-paytable";
-    wrap.style.width = "100%";
-    wrap.style.height = "100%";
-    wrap.style.overflow = "auto";
-    wrap.style.padding = "18px";
-    wrap.style.color = "#fff";
-
-    const title = document.createElement("h2");
-    title.textContent = "PAYTABLE (current denom & bet)";
-    title.style.margin = "0 0 16px 0";
-    title.style.color = "#ff66c4";
-    wrap.appendChild(title);
-
-    const topText = document.createElement("div");
-    topText.style.lineHeight = "1.6";
-    topText.style.marginBottom = "18px";
-    topText.innerHTML = `
-      <div><strong>Scatter</strong>: pays in any position and triggers free games on 3+</div>
-      <div><strong>Wild</strong>: substitutes for all symbols except Scatter</div>
-      <div>Wins begin on the leftmost reel and pay left to right on adjacent reels.</div>
-      <div>Current bet: <strong>${money(this.currentBet)}</strong></div>
-    `;
-    wrap.appendChild(topText);
-
-    const table = document.createElement("div");
-    table.style.display = "grid";
-    table.style.gridTemplateColumns = "repeat(auto-fit, minmax(180px, 1fr))";
-    table.style.gap = "12px";
-
-    const symbols = ["Scatter", "AAAAA", "AAAA", "AAA", "AA", "A", "K", "Q", "J", "10"];
-
-    for (const sym of symbols) {
-      const card = document.createElement("div");
-      card.style.background = "rgba(255,255,255,0.04)";
-      card.style.border = "1px solid rgba(255,255,255,0.10)";
-      card.style.borderRadius = "16px";
-      card.style.padding = "12px";
-
-      const img = this.symbolImages[sym];
-      const head = document.createElement("div");
-      head.style.display = "flex";
-      head.style.alignItems = "center";
-      head.style.gap = "10px";
-      head.style.marginBottom = "10px";
-
-      if (img && img.complete && img.naturalWidth > 0) {
-        const im = document.createElement("img");
-        im.src = img.src;
-        im.alt = sym;
-        im.style.width = "52px";
-        im.style.height = "52px";
-        im.style.objectFit = "contain";
-        head.appendChild(im);
-      }
-
-      const name = document.createElement("div");
-      name.textContent = sym;
-      name.style.fontWeight = "800";
-      name.style.color = "#ffd35c";
-      head.appendChild(name);
-      card.appendChild(head);
-
-      const pays = PAYTABLE_LINES[sym] || {};
-      const body = document.createElement("div");
-      body.style.lineHeight = "1.7";
-      body.innerHTML = `
-        <div>5: ${pays[5] ? `${pays[5]}x total bet` : "-"}</div>
-        <div>4: ${pays[4] ? `${pays[4]}x total bet` : "-"}</div>
-        <div>3: ${pays[3] ? `${pays[3]}x total bet` : "-"}</div>
-      `;
-      card.appendChild(body);
-
-      table.appendChild(card);
-    }
-
-    wrap.appendChild(table);
-    const content = this.infoModal.querySelector(".info-content");
-    this.infoImage.style.display = "none";
-    document.getElementById("modalToggleBtn").style.display = "none";
-    content.appendChild(wrap);
-    this.infoModal.style.display = "flex";
-  }
-
-  openInfo() {
-    this.closePaytableDynamic();
-    this.infoPage = 1;
-    this.infoImage.src = "Assets/Ui/GameInfo1.png";
-    this.infoModal.style.display = "flex";
-  }
-
-  toggleInfoPage() {
-    this.infoPage = this.infoPage === 1 ? 2 : 1;
-    this.infoImage.src = this.infoPage === 1 ? "Assets/Ui/GameInfo1.png" : "Assets/Ui/GameInfo2.png";
-  }
-
-  closeInfo() {
-    this.closePaytableDynamic();
-    this.infoModal.style.display = "none";
   }
 
   startTransition(type, nextState, after = null) {
@@ -1073,10 +1013,6 @@ class SlotGameWebAssets {
     }
 
     this.showMessage(applied.newHit ? "New 1x1 landed. Spins reset to 3." : "No new 1x1 landed.");
-
-    if (this.lockinBoard.finished && !this.lockinPayouts.length) {
-      // payout count will begin after merge anim ends
-    }
   }
 
   maybeStartLockinCount() {
@@ -1091,7 +1027,8 @@ class SlotGameWebAssets {
   }
 
   handleCanvasClick(e) {
-    if (this.state !== STATE_LOCKIN || !this.lockinRevealActive || this.lockinRevealSpinActive || !this.lockinRevealKey) return;
+    if (this.state !== STATE_LOCKIN || !this.lockinRevealActive || !this.lockinRevealKey) return;
+    if (this.lockinRevealSpinActive) return;
 
     const rect = this.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
