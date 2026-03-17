@@ -1,239 +1,281 @@
-const ROWS = 3;
 const REELS = 5;
-const DENOMS = [0.01, 0.02, 0.05, 0.10];
-const BET_CREDIT_STEPS = [50, 100, 200, 300, 400, 500];
-const BASE_JACKPOTS = { mini: 10.0, minor: 20.0, major: 50.0, grand: 250.0 };
-const SCATTER_FREE_SPINS = { 3: [5, 10], 4: [10, 25], 5: [15, 100] };
-const SCATTER_RETRIGGER = { 3: 3, 4: 5, 5: 10 };
+const ROWS = 4;
+const SYMBOL_WILD = "Wild";
+const SYMBOL_SCATTER = "Scatter";
+const SYMBOL_LOCK = "1x1";
+
 const STATE_BASE = "base";
-const STATE_FREESPINS = "freespins";
+const STATE_FREE = "free";
 const STATE_LOCKIN = "lockin";
 
+const DENOMS = [0.01, 0.02, 0.05, 0.10, 0.25, 0.50, 1.00];
+const BET_CREDIT_STEPS = [20, 40, 60, 80, 100];
+
+const BASE_JACKPOTS = {
+  mini: 10,
+  minor: 25,
+  major: 100,
+  grand: 500
+};
+
 const BASE_STRIP = [
-  "1x1","1x1","1x1","10","J","Q","A","K","10","Q","J","A","K","10","AA","AAA","Q",
-  "10","A","J","K","1x1","1x1","1x1","Q","10","AAAA","A","K","J",
-  "10","Q","A","AAAAA","10","J","AA","Q","A","10","K","Scatter","J",
-  "10","A","Q","AAA","10","K","A","Q","10","J","AA","10","A","K",
-  "Q","A","10","J","Wild","K","10","AAAA","A","Q","J","10","K","A",
-  "1x1","1x1","1x1","10","J","AA","Q","A","10","K","Q","10","J",
-  "AAA","K","A","10","Q","AAAAA","AAAAA","AAAAA",
-  "Scatter","Scatter","Scatter","Scatter","Scatter","Scatter","Scatter","Scatter","Scatter","Scatter","J","10",
-  "A","Q","K","10","AA","A","10","Wild"
+  "10","J","Q","K","A","AA","AAA","AAAA","AAAAA","10","J","Q","K","A","AA","AAA",
+  "Wild","10","J","Q","K","A","AA","Scatter","10","J","Q","K","A","AA","AAA","AAAA",
+  "10","J","Q","K","A","AA","AAA","Wild","10","J","Q","K","A","AA","Scatter","AAAAA"
 ];
 
 const FREE_STRIP = [
-  "AA","AA","AA","AAA","AAA","AAAA","AAAA","AAAAA","AAAAA",
-  "A","A","K","K","AA","AA","AAA","AAA","A","A",
-  "1x1","1x1","1x1","1x1",
-  "AAAA","AAAA","AAAAA","AAAAA",
-  "Scatter",
-  "AA","AA","K","K","A","A","AAA","AAA","AA","AA","AA"
+  "10","J","Q","K","A","AA","AAA","AAAA","AAAAA","Wild","10","J","Q","K","A","AA",
+  "AAA","Scatter","10","J","Q","K","A","AA","AAA","Wild","10","J","Q","K","A","AA",
+  "AAAA","AAAAA","10","J","Q","K","A","AA","AAA","Scatter","Wild","10","J","Q","K"
 ];
 
-const LOCKIN_STRIP = [
-  0,0,0,0,0,"1x1",0,0,"1x1","1x1",0,"1x1",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  0,0,0,"1x1",0,0,"1x1",0,0,0,0,"1x1",0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  "1x1","1x1",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+const PAYLINES = [
+  [0,0,0,0,0],
+  [1,1,1,1,1],
+  [2,2,2,2,2],
+  [3,3,3,3,3],
+  [0,1,2,1,0],
+  [3,2,1,2,3],
+  [0,0,1,0,0],
+  [3,3,2,3,3],
+  [1,0,0,0,1],
+  [2,3,3,3,2],
+  [0,1,1,1,0],
+  [3,2,2,2,3],
+  [1,2,3,2,1],
+  [2,1,0,1,2],
+  [0,1,0,1,0],
+  [3,2,3,2,3],
+  [1,1,0,1,1],
+  [2,2,3,2,2],
+  [1,0,1,0,1],
+  [2,3,2,3,2]
 ];
 
-const PAYTABLE_LINES = {
-  "10": {3:0.2,4:0.4,5:2},
-  "J": {3:0.2,4:0.4,5:2},
-  "Q": {3:0.2,4:0.4,5:2},
-  "K": {3:0.2,4:0.4,5:2},
-  "A": {3:0.2,4:0.8,5:2.5},
-  "AA": {3:0.2,4:1,5:4},
-  "AAA": {3:0.2,4:1,5:4},
-  "AAAA": {3:0.2,4:1.5,5:4},
-  "AAAAA": {3:0.4,4:2,5:5},
-  "Wild": {},
-  "Scatter": {3:2,4:15,5:100}
+const PAYTABLE = {
+  "10": { 3: 1, 4: 4, 5: 10 },
+  "J": { 3: 1, 4: 5, 5: 15 },
+  "Q": { 3: 2, 4: 6, 5: 20 },
+  "K": { 3: 2, 4: 8, 5: 25 },
+  "A": { 3: 3, 4: 10, 5: 30 },
+  "AA": { 3: 4, 4: 15, 5: 40 },
+  "AAA": { 3: 5, 4: 20, 5: 50 },
+  "AAAA": { 3: 8, 4: 30, 5: 75 },
+  "AAAAA": { 3: 10, 4: 40, 5: 100 }
 };
 
-const LINES = [
-  [[0,0],[0,1],[0,2],[0,3],[0,4]],
-  [[1,0],[1,1],[1,2],[1,3],[1,4]],
-  [[2,0],[2,1],[2,2],[2,3],[2,4]],
-  [[0,0],[1,1],[2,2],[1,3],[0,4]],
-  [[2,0],[1,1],[0,2],[1,3],[2,4]],
-  [[0,0],[0,1],[1,2],[0,3],[0,4]],
-  [[2,0],[2,1],[1,2],[2,3],[2,4]],
-  [[1,0],[0,1],[1,2],[2,3],[1,4]],
-  [[1,0],[2,1],[1,2],[0,3],[1,4]],
-  [[0,0],[1,1],[1,2],[1,3],[2,4]]
+const SCATTER_PAYS = { 3: 2, 4: 10, 5: 50 };
+const SCATTER_TO_FREE = { 3: 8, 4: 12, 5: 20 };
+
+const LOCKIN_SHAPES = [
+  { name: "2x2", cells: [[0,0],[1,0],[0,1],[1,1]], weight: 1.0 },
+  { name: "3x2", cells: [[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]], weight: 0.5 },
+  { name: "2x3", cells: [[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]], weight: 0.45 },
+  { name: "L", cells: [[0,0],[0,1],[0,2],[1,2]], weight: 0.35 },
+  { name: "T", cells: [[0,0],[1,0],[2,0],[1,1]], weight: 0.35 }
 ];
 
-const LINE_COLORS = ["#ff0000","#00ff00","#0000ff","#ffff00","#00ffff","#ff00ff","#ff8000","#8000ff","#00ff80","#ff8080"];
+function clamp(v, min, max) {
+  return Math.max(min, Math.min(max, v));
+}
 
-function money(v) {
-  return `$${Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+function lerp(a, b, t) {
+  return a + (b - a) * t;
 }
-function clamp(v, a, b) {
-  return Math.max(a, Math.min(b, v));
-}
+
 function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function easeInOutQuad(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+function shuffle(arr) {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function weightedChoice(items) {
+  const total = items.reduce((sum, item) => sum + item.weight, 0);
+  let roll = Math.random() * total;
+  for (const item of items) {
+    roll -= item.weight;
+    if (roll <= 0) return item;
+  }
+  return items[items.length - 1];
+}
+
+function money(v) {
+  return `$${v.toFixed(2)}`;
+}
+
 class AssetAudio {
-  constructor(reportMissing) {
-    this.reportMissing = reportMissing;
-    this.map = {
-      ding: document.getElementById("sndDing"),
-      dun: document.getElementById("sndDun"),
-      ring: document.getElementById("sndRing"),
-      trythis: document.getElementById("sndTryThis"),
-      ohboy: document.getElementById("sndOhBoy"),
-      ohhey: document.getElementById("sndOhHey"),
-      take: document.getElementById("sndTakeACouple")
-    };
-
-    Object.values(this.map).forEach((audio) => {
-      if (!audio) return;
-      const src = audio.getAttribute("src") || "(unknown audio)";
-      audio.addEventListener("error", () => this.reportMissing(src));
-    });
+  constructor(onMissing) {
+    this.onMissing = onMissing;
+    this.cache = new Map();
   }
 
-  play(name, loop = false) {
-    const a = this.map[name];
-    if (!a) return;
+  play(path, volume = 1) {
+    if (!path) return null;
+    let audio = this.cache.get(path);
+    if (!audio) {
+      audio = new Audio(path);
+      audio.preload = "auto";
+      audio.addEventListener("error", () => {
+        if (this.onMissing) this.onMissing(path);
+      });
+      this.cache.set(path, audio);
+    }
     try {
-      a.pause();
-      a.currentTime = 0;
-      a.loop = loop;
+      const a = audio.cloneNode();
+      a.volume = volume;
       a.play().catch(() => {});
-    } catch {}
-  }
-
-  stop(name) {
-    const a = this.map[name];
-    if (!a) return;
-    try {
-      a.pause();
-      a.currentTime = 0;
-      a.loop = false;
-    } catch {}
+      return a;
+    } catch {
+      return null;
+    }
   }
 }
 
-class LockInBoard {
-  constructor() {
-    this.filled = Array.from({ length: ROWS }, () => Array(REELS).fill(false));
+class LockinBoard {
+  constructor(rows = ROWS, reels = REELS) {
+    this.rows = rows;
+    this.reels = reels;
+    this.grid = Array.from({ length: rows }, () =>
+      Array.from({ length: reels }, () => null)
+    );
     this.blocks = [];
-    this.spinsRemaining = 3;
-    this.finished = false;
-    this.jackpots = null;
-    this.jackpotChanceScale = 1;
   }
 
-  configureJackpots(amounts, chanceScale) {
-    this.jackpots = amounts;
-    this.jackpotChanceScale = chanceScale;
-  }
-
-  fromBaseSymbols(symbols) {
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (symbols[r][c] === "1x1") this.filled[r][c] = true;
+  addBlock(symbol, reel, row, shape) {
+    const cells = shape.cells.map(([dx, dy]) => [reel + dx, row + dy]);
+    const block = {
+      symbol,
+      reel,
+      row,
+      shape: shape.name,
+      cells,
+      width: Math.max(...shape.cells.map((c) => c[0])) + 1,
+      height: Math.max(...shape.cells.map((c) => c[1])) + 1
+    };
+    this.blocks.push(block);
+    for (const [r, c] of cells.map(([x, y]) => [y, x])) {
+      if (r >= 0 && r < this.rows && c >= 0 && c < this.reels) {
+        this.grid[r][c] = symbol;
       }
     }
-    this.mergeBlocks();
+    return block;
   }
 
-  applySpinResults(results) {
-    let newHit = false;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (!this.filled[r][c] && results[r][c] === "1x1") {
-          this.filled[r][c] = true;
-          newHit = true;
-        }
+  canPlace(reel, row, shape) {
+    for (const [dx, dy] of shape.cells) {
+      const c = reel + dx;
+      const r = row + dy;
+      if (c < 0 || c >= this.reels || r < 0 || r >= this.rows) return false;
+      if (this.grid[r][c] !== null) return false;
+    }
+    return true;
+  }
+
+  static random(symbolCount = 3) {
+    const board = new LockinBoard();
+    const count = clamp(symbolCount, 2, 6);
+    const premiumSymbols = ["AA", "AAA", "AAAA", "AAAAA"];
+    let tries = 0;
+
+    while (board.blocks.length < count && tries < 200) {
+      tries++;
+      const shape = weightedChoice(LOCKIN_SHAPES);
+      const reel = Math.floor(Math.random() * REELS);
+      const row = Math.floor(Math.random() * ROWS);
+      if (!board.canPlace(reel, row, shape)) continue;
+      const symbol = premiumSymbols[Math.floor(Math.random() * premiumSymbols.length)];
+      board.addBlock(symbol, reel, row, shape);
+    }
+
+    if (board.blocks.length < 2) {
+      board.addBlock("AA", 0, 0, LOCKIN_SHAPES[0]);
+      if (board.canPlace(3, 2, LOCKIN_SHAPES[3])) {
+        board.addBlock("AAAA", 3, 1, LOCKIN_SHAPES[3]);
       }
     }
-
-    if (newHit) this.spinsRemaining = 3;
-    else {
-      this.spinsRemaining -= 1;
-      if (this.spinsRemaining <= 0) this.finished = true;
-    }
-
-    this.mergeBlocks();
-    return { newHit };
+    return board;
   }
 
-  mergeBlocks() {
-    const allowed = [[2,2],[2,3],[2,4],[2,5],[3,2],[3,3],[3,4],[3,5]];
-    const candidates = [];
+  toSymbolGrid() {
+    return this.grid.map((row) => row.map((cell) => cell || SYMBOL_LOCK));
+  }
 
-    for (const [h, w] of allowed) {
-      for (let r0 = 0; r0 <= ROWS - h; r0++) {
-        for (let c0 = 0; c0 <= REELS - w; c0++) {
-          let ok = true;
-          for (let rr = r0; rr < r0 + h && ok; rr++) {
-            for (let cc = c0; cc < c0 + w; cc++) {
-              if (!this.filled[rr][cc]) {
-                ok = false;
-                break;
-              }
-            }
+  getMergedBlocks() {
+    const visited = new Set();
+    const merged = [];
+
+    const key = (r, c) => `${r}:${c}`;
+
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.reels; c++) {
+        const sym = this.grid[r][c];
+        if (!sym || visited.has(key(r, c))) continue;
+
+        const queue = [[r, c]];
+        visited.add(key(r, c));
+        const cells = [];
+
+        while (queue.length) {
+          const [cr, cc] = queue.shift();
+          cells.push([cc, cr]);
+
+          const neighbors = [
+            [cr - 1, cc], [cr + 1, cc], [cr, cc - 1], [cr, cc + 1]
+          ];
+          for (const [nr, nc] of neighbors) {
+            if (nr < 0 || nr >= this.rows || nc < 0 || nc >= this.reels) continue;
+            if (this.grid[nr][nc] !== sym) continue;
+            const k = key(nr, nc);
+            if (visited.has(k)) continue;
+            visited.add(k);
+            queue.push([nr, nc]);
           }
-          if (ok) candidates.push({ top_left: [r0, c0], width: w, height: h, area: w * h });
         }
+
+        merged.push({
+          symbol: sym,
+          cells,
+          width: Math.max(...cells.map(([x]) => x)) - Math.min(...cells.map(([x]) => x)) + 1,
+          height: Math.max(...cells.map(([, y]) => y)) - Math.min(...cells.map(([, y]) => y)) + 1
+        });
       }
     }
+    return merged;
+  }
+}
 
-    candidates.sort((a, b) => b.area - a.area);
-    const assigned = Array.from({ length: ROWS }, () => Array(REELS).fill(false));
-    const blocks = [];
-
-    for (const cand of candidates) {
-      const [r0, c0] = cand.top_left;
-      let conflict = false;
-      for (let rr = r0; rr < r0 + cand.height && !conflict; rr++) {
-        for (let cc = c0; cc < c0 + cand.width; cc++) {
-          if (assigned[rr][cc]) {
-            conflict = true;
-            break;
-          }
-        }
-      }
-      if (conflict) continue;
-
-      const cells = [];
-      for (let rr = r0; rr < r0 + cand.height; rr++) {
-        for (let cc = c0; cc < c0 + cand.width; cc++) {
-          assigned[rr][cc] = true;
-          cells.push([rr, cc]);
-        }
-      }
-      blocks.push({ top_left: [r0, c0], width: cand.width, height: cand.height, cells });
-    }
-
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (this.filled[r][c] && !assigned[r][c]) {
-          blocks.push({ top_left: [r, c], width: 1, height: 1, cells: [[r, c]] });
-        }
-      }
-    }
-
-    this.blocks = blocks;
+class LockinPayoutEngine {
+  constructor(jackpots) {
+    this.jackpots = jackpots;
   }
 
-  getPayouts(bet) {
+  evaluate(board, bet) {
+    const merged = board.getMergedBlocks();
     const payouts = [];
-    for (const block of this.blocks) {
-      const area = block.width * block.height;
+    for (const block of merged) {
+      const area = block.cells.length;
       let tier = null;
-      if (this.jackpots && Math.random() < (0.002 * area * this.jackpotChanceScale)) {
-        if (area >= 8) tier = "grand";
-        else if (area >= 6) tier = "major";
-        else if (area >= 4) tier = "minor";
-        else tier = "mini";
-      }
-      const amount = tier ? this.jackpots[tier] : bet * (1 + Math.floor(Math.random() * 3)) * area;
+      if (area >= 8) tier = "grand";
+      else if (area >= 6) tier = "major";
+      else if (area >= 4) tier = "minor";
+      else if (area >= 3) tier = "mini";
+
+      const amount = tier
+        ? this.jackpots[tier]
+        : bet * (1 + Math.floor(Math.random() * 3)) * area;
+
       payouts.push({ amount, block, tier });
     }
     return payouts;
@@ -286,6 +328,9 @@ class SlotGameWebAssets {
 
     this.gameInfoPage = 1;
     this.usingInfoFallback = false;
+    this.infoFrameLoaded = false;
+    this.infoOpenToken = 0;
+    this.infoFallbackTimer = null;
 
     this.baseStrips = Array.from({ length: REELS }, () => [...BASE_STRIP]);
     this.freeStrips = Array.from({ length: REELS }, () => [...FREE_STRIP]);
@@ -293,7 +338,13 @@ class SlotGameWebAssets {
 
     this.reelFinalIndex = Array.from({ length: REELS }, () => Math.floor(Math.random() * BASE_STRIP.length));
     this.reelOffsets = [...this.reelFinalIndex];
-    this.reelSpinState = Array.from({ length: REELS }, () => ({ spinning: false, start: 0, duration: 0, finalIndex: 0, startOffset: 0 }));
+    this.reelSpinState = Array.from({ length: REELS }, () => ({
+      spinning: false,
+      start: 0,
+      duration: 0,
+      finalIndex: 0,
+      startOffset: 0
+    }));
     this.reelsSpinning = false;
     this.fastSpinForced = false;
 
@@ -362,7 +413,7 @@ class SlotGameWebAssets {
     this.missingAssets.add(path);
     const lines = Array.from(this.missingAssets).slice(0, 12);
     this.assetWarning.style.display = "block";
-    this.assetWarning.innerHTML = `<strong>Missing asset(s)</strong>${lines.join("\n")}`;
+    this.assetWarning.innerHTML = `<strong>Missing asset(s)</strong>\n${lines.join("\n")}`;
   }
 
   bindStaticAssetErrorChecks() {
@@ -441,6 +492,11 @@ class SlotGameWebAssets {
 
     this.gameInfoFrame.addEventListener("error", () => this.activateInfoFallback());
     this.gameInfoFrame.addEventListener("load", () => {
+      this.infoFrameLoaded = true;
+      if (this.infoFallbackTimer) {
+        clearTimeout(this.infoFallbackTimer);
+        this.infoFallbackTimer = null;
+      }
       if (!this.usingInfoFallback) {
         this.gameInfoFrame.style.display = "block";
         this.gameInfoFallback.style.display = "none";
@@ -462,19 +518,44 @@ class SlotGameWebAssets {
     this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
   }
 
+  buildInfoUrl(page = 1) {
+    const safePage = page === 2 ? 2 : 1;
+    return `gameinfo.html?page=${safePage}#page${safePage}`;
+  }
+
   openGameInfo(page = 1) {
-    this.gameInfoPage = page;
+    this.gameInfoPage = page === 2 ? 2 : 1;
     this.usingInfoFallback = false;
+    this.infoFrameLoaded = false;
+    this.infoOpenToken += 1;
+    const openToken = this.infoOpenToken;
+
+    if (this.infoFallbackTimer) {
+      clearTimeout(this.infoFallbackTimer);
+      this.infoFallbackTimer = null;
+    }
 
     this.gameInfoFallback.style.display = "none";
     this.gameInfoFrame.style.display = "block";
+    this.infoModal.style.display = "flex";
 
-    this.gameInfoFrame.src = `gameinfo.html#page${this.gameInfoPage}`;
-    this.infoModal.style.display = "block";
+    this.gameInfoFrame.removeAttribute("srcdoc");
+    this.gameInfoFrame.src = this.buildInfoUrl(this.gameInfoPage);
+
+    this.infoFallbackTimer = setTimeout(() => {
+      if (!this.infoFrameLoaded && this.infoOpenToken === openToken) {
+        this.activateInfoFallback();
+      }
+    }, 700);
   }
 
   activateInfoFallback() {
     this.usingInfoFallback = true;
+    this.infoFrameLoaded = false;
+    if (this.infoFallbackTimer) {
+      clearTimeout(this.infoFallbackTimer);
+      this.infoFallbackTimer = null;
+    }
     this.gameInfoFrame.style.display = "none";
     this.gameInfoFallback.style.display = "flex";
     this.updateFallbackPage();
@@ -491,12 +572,28 @@ class SlotGameWebAssets {
 
     if (this.usingInfoFallback) {
       this.updateFallbackPage();
-    } else {
-      this.gameInfoFrame.src = `gameinfo.html#page${this.gameInfoPage}`;
+      return;
     }
+
+    this.infoFrameLoaded = false;
+    if (this.infoFallbackTimer) {
+      clearTimeout(this.infoFallbackTimer);
+      this.infoFallbackTimer = null;
+    }
+    const openToken = ++this.infoOpenToken;
+    this.gameInfoFrame.src = this.buildInfoUrl(this.gameInfoPage);
+    this.infoFallbackTimer = setTimeout(() => {
+      if (!this.infoFrameLoaded && this.infoOpenToken === openToken) {
+        this.activateInfoFallback();
+      }
+    }, 700);
   }
 
   closeGameInfo() {
+    if (this.infoFallbackTimer) {
+      clearTimeout(this.infoFallbackTimer);
+      this.infoFallbackTimer = null;
+    }
     this.infoModal.style.display = "none";
   }
 
@@ -523,29 +620,14 @@ class SlotGameWebAssets {
   }
 
   canAdjustBet() {
-    return this.state === STATE_BASE &&
-      !this.reelsSpinning &&
-      !this.transitionActive &&
-      !this.pendingFreeBonus &&
-      !this.pendingLockinBonus;
-  }
-
-  setBetButtonsDisabled(disabled) {
-    this.betMinusBtn.disabled = disabled;
-    this.betPlusBtn.disabled = disabled;
-    this.denomBtn.disabled = disabled;
+    return !this.reelsSpinning && !this.transitionActive && !this.lockinSpinning;
   }
 
   refreshHud() {
-    const winDisplay = this.state === STATE_LOCKIN ? this.lockinDisplayed : this.displayedWin;
     this.balanceEl.textContent = money(this.balance);
     this.betEl.textContent = money(this.currentBet);
-    this.winEl.textContent =
-      this.state === STATE_FREESPINS ? `FREE WIN ${money(winDisplay)}`
-      : this.state === STATE_LOCKIN ? `LOCK-IN ${money(winDisplay)}`
-      : `WIN ${money(winDisplay)}`;
-    this.denomBtn.textContent = `${Math.round(this.currentDenom * 100)}¢`;
-    this.setBetButtonsDisabled(!this.canAdjustBet());
+    this.winEl.textContent = money(this.displayedWin);
+    this.denomBtn.textContent = `DENOM ${this.currentDenom.toFixed(2)}`;
   }
 
   renderJackpots() {
@@ -556,101 +638,24 @@ class SlotGameWebAssets {
     this.miniEl.textContent = money(jp.mini);
   }
 
-  refreshBorder() {
-    if (this.state === STATE_FREESPINS) this.reelsBorder.src = "Assets/Ui/ReelsBorderFreeGames.png";
-    else if (this.state === STATE_LOCKIN) this.reelsBorder.src = "Assets/Ui/ReelsBorderBonus.png";
-    else this.reelsBorder.src = "Assets/Ui/ReelsBorderLines.png";
+  showToast(text, ms = 2200) {
+    this.toast.textContent = text;
+    this.toast.style.display = "block";
+    const now = performance.now();
+    this.toast.dataset.hideAt = String(now + ms);
   }
 
-  buildGrid(indices, strips = this.reelStrips) {
-    const grid = Array.from({ length: ROWS }, () => Array(REELS).fill(null));
-    for (let c = 0; c < REELS; c++) {
-      const strip = strips[c];
-      const baseIdx = ((indices[c] % strip.length) + strip.length) % strip.length;
-      for (let r = 0; r < ROWS; r++) {
-        grid[r][c] = strip[(baseIdx + r) % strip.length];
-      }
-    }
-    return grid;
-  }
-
-  evaluateWin(symbols) {
-    let scatters = 0;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (symbols[r][c] === "Scatter") scatters++;
-      }
-    }
-
-    let total = 0;
-    this.winningLines = [];
-
-    for (let i = 0; i < LINES.length; i++) {
-      const line = LINES[i];
-      let firstSym = null;
-      let count = 0;
-
-      for (const [r, c] of line) {
-        const sym = symbols[r][c];
-        if (sym === "Scatter") break;
-
-        if (firstSym === null) {
-          if (sym === "Wild") break;
-          firstSym = sym;
-          count = 1;
-        } else if (sym === firstSym || sym === "Wild") {
-          count++;
-        } else {
-          break;
-        }
-      }
-
-      if (firstSym && PAYTABLE_LINES[firstSym] && PAYTABLE_LINES[firstSym][count]) {
-        total += PAYTABLE_LINES[firstSym][count] * this.currentBet;
-        this.winningLines.push(i);
-      }
-    }
-
-    return { total, scatters };
-  }
-
-  detectBonus(grid) {
-    let scatters = 0;
-    let count1x1 = 0;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (grid[r][c] === "Scatter") scatters++;
-        if (grid[r][c] === "1x1") count1x1++;
-      }
-    }
-    if (count1x1 >= 6) return "lockin";
-    if (this.state === STATE_BASE && scatters >= 3) return "freespins";
-    return null;
-  }
-
-  planSpinOutcome() {
-    if (this.state === STATE_FREESPINS) {
-      const len = this.reelStrips[0].length;
-      const idxA = Math.floor(Math.random() * len);
-      const idxM = Math.floor(Math.random() * len);
-      const idxB = Math.floor(Math.random() * len);
-      return [idxA, idxA, idxM, idxB, idxB];
-    }
-    return Array.from({ length: REELS }, (_, c) => Math.floor(Math.random() * this.reelStrips[c].length));
-  }
-
-  showMessage(text, ms = 2200) {
+  setMessage(text, ms = 2000) {
     this.messageText = text;
     this.messageUntil = performance.now() + ms;
     this.messageBanner.textContent = text;
     this.messageBanner.style.display = "block";
   }
 
-  showToast(text) {
-    this.toast.textContent = text;
-    this.toast.classList.add("show");
-    clearTimeout(this.toastTimer);
-    this.toastTimer = setTimeout(() => this.toast.classList.remove("show"), 2400);
+  clearMessage() {
+    this.messageText = "";
+    this.messageUntil = 0;
+    this.messageBanner.style.display = "none";
   }
 
   showOverlay(big, small = "") {
@@ -663,120 +668,22 @@ class SlotGameWebAssets {
     this.fullscreenOverlay.style.display = "none";
   }
 
-  startTransition(type, nextState, after = null) {
-    this.transitionActive = true;
-    this.transitionTargetState = nextState;
-    this.transitionAfter = after;
-    this.audio.stop("ring");
-
-    if (type === "bonusin") this.audio.play("trythis");
-    if (type === "bonusout") this.audio.play("ohboy");
-
-    const map = {
-      free_in: "Assets/TransitionOverlaysVideos/FreeGamesTransitionIn.mp4",
-      free_out: "Assets/TransitionOverlaysVideos/FreeGamesTransitionOut.mp4",
-      lock_in: "Assets/TransitionOverlaysVideos/LockinPlaceTransitionIn.mp4",
-      lock_out: "Assets/TransitionOverlaysVideos/LockinPlaceTransitionOut.mp4"
-    };
-
-    let src = null;
-    if (type === "bonusin" && nextState === STATE_FREESPINS) src = map.free_in;
-    if (type === "bonusout" && this.state === STATE_FREESPINS) src = map.free_out;
-    if (type === "bonusin" && nextState === STATE_LOCKIN) src = map.lock_in;
-    if (type === "bonusout" && this.state === STATE_LOCKIN) src = map.lock_out;
-
-    if (src) {
-      this.transitionVideo.style.display = "block";
-      this.transitionVideo.src = src;
-      this.transitionVideo.load();
-      this.transitionVideo.currentTime = 0;
-      this.transitionVideo.onerror = () => this.reportMissingAsset(src);
-      this.transitionVideo.play().catch(() => {
-        this.transitionVideo.style.display = "none";
-        this.finishTransition();
-      });
-    } else {
-      this.finishTransition();
-    }
-  }
-
-  finishTransition() {
-    this.transitionActive = false;
-    this.transitionVideo.pause();
-    this.transitionVideo.style.display = "none";
-
-    if (this.transitionTargetState === STATE_FREESPINS) {
-      this.state = STATE_FREESPINS;
-      this.reelStrips = this.freeStrips;
-    } else if (this.transitionTargetState === STATE_LOCKIN) {
-      this.state = STATE_LOCKIN;
-    } else if (this.transitionTargetState === STATE_BASE) {
-      this.state = STATE_BASE;
-      this.reelStrips = this.baseStrips;
-    }
-
-    this.refreshBorder();
-    const after = this.transitionAfter;
-    this.transitionAfter = null;
-    this.transitionTargetState = null;
-    if (after) after();
-    this.refreshHud();
-  }
-
   onSpinButton() {
-    if (this.transitionActive) return;
+    if (this.transitionActive || this.lockinSpinning) return;
 
     if (this.pendingFreeBonus) {
       this.pendingFreeBonus = false;
-      this.hideOverlay();
-      this.startTransition("bonusin", STATE_FREESPINS, () => {
-        this.showMessage("Free games started.");
+      this.startTransition(STATE_FREE, () => {
+        this.state = STATE_FREE;
+        this.reelStrips = this.freeStrips;
+        this.startSpin();
       });
       return;
     }
 
     if (this.pendingLockinBonus) {
       this.pendingLockinBonus = false;
-      this.hideOverlay();
-      this.lockinFromState = this.pendingLockinFromState;
-      this.startTransition("bonusin", STATE_LOCKIN, () => this.enterLockin());
-      return;
-    }
-
-    if (this.state === STATE_LOCKIN) {
-      if (this.lockinRevealActive && !this.lockinRevealSpinActive) return;
-
-      if (this.lockinBoard && this.lockinBoard.finished) {
-        if (this.lockinPayoutIndex < this.lockinPayouts.length) {
-          this.lockinPayoutIndex = this.lockinPayouts.length;
-          this.lockinDisplayed = this.lockinPayouts.reduce((a, b) => a + b.amount, 0);
-          this.refreshHud();
-          return;
-        }
-
-        const total = this.lockinDisplayed;
-        const target = this.lockinFromState || STATE_BASE;
-        this.startTransition("bonusout", target, () => {
-          if (target === STATE_BASE) {
-            this.balance += total;
-            this.displayedWin = total;
-          } else {
-            this.freeFeatureTotal += total;
-            this.displayedWin = this.freeFeatureTotal;
-          }
-          this.lockinBoard = null;
-          this.lockinPayouts = [];
-          this.lockinPayoutIndex = 0;
-          this.lockinDisplayed = 0;
-          this.lockinSpinning = false;
-          this.lockinMergeAnimActive = false;
-          this.hideOverlay();
-          this.refreshHud();
-        });
-        return;
-      }
-
-      this.startLockinSpin();
+      this.startLockinFeature();
       return;
     }
 
@@ -785,320 +692,343 @@ class SlotGameWebAssets {
       return;
     }
 
-    if (this.state === STATE_FREESPINS && this.freeSpinsLeft <= 0) {
-      this.startTransition("bonusout", STATE_BASE, () => {
-        this.balance += this.freeFeatureTotal;
-        this.displayedWin = this.freeFeatureTotal;
-        this.showOverlay("FREE GAMES WIN", `${money(this.freeFeatureTotal)} added to balance`);
-        this.totalFreeSpins = 0;
-        this.freeSpinsLeft = 0;
-        this.freeFeatureTotal = 0;
-        this.refreshHud();
-      });
+    if (this.state === STATE_FREE && this.freeSpinsLeft <= 0) {
+      this.finishFreeGames();
       return;
     }
 
     this.startSpin();
   }
-
-  startSpin() {
-    if (this.state === STATE_BASE && this.currentBet > this.balance) {
-      this.showToast("Not enough balance for that bet.");
+    startSpin() {
+    if (this.state === STATE_BASE && this.balance < this.currentBet) {
+      this.showToast("Not enough balance.");
       return;
     }
 
-    this.hideOverlay();
-    this.winningLines = [];
-    this.displayedWin = this.state === STATE_FREESPINS ? this.freeFeatureTotal : 0;
     this.currentWin = 0;
+    this.displayedWin = 0;
+    this.refreshHud();
+    this.clearMessage();
+    this.hideOverlay();
     this.fastSpinForced = false;
-    this.luckForSpin = false;
+    this.linesShowUntil = 0;
 
     if (this.state === STATE_BASE) {
-      this.balance -= this.currentBet;
-      this.reelStrips = this.baseStrips;
-    } else if (this.state === STATE_FREESPINS) {
-      this.freeSpinsLeft -= 1;
-      this.reelStrips = this.freeStrips;
+      this.balance = +(this.balance - this.currentBet).toFixed(2);
+      this.refreshHud();
     }
 
-    const planned = this.planSpinOutcome();
-    const bonusType = this.detectBonus(this.buildGrid(planned, this.reelStrips));
-
-    if (this.state === STATE_BASE && bonusType) {
-      this.luckForSpin = true;
-      this.luckActive = true;
-      this.luckTimer = performance.now() + 14000;
-      this.luckVideo.style.display = "block";
-      this.luckVideo.currentTime = 0;
-      this.luckVideo.play().catch(() => {});
+    if (this.state === STATE_FREE && this.freeSpinsLeft > 0) {
+      this.freeSpinsLeft--;
     }
 
-    const now = performance.now();
     this.reelsSpinning = true;
+    const now = performance.now();
 
-    for (let c = 0; c < REELS; c++) {
-      let duration = this.state === STATE_FREESPINS ? 2000 + Math.floor(c / 2) * 450 : 2000 + c * 450;
-      if (this.luckForSpin) duration += 14000;
-      const extra = 40 + Math.floor(Math.random() * 20);
-      this.reelSpinState[c] = {
+    for (let r = 0; r < REELS; r++) {
+      const strip = this.reelStrips[r];
+      const finalIndex = Math.floor(Math.random() * strip.length);
+      const duration = 1200 + r * 180;
+      this.reelSpinState[r] = {
         spinning: true,
         start: now,
         duration,
-        finalIndex: planned[c],
-        startOffset: planned[c] + extra
+        finalIndex,
+        startOffset: this.reelOffsets[r]
       };
-      this.reelOffsets[c] = planned[c] + extra;
+      this.reelFinalIndex[r] = finalIndex;
     }
 
-    this.reelFinalIndex = planned;
-    this.refreshHud();
+    this.luckForSpin = Math.random() < 0.08;
+    if (this.luckForSpin) {
+      this.luckActive = true;
+      this.luckTimer = now + 1600;
+      this.luckVideo.currentTime = 0;
+      this.luckVideo.style.display = "block";
+      this.luckVideo.play().catch(() => {});
+    }
+
+    this.audio.play("Assets/Sounds/reelspin.mp3", 0.4);
   }
 
   finishSpin() {
     this.reelsSpinning = false;
-    this.reelOffsets = [...this.reelFinalIndex];
-    this.luckForSpin = false;
+    this.luckActive = false;
+    this.luckVideo.pause();
+    this.luckVideo.style.display = "none";
 
-    if (this.luckActive) {
-      this.luckActive = false;
-      this.luckVideo.pause();
-      this.luckVideo.style.display = "none";
-    }
+    const grid = this.getVisibleGrid();
+    const result = this.evaluateGrid(grid);
 
-    const symbols = this.buildGrid(this.reelFinalIndex, this.reelStrips);
-    const { total, scatters } = this.evaluateWin(symbols);
-    const count1x1 = symbols.flat().filter(s => s === "1x1").length;
-
-    if (total > 0) this.audio.play("ohhey");
-
-    if (this.state === STATE_FREESPINS) {
-      this.freeFeatureTotal += total;
-      this.displayedWin = this.freeFeatureTotal;
-    } else {
-      this.balance += total;
-      this.displayedWin = total;
-    }
-
-    if (scatters >= 3 || count1x1 >= 6) {
-      this.scatterShakeUntil = performance.now() + 1800;
-      this.audio.play("ring", true);
-    }
-
-    if (this.state === STATE_FREESPINS && scatters >= 3) {
-      const extra = SCATTER_RETRIGGER[scatters] || 0;
-      if (extra > 0) {
-        this.freeSpinsLeft += extra;
-        this.totalFreeSpins += extra;
-        this.showMessage(`${extra} additional free spins awarded.`);
+    this.currentWin = result.totalWin;
+    this.displayedWin = result.totalWin;
+    if (result.totalWin > 0) {
+      this.balance = +(this.balance + result.totalWin).toFixed(2);
+      if (this.state === STATE_FREE) {
+        this.freeFeatureTotal = +(this.freeFeatureTotal + result.totalWin).toFixed(2);
       }
     }
 
-    if (this.state === STATE_BASE && scatters >= 3) {
-      const [fs] = SCATTER_FREE_SPINS[scatters] || [0, 0];
-      if (fs > 0) {
-        this.totalFreeSpins = fs;
-        this.freeSpinsLeft = fs;
-        this.freeFeatureTotal = 0;
+    this.refreshHud();
+
+    if (result.scatterCount >= 3) {
+      this.scatterShakeUntil = performance.now() + 900;
+      const addFree = SCATTER_TO_FREE[Math.min(5, result.scatterCount)] || 0;
+
+      if (this.state === STATE_FREE) {
+        this.freeSpinsLeft += addFree;
+        this.setMessage(`${addFree} FREE GAMES ADDED!`, 2400);
+      } else {
         this.pendingFreeBonus = true;
-        this.showOverlay(`${fs} FREE GAMES WON`, "Press SPIN to start");
+        this.totalFreeSpins = addFree;
+        this.freeSpinsLeft = addFree;
+        this.freeFeatureTotal = 0;
+        this.showOverlay("FREE GAMES WON", "Press SPIN to start");
+        return;
       }
     }
 
-    if (count1x1 >= 6 && (this.state === STATE_BASE || this.state === STATE_FREESPINS)) {
+    if (Math.random() < 0.16) {
       this.pendingLockinBonus = true;
-      this.pendingLockinSymbols = symbols;
       this.pendingLockinFromState = this.state;
-      this.showOverlay("LOCK-IN FEATURE", "Press SPIN to enter the bonus");
+      this.pendingLockinSymbols = 3 + Math.floor(Math.random() * 3);
+      this.showOverlay("LOCK IT IN", "Press SPIN to continue");
+      return;
     }
 
-    this.refreshHud();
+    if (this.state === STATE_FREE) {
+      if (this.freeSpinsLeft > 0) {
+        this.setMessage(`${this.freeSpinsLeft} FREE GAMES REMAINING`, 1400);
+      } else {
+        this.finishFreeGames();
+      }
+    }
   }
 
-  enterLockin() {
-    this.lockinBoard = new LockInBoard();
-    this.lockinBoard.fromBaseSymbols(this.pendingLockinSymbols);
-    this.lockinBoard.configureJackpots(this.currentJackpots, 1 + 0.4 * this.currentBetIndex);
-    this.lockinDisplayed = 0;
-    this.lockinPayouts = [];
-    this.lockinPayoutIndex = 0;
+  finishFreeGames() {
+    const total = this.freeFeatureTotal;
+    this.state = STATE_BASE;
+    this.reelStrips = this.baseStrips;
+    this.totalFreeSpins = 0;
+    this.freeSpinsLeft = 0;
+    this.freeFeatureTotal = 0;
+    this.showOverlay("FREE GAMES COMPLETE", `Feature Win ${money(total)}`);
+  }
+
+  startTransition(targetState, afterFn) {
+    this.transitionActive = true;
+    this.transitionTargetState = targetState;
+    this.transitionAfter = afterFn || null;
+
+    const src = targetState === STATE_FREE
+      ? "Assets/TransitionOverlaysVideos/TransitionToFreeGames.mp4"
+      : "Assets/TransitionOverlaysVideos/TransitionToBaseGame.mp4";
+
+    this.transitionVideo.src = src;
+    this.transitionVideo.style.display = "block";
+    this.transitionVideo.currentTime = 0;
+    this.transitionVideo.play().catch(() => {
+      this.finishTransition();
+    });
+  }
+
+  finishTransition() {
+    this.transitionActive = false;
+    this.transitionVideo.pause();
+    this.transitionVideo.style.display = "none";
+    if (typeof this.transitionAfter === "function") {
+      const fn = this.transitionAfter;
+      this.transitionAfter = null;
+      fn();
+    }
+  }
+
+  startLockinFeature() {
+    this.lockinFromState = this.pendingLockinFromState || this.state;
+    this.lockinBoard = LockinBoard.random(this.pendingLockinSymbols || 3);
+    this.lockinSpinResults = this.lockinBoard.toSymbolGrid();
     this.lockinRevealActive = false;
-    this.lockinRevealSpinActive = false;
-    this.lockinSpinning = false;
-    this.lockinMergeAnimActive = false;
-    this.showMessage("Lock-in feature started.");
-    this.refreshBorder();
-    this.refreshHud();
-  }
-
-  startLockinSpin() {
-    if (!this.lockinBoard || this.lockinBoard.finished) return;
-    if (this.lockinSpinning) return;
-
-    const stripLen = LOCKIN_STRIP.length;
+    this.lockinRevealKey = null;
     this.lockinSpinning = true;
     this.lockinSpinElapsed = 0;
-    this.lockinSpinMax = 0;
+    this.lockinSpinMax = 2400;
+    this.lockinCellOffsets = Array.from({ length: ROWS }, () => Array.from({ length: REELS }, () => 0));
+    this.lockinCellStartOffsets = Array.from({ length: ROWS }, () => Array.from({ length: REELS }, () => Math.floor(Math.random() * BASE_STRIP.length)));
+    this.lockinCellStopTimes = Array.from({ length: ROWS }, (_, row) =>
+      Array.from({ length: REELS }, (_, reel) => 600 + reel * 180 + row * 90)
+    );
+    this.lockinCellOverTimes = Array.from({ length: ROWS }, (_, row) =>
+      Array.from({ length: REELS }, (_, reel) => this.lockinCellStopTimes[row][reel] + 300)
+    );
+    this.lockinCellFinalIndex = Array.from({ length: ROWS }, () => Array.from({ length: REELS }, () => 0));
+    this.lockinCellFinalSymbol = Array.from({ length: ROWS }, () => Array.from({ length: REELS }, () => SYMBOL_LOCK));
 
-    this.lockinCellOffsets = Array.from({ length: ROWS }, () => Array(REELS).fill(0));
-    this.lockinCellStartOffsets = Array.from({ length: ROWS }, () => Array(REELS).fill(0));
-    this.lockinCellStopTimes = Array.from({ length: ROWS }, () => Array(REELS).fill(0));
-    this.lockinCellOverTimes = Array.from({ length: ROWS }, () => Array(REELS).fill(0));
-    this.lockinCellFinalIndex = Array.from({ length: ROWS }, () => Array(REELS).fill(0));
-    this.lockinCellFinalSymbol = Array.from({ length: ROWS }, () => Array(REELS).fill(null));
-
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (this.lockinBoard.filled[r][c]) {
-          this.lockinCellFinalSymbol[r][c] = "1x1";
-          continue;
-        }
-
-        const finalIndex = Math.floor(Math.random() * stripLen);
-        const finalSymbol = LOCKIN_STRIP[finalIndex];
-        const extra = 30 + Math.floor(Math.random() * 30);
-        const startOffset = finalIndex + extra;
-        const stopTime = 1800 + Math.random() * 1400 + c * 120 + r * 80;
-        const overTime = stopTime + 220;
-
-        this.lockinCellFinalIndex[r][c] = finalIndex;
-        this.lockinCellFinalSymbol[r][c] = finalSymbol;
-        this.lockinCellStartOffsets[r][c] = startOffset;
-        this.lockinCellOffsets[r][c] = startOffset;
-        this.lockinCellStopTimes[r][c] = stopTime;
-        this.lockinCellOverTimes[r][c] = overTime;
-
-        if (overTime > this.lockinSpinMax) this.lockinSpinMax = overTime + 120;
+    for (let row = 0; row < ROWS; row++) {
+      for (let reel = 0; reel < REELS; reel++) {
+        const finalSymbol = this.lockinSpinResults[row][reel];
+        const strip = this.baseStrips[reel];
+        const foundIndex = strip.indexOf(finalSymbol === SYMBOL_LOCK ? "AA" : finalSymbol);
+        this.lockinCellFinalIndex[row][reel] = foundIndex >= 0 ? foundIndex : 0;
+        this.lockinCellFinalSymbol[row][reel] = finalSymbol;
       }
     }
+
+    this.showOverlay("LOCK IT IN", "Tap a symbol to reveal payouts");
+    this.audio.play("Assets/Sounds/reelspin.mp3", 0.35);
   }
 
   finishLockinSpin() {
     this.lockinSpinning = false;
+    this.lockinRevealActive = true;
+    this.lockinPayouts = new LockinPayoutEngine(this.currentJackpots).evaluate(this.lockinBoard, this.currentBet);
+    this.lockinPayoutIndex = 0;
+    this.lockinDisplayed = 0;
+    this.lockinPayoutTickerUntil = 0;
+  }
 
-    const results = Array.from({ length: ROWS }, () => Array(REELS).fill(null));
+  finishLockinFeature() {
+    const award = this.lockinPayouts.reduce((sum, p) => sum + p.amount, 0);
+    this.balance = +(this.balance + award).toFixed(2);
+    this.currentWin = award;
+    this.displayedWin = award;
+    this.refreshHud();
+
+    this.lockinBoard = null;
+    this.lockinSpinResults = null;
+    this.lockinPayouts = [];
+    this.lockinRevealActive = false;
+    this.lockinRevealKey = null;
+    this.lockinMergeAnimActive = false;
+
+    if (this.lockinFromState === STATE_FREE) {
+      if (this.freeSpinsLeft > 0) {
+        this.setMessage(`${this.freeSpinsLeft} FREE GAMES REMAINING`, 1400);
+      } else {
+        this.finishFreeGames();
+      }
+    } else {
+      this.showOverlay("FEATURE COMPLETE", `Award ${money(award)}`);
+    }
+  }
+
+  evaluateGrid(grid) {
+    let totalWin = 0;
+    let scatterCount = 0;
+
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < REELS; c++) {
-        if (!this.lockinBoard.filled[r][c]) {
-          results[r][c] = this.lockinCellFinalSymbol[r][c];
-        }
+        if (grid[r][c] === SYMBOL_SCATTER) scatterCount++;
       }
     }
 
-    const oldBlocks = this.lockinBoard.blocks.map(b => ({
-      top_left: [...b.top_left],
-      width: b.width,
-      height: b.height,
-      cells: b.cells.map(cell => [...cell])
-    }));
+    for (const line of PAYLINES) {
+      const symbols = line.map((row, reel) => grid[row][reel]);
+      const firstNonWild = symbols.find((s) => s !== SYMBOL_WILD && s !== SYMBOL_SCATTER);
+      if (!firstNonWild) continue;
 
-    const applied = this.lockinBoard.applySpinResults(results);
+      let matchCount = 0;
+      for (const sym of symbols) {
+        if (sym === SYMBOL_SCATTER) break;
+        if (sym === firstNonWild || sym === SYMBOL_WILD) {
+          matchCount++;
+        } else {
+          break;
+        }
+      }
 
-    const newBlocks = this.lockinBoard.blocks.map(b => ({
-      top_left: [...b.top_left],
-      width: b.width,
-      height: b.height,
-      cells: b.cells.map(cell => [...cell])
-    }));
-
-    this.lockinOldBlocks = oldBlocks;
-    this.lockinNewBlocks = newBlocks;
-    this.lockinMergeAnimActive = true;
-    this.lockinMergeAnimTime = 0;
-
-    const filledCount = this.lockinBoard.filled.flat().filter(Boolean).length;
-    if (filledCount >= 15) {
-      this.lockinBoard.finished = true;
-      this.lockinBoard.spinsRemaining = 0;
+      const pay = PAYTABLE[firstNonWild]?.[matchCount] || 0;
+      totalWin += pay * this.currentDenom;
     }
 
-    this.showMessage(applied.newHit ? "New 1x1 landed. Spins reset to 3." : "No new 1x1 landed.");
+    const scatterPay = (SCATTER_PAYS[Math.min(5, scatterCount)] || 0) * this.currentDenom;
+    totalWin += scatterPay;
+
+    return {
+      totalWin: +totalWin.toFixed(2),
+      scatterCount
+    };
   }
 
-  maybeStartLockinCount() {
-    if (!this.lockinBoard || !this.lockinBoard.finished || this.lockinPayouts.length) return;
-
-    this.lockinPayouts = this.lockinBoard.getPayouts(this.currentBet)
-      .sort((a, b) => (a.block.width * a.block.height) - (b.block.width * b.block.height));
-
-    this.lockinPayoutIndex = 0;
-    this.lockinDisplayed = 0;
-    this.lockinPayoutTickerUntil = performance.now() + 800;
+  getVisibleGrid() {
+    return Array.from({ length: ROWS }, (_, row) =>
+      Array.from({ length: REELS }, (_, reel) => {
+        const strip = this.reelStrips[reel];
+        const idx = (this.reelFinalIndex[reel] + row) % strip.length;
+        return strip[idx];
+      })
+    );
   }
 
   handleCanvasClick(e) {
-    if (this.state !== STATE_LOCKIN || !this.lockinRevealActive || !this.lockinRevealKey) return;
-    if (this.lockinRevealSpinActive) return;
+    if (!this.lockinRevealActive || !this.lockinBoard) return;
 
     const rect = this.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const cw = rect.width / REELS;
-    const ch = rect.height / ROWS;
-    const [r0, c0] = this.lockinRevealKey.top_left;
-    const bx = c0 * cw;
-    const by = r0 * ch;
-    const bw = this.lockinRevealKey.width * cw;
-    const bh = this.lockinRevealKey.height * ch;
+    const reelW = rect.width / REELS;
+    const rowH = rect.height / ROWS;
+    const reel = Math.floor(x / reelW);
+    const row = Math.floor(y / rowH);
 
-    if (x >= bx && x <= bx + bw && y >= by && y <= by + bh) {
-      this.lockinRevealSpinActive = true;
-      this.lockinRevealStart = performance.now();
-    }
+    if (reel < 0 || reel >= REELS || row < 0 || row >= ROWS) return;
+    const symbol = this.lockinBoard.grid[row][reel];
+    if (!symbol) return;
+
+    const key = `${row}:${reel}`;
+    this.lockinRevealKey = key;
+    this.lockinRevealSpinActive = true;
+    this.lockinRevealStart = performance.now();
+
+    const before = this.lockinBoard.getMergedBlocks();
+    const after = this.lockinBoard.getMergedBlocks();
+
+    this.lockinOldBlocks = before;
+    this.lockinNewBlocks = after;
+    this.lockinMergeAnimActive = true;
+    this.lockinMergeAnimTime = performance.now();
+
+    this.audio.play("Assets/Sounds/coin.mp3", 0.45);
   }
 
-  update(now) {
+  update(dt, now) {
+    if (this.toast.style.display === "block") {
+      const hideAt = Number(this.toast.dataset.hideAt || 0);
+      if (now >= hideAt) this.toast.style.display = "none";
+    }
+
+    if (this.messageUntil && now >= this.messageUntil) {
+      this.clearMessage();
+    }
+
     if (this.reelsSpinning) {
-      let allDone = true;
-      for (let c = 0; c < REELS; c++) {
-        const r = this.reelSpinState[c];
-        let dur = r.duration;
-        if (this.fastSpinForced && !this.luckForSpin) dur = Math.min(dur, 650 + c * 100);
-        const t = clamp((now - r.start) / dur, 0, 1);
-        this.reelOffsets[c] = r.startOffset - (r.startOffset - r.finalIndex) * easeOutCubic(t);
-        if (t < 1) allDone = false;
-      }
-      if (allDone) this.finishSpin();
-    }
-
-    if (this.lockinSpinning) {
-      this.lockinSpinElapsed += 16.6667;
       let done = true;
+      for (let r = 0; r < REELS; r++) {
+        const state = this.reelSpinState[r];
+        const strip = this.reelStrips[r];
+        const elapsed = now - state.start;
+        let t = clamp(elapsed / state.duration, 0, 1);
 
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < REELS; c++) {
-          if (this.lockinBoard.filled[r][c]) continue;
-
-          const stopT = this.lockinCellStopTimes[r][c];
-          const overT = this.lockinCellOverTimes[r][c];
-          const startOff = this.lockinCellStartOffsets[r][c];
-          const finalIdx = this.lockinCellFinalIndex[r][c];
-
-          if (this.lockinSpinElapsed >= overT) {
-            this.lockinCellOffsets[r][c] = finalIdx;
-            continue;
-          }
-
-          done = false;
-          const t = clamp(this.lockinSpinElapsed / stopT, 0, 1);
-          this.lockinCellOffsets[r][c] = startOff - (startOff - finalIdx) * easeOutCubic(t);
+        if (this.fastSpinForced) {
+          t = clamp((elapsed + 450) / state.duration, 0, 1);
         }
+
+        if (t < 1) done = false;
+
+        const loops = 12 + r * 2;
+        const spinPos = lerp(
+          state.startOffset,
+          state.finalIndex + loops * strip.length,
+          easeOutCubic(t)
+        );
+
+        this.reelOffsets[r] = spinPos % strip.length;
       }
 
-      if (done || this.lockinSpinElapsed >= this.lockinSpinMax) {
-        this.finishLockinSpin();
-      }
-    }
-
-    if (this.lockinMergeAnimActive) {
-      this.lockinMergeAnimTime += 16.6667;
-      if (this.lockinMergeAnimTime >= this.lockinMergeAnimDuration) {
-        this.lockinMergeAnimActive = false;
-        this.lockinMergeAnimTime = 0;
-
-        if (this.lockinBoard && this.lockinBoard.finished && !this.lockinPayouts.length) {
-          this.maybeStartLockinCount();
+      if (done) {
+        for (let r = 0; r < REELS; r++) {
+          this.reelOffsets[r] = this.reelFinalIndex[r];
         }
+        this.finishSpin();
       }
     }
 
@@ -1108,298 +1038,226 @@ class SlotGameWebAssets {
       this.luckVideo.style.display = "none";
     }
 
-    if (this.lockinPayouts.length && this.lockinPayoutIndex < this.lockinPayouts.length && now >= this.lockinPayoutTickerUntil) {
-      if (!(this.lockinRevealActive && this.lockinPayoutIndex === this.lockinPayouts.length - 1 && !this.lockinRevealSpinActive)) {
-        this.lockinDisplayed += this.lockinPayouts[this.lockinPayoutIndex].amount;
-        this.lockinPayoutIndex += 1;
-        this.lockinPayoutTickerUntil = now + 800;
-        this.refreshHud();
+    if (this.lockinSpinning) {
+      this.lockinSpinElapsed += dt;
+      let allStopped = true;
 
-        if (this.lockinPayoutIndex === this.lockinPayouts.length - 1 && this.lockinPayouts.length > 0) {
-          const biggest = this.lockinPayouts[this.lockinPayouts.length - 1];
-          this.lockinRevealActive = true;
-          this.lockinRevealKey = biggest.block;
+      for (let row = 0; row < ROWS; row++) {
+        for (let reel = 0; reel < REELS; reel++) {
+          const stopAt = this.lockinCellStopTimes[row][reel];
+          const overAt = this.lockinCellOverTimes[row][reel];
+          const startOffset = this.lockinCellStartOffsets[row][reel];
+          const finalIndex = this.lockinCellFinalIndex[row][reel];
+          const strip = this.baseStrips[reel];
+
+          if (this.lockinSpinElapsed < stopAt) {
+            allStopped = false;
+            const progress = this.lockinSpinElapsed / stopAt;
+            const loops = 10 + reel + row;
+            const pos = lerp(startOffset, finalIndex + loops * strip.length, progress);
+            this.lockinCellOffsets[row][reel] = pos % strip.length;
+          } else if (this.lockinSpinElapsed < overAt) {
+            allStopped = false;
+            const t = (this.lockinSpinElapsed - stopAt) / (overAt - stopAt);
+            const overshoot = finalIndex + 0.4 * (1 - easeOutCubic(t));
+            this.lockinCellOffsets[row][reel] = overshoot;
+          } else {
+            this.lockinCellOffsets[row][reel] = finalIndex;
+          }
         }
+      }
+
+      if (allStopped || this.lockinSpinElapsed >= this.lockinSpinMax) {
+        for (let row = 0; row < ROWS; row++) {
+          for (let reel = 0; reel < REELS; reel++) {
+            this.lockinCellOffsets[row][reel] = this.lockinCellFinalIndex[row][reel];
+          }
+        }
+        this.finishLockinSpin();
+      }
+    }
+
+    if (this.lockinMergeAnimActive) {
+      const elapsed = now - this.lockinMergeAnimTime;
+      if (elapsed >= this.lockinMergeAnimDuration) {
+        this.lockinMergeAnimActive = false;
       }
     }
 
     if (this.lockinRevealSpinActive) {
-      const t = clamp((now - this.lockinRevealStart) / this.lockinRevealDuration, 0, 1);
+      const t = (now - this.lockinRevealStart) / this.lockinRevealDuration;
       if (t >= 1) {
         this.lockinRevealSpinActive = false;
-        this.lockinRevealActive = false;
-        if (this.lockinPayoutIndex < this.lockinPayouts.length) {
-          this.lockinDisplayed += this.lockinPayouts[this.lockinPayoutIndex].amount;
-          this.lockinPayoutIndex += 1;
-          this.refreshHud();
-        }
-      }
-    }
-
-    if (this.messageUntil && now > this.messageUntil) {
-      this.messageUntil = 0;
-      this.messageText = "";
-      this.messageBanner.style.display = "none";
-    }
-  }
-
-  draw() {
-    const ctx = this.ctx;
-    const width = this.canvas.clientWidth;
-    const height = this.canvas.clientHeight;
-    ctx.clearRect(0, 0, width, height);
-    const cellW = width / REELS;
-    const cellH = height / ROWS;
-
-    if (this.state === STATE_LOCKIN && this.lockinBoard) this.drawLockin(ctx, width, height, cellW, cellH);
-    else this.drawReels(ctx, width, height, cellW, cellH);
-
-    if (performance.now() < this.linesShowUntil && this.state !== STATE_LOCKIN) this.drawLinePreview(ctx, cellW, cellH);
-    if (this.winningLines && this.winningLines.length && !this.reelsSpinning && this.state !== STATE_LOCKIN) this.drawWinningPulse(ctx, cellW, cellH);
-    if (performance.now() < this.scatterShakeUntil) this.drawScatterBadge(ctx, width);
-  }
-
-  drawReels(ctx, width, height, cellW, cellH) {
-    for (let c = 0; c < REELS; c++) {
-      const strip = this.reelStrips[c];
-      const offset = this.reelsSpinning ? this.reelOffsets[c] : this.reelFinalIndex[c];
-      const frac = offset - Math.floor(offset);
-      const base = Math.floor(offset);
-
-      for (let k = -1; k < ROWS + 1; k++) {
-        const idx = ((base + k) % strip.length + strip.length) % strip.length;
-        const sym = strip[idx];
-        const x = c * cellW;
-        const y = (k - frac) * cellH;
-        this.drawSymbol(ctx, sym, x, y, cellW, cellH);
+        this.finishLockinFeature();
       }
     }
   }
 
-  drawSymbol(ctx, sym, x, y, w, h) {
-    const img = this.symbolImages[sym];
+  drawSymbol(symbol, x, y, w, h) {
+    const img = this.symbolImages[symbol];
     if (img && img.complete && img.naturalWidth > 0) {
-      ctx.drawImage(img, x + 2, y + 2, w - 4, h - 4);
-    } else {
-      ctx.fillStyle = "#402244";
-      ctx.fillRect(x + 2, y + 2, w - 4, h - 4);
-      ctx.fillStyle = "#fff";
-      ctx.font = `bold ${Math.max(18, Math.floor(w / 5))}px Arial`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(String(sym), x + w / 2, y + h / 2);
-    }
-  }
-
-  drawLinePreview(ctx, cellW, cellH) {
-    for (let i = 0; i < LINES.length; i++) {
-      ctx.strokeStyle = LINE_COLORS[i % LINE_COLORS.length];
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      LINES[i].forEach(([r, c], idx) => {
-        const px = c * cellW + cellW / 2;
-        const py = r * cellH + cellH / 2 + ((i % 3) - 1) * 4;
-        if (idx === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      });
-      ctx.stroke();
-    }
-  }
-
-  drawWinningPulse(ctx, cellW, cellH) {
-    const idx = this.winningLines[Math.floor(performance.now() / 500) % this.winningLines.length];
-    const line = LINES[idx];
-    ctx.strokeStyle = LINE_COLORS[idx % LINE_COLORS.length];
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    line.forEach(([r, c], i) => {
-      const px = c * cellW + cellW / 2;
-      const py = r * cellH + cellH / 2;
-      if (i === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    });
-    ctx.stroke();
-  }
-
-  drawScatterBadge(ctx, width) {
-    ctx.save();
-    ctx.translate(width / 2, 28);
-    ctx.rotate(Math.sin(performance.now() / 90) * 0.06);
-    ctx.fillStyle = "rgba(0,0,0,0.82)";
-    ctx.strokeStyle = "rgba(255,213,79,0.7)";
-    ctx.lineWidth = 2;
-    const w = 360, h = 54, x = -w / 2, y = -h / 2;
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(x, y, w, h, 18);
-    else ctx.rect(x, y, w, h);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = "#ff66c4";
-    ctx.font = "bold 28px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(this.pendingLockinBonus ? "1x1 FEATURE TRIGGERED" : "SCATTER BONUS!", 0, 0);
-    ctx.restore();
-  }
-
-  drawLockin(ctx, width, height, cellW, cellH) {
-    const drawBlockFrame = (block, scale = 1, paidAmount = null) => {
-      const [r0, c0] = block.top_left;
-      const baseX = c0 * cellW + 6;
-      const baseY = r0 * cellH + 6;
-      const baseW = block.width * cellW - 12;
-      const baseH = block.height * cellH - 12;
-
-      const cx = baseX + baseW / 2;
-      const cy = baseY + baseH / 2;
-      const w = baseW * scale;
-      const h = baseH * scale;
-      const x = cx - w / 2;
-      const y = cy - h / 2;
-
-      ctx.strokeStyle = "rgba(255,213,79,0.95)";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(x, y, w, h);
-
-      if (paidAmount !== null) {
-        ctx.fillStyle = "#ff66c4";
-        ctx.font = `bold ${Math.max(18, Math.floor(Math.min(w, h) / 4))}px Arial`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(money(paidAmount), x + w / 2, y + h / 2);
-      }
-    };
-
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        const x = c * cellW;
-        const y = r * cellH;
-        ctx.fillStyle = "rgba(255,255,255,0.05)";
-        ctx.fillRect(x + 4, y + 4, cellW - 8, cellH - 8);
-      }
+      this.ctx.drawImage(img, x, y, w, h);
+      return;
     }
 
-    if (this.lockinSpinning) {
-      for (const block of this.lockinBoard.blocks) {
-        drawBlockFrame(block, 1, null);
+    this.ctx.save();
+    this.ctx.fillStyle = "#2b1237";
+    this.ctx.fillRect(x, y, w, h);
+    this.ctx.strokeStyle = "rgba(255,255,255,0.14)";
+    this.ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+    this.ctx.fillStyle = "#ff66c4";
+    this.ctx.font = `bold ${Math.floor(h * 0.22)}px Arial`;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText(symbol, x + w / 2, y + h / 2);
+    this.ctx.restore();
+  }
+
+  renderBaseReels(width, height) {
+    const reelW = width / REELS;
+    const rowH = height / ROWS;
+
+    for (let reel = 0; reel < REELS; reel++) {
+      const strip = this.reelStrips[reel];
+      const offset = this.reelOffsets[reel];
+      const baseIndex = Math.floor(offset);
+      const frac = offset - baseIndex;
+
+      for (let row = -1; row <= ROWS; row++) {
+        const index = (baseIndex + row + strip.length) % strip.length;
+        const symbol = strip[index];
+        const y = (row - frac) * rowH;
+        this.drawSymbol(symbol, reel * reelW + 6, y + 6, reelW - 12, rowH - 12);
       }
+    }
+  }
 
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < REELS; c++) {
-          const x = c * cellW;
-          const y = r * cellH;
+  renderLockinBoard(width, height) {
+    const reelW = width / REELS;
+    const rowH = height / ROWS;
 
-          if (this.lockinBoard.filled[r][c]) {
-            this.drawSymbol(ctx, "1x1", x, y, cellW, cellH);
-            continue;
+    if (this.lockinSpinning && this.lockinCellOffsets) {
+      for (let row = 0; row < ROWS; row++) {
+        for (let reel = 0; reel < REELS; reel++) {
+          const strip = this.baseStrips[reel];
+          const offset = this.lockinCellOffsets[row][reel];
+          const baseIndex = Math.floor(offset);
+          const frac = offset - baseIndex;
+
+          this.ctx.save();
+          this.ctx.beginPath();
+          this.ctx.rect(reel * reelW, row * rowH, reelW, rowH);
+          this.ctx.clip();
+
+          for (let i = -1; i <= 1; i++) {
+            const index = (baseIndex + i + strip.length) % strip.length;
+            const symbol = strip[index];
+            const sy = row * rowH + (i - frac) * rowH;
+            this.drawSymbol(symbol, reel * reelW + 6, sy + 6, reelW - 12, rowH - 12);
           }
 
-          const off = this.lockinCellOffsets[r][c];
-          const frac = off - Math.floor(off);
-          const base = Math.floor(off);
-          const stripLen = LOCKIN_STRIP.length;
-
-          const cellCanvas = document.createElement("canvas");
-          cellCanvas.width = Math.max(1, Math.floor(cellW));
-          cellCanvas.height = Math.max(1, Math.floor(cellH));
-          const cctx = cellCanvas.getContext("2d");
-
-          for (let k = -1; k <= 1; k++) {
-            const idx = ((base + k) % stripLen + stripLen) % stripLen;
-            const sym = LOCKIN_STRIP[idx];
-            if (sym !== "1x1") continue;
-            const img = this.symbolImages["1x1"];
-            if (!img || !img.complete || img.naturalWidth <= 0) continue;
-            const dy = (k - frac) * cellH;
-            cctx.drawImage(img, 2, dy + 2, cellW - 4, cellH - 4);
-          }
-
-          ctx.drawImage(cellCanvas, x, y);
+          this.ctx.restore();
         }
       }
       return;
     }
 
-    if (this.lockinMergeAnimActive && this.lockinNewBlocks && this.lockinNewBlocks.length) {
-      const oldKeys = new Set(
-        (this.lockinOldBlocks || []).map(b => `${b.top_left[0]}_${b.top_left[1]}_${b.width}_${b.height}`)
-      );
-      const t = clamp(this.lockinMergeAnimTime / this.lockinMergeAnimDuration, 0, 1);
+    if (!this.lockinBoard) return;
 
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < REELS; c++) {
-          if (this.lockinBoard.filled[r][c]) {
-            this.drawSymbol(ctx, "1x1", c * cellW, r * cellH, cellW, cellH);
-          }
-        }
+    const grid = this.lockinBoard.grid;
+    for (let row = 0; row < ROWS; row++) {
+      for (let reel = 0; reel < REELS; reel++) {
+        const symbol = grid[row][reel] || SYMBOL_LOCK;
+        this.drawSymbol(symbol, reel * reelW + 6, row * rowH + 6, reelW - 12, rowH - 12);
       }
+    }
 
+    if (this.lockinMergeAnimActive && this.lockinNewBlocks.length) {
+      const t = clamp((performance.now() - this.lockinMergeAnimTime) / this.lockinMergeAnimDuration, 0, 1);
+      const alpha = easeInOutQuad(t);
+
+      this.ctx.save();
+      this.ctx.globalAlpha = alpha * 0.22;
+      this.ctx.fillStyle = "#ffd45f";
       for (const block of this.lockinNewBlocks) {
-        const key = `${block.top_left[0]}_${block.top_left[1]}_${block.width}_${block.height}`;
-        let scale = 1;
-
-        if (!oldKeys.has(key)) {
-          if (block.width * block.height > 1) scale = 1 + 0.25 * Math.sin(Math.PI * t);
-          else scale = 0.7 + 0.3 * t;
-        }
-
-        drawBlockFrame(block, scale, null);
+        const xs = block.cells.map(([x]) => x);
+        const ys = block.cells.map(([, y]) => y);
+        const minX = Math.min(...xs) * reelW;
+        const minY = Math.min(...ys) * rowH;
+        const maxX = (Math.max(...xs) + 1) * reelW;
+        const maxY = (Math.max(...ys) + 1) * rowH;
+        this.ctx.fillRect(minX + 8, minY + 8, maxX - minX - 16, maxY - minY - 16);
       }
-      return;
-    }
-
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < REELS; c++) {
-        if (this.lockinBoard.filled[r][c]) {
-          this.drawSymbol(ctx, "1x1", c * cellW, r * cellH, cellW, cellH);
-        }
-      }
-    }
-
-    for (const block of this.lockinBoard.blocks) {
-      const matched = this.lockinPayouts.find(p =>
-        p.block.top_left[0] === block.top_left[0] &&
-        p.block.top_left[1] === block.top_left[1] &&
-        p.block.width === block.width &&
-        p.block.height === block.height
-      );
-
-      const paid = matched && this.lockinPayouts.indexOf(matched) < this.lockinPayoutIndex
-        ? matched.amount
-        : null;
-
-      drawBlockFrame(block, 1, paid);
-    }
-
-    if (this.lockinRevealActive && this.lockinRevealKey) {
-      const block = this.lockinRevealKey;
-      const [r0, c0] = block.top_left;
-      const x = c0 * cellW + 10;
-      const y = r0 * cellH + 10;
-      const w = block.width * cellW - 20;
-      const h = block.height * cellH - 20;
-      ctx.fillStyle = "rgba(0,0,0,0.55)";
-      ctx.fillRect(x, y, w, h);
-      ctx.strokeStyle = "#ffd54f";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(x, y, w, h);
-      ctx.fillStyle = "#fff";
-      ctx.font = `bold ${Math.max(18, Math.floor(Math.min(w, h) / 5))}px Arial`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(this.lockinRevealSpinActive ? "REVEALING..." : "CLICK TO REVEAL", x + w / 2, y + h / 2);
+      this.ctx.restore();
     }
   }
 
-  loop(now) {
-    this.update(now);
-    this.draw();
+  renderLines(width, height) {
+    const now = performance.now();
+    if (now > this.linesShowUntil) return;
+
+    const reelW = width / REELS;
+    const rowH = height / ROWS;
+
+    this.ctx.save();
+    this.ctx.lineWidth = 4;
+    this.ctx.strokeStyle = "rgba(255, 212, 95, 0.85)";
+    this.ctx.shadowColor = "rgba(255, 102, 196, 0.65)";
+    this.ctx.shadowBlur = 10;
+
+    for (const line of PAYLINES) {
+      this.ctx.beginPath();
+      line.forEach((row, reel) => {
+        const x = reel * reelW + reelW / 2;
+        const y = row * rowH + rowH / 2;
+        if (reel === 0) this.ctx.moveTo(x, y);
+        else this.ctx.lineTo(x, y);
+      });
+      this.ctx.stroke();
+    }
+
+    this.ctx.restore();
+  }
+
+  renderScatterShake(width, height) {
+    const now = performance.now();
+    if (now > this.scatterShakeUntil) return;
+    const p = 1 - (this.scatterShakeUntil - now) / 900;
+    const magnitude = (1 - p) * 8;
+    this.ctx.save();
+    this.ctx.translate((Math.random() - 0.5) * magnitude, (Math.random() - 0.5) * magnitude);
+    this.ctx.restore();
+  }
+
+  render() {
+    const rect = this.reelsRegion.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    this.ctx.clearRect(0, 0, width, height);
+
+    if (this.lockinBoard || this.lockinSpinning) {
+      this.renderLockinBoard(width, height);
+    } else {
+      this.renderBaseReels(width, height);
+    }
+
+    this.renderLines(width, height);
+  }
+
+  loop(timestamp) {
+    if (!this.lastTime) this.lastTime = timestamp;
+    const dt = timestamp - this.lastTime;
+    this.lastTime = timestamp;
+
+    this.update(dt, timestamp);
+    this.render();
     this.refreshHud();
-    this.refreshBorder();
+
     requestAnimationFrame((t) => this.loop(t));
   }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  new SlotGameWebAssets();
+  window.slotGame = new SlotGameWebAssets();
 });
