@@ -1,28 +1,56 @@
-(function () {
-  const images = document.querySelectorAll('.portfolio-img');
+document.addEventListener("DOMContentLoaded", () => {
+  setupImageFallbacks();
+  setupVideoFallback();
+});
 
-  function makeFallback(img) {
-    const title = img.dataset.fallbackTitle || 'Image unavailable';
-    const text = img.dataset.fallbackText || 'Add the referenced image file to this project folder.';
-    const box = document.createElement('div');
-    box.className = 'image-fallback';
-    box.innerHTML = `<div><strong>${title}</strong><span>${text}</span></div>`;
-
-    if (img.classList.contains('hero-bg')) {
-      box.style.position = 'absolute';
-      box.style.inset = '0';
-      box.style.zIndex = '0';
-    }
-
-    img.replaceWith(box);
-  }
+function setupImageFallbacks() {
+  const images = document.querySelectorAll(".fallback-img");
 
   images.forEach((img) => {
-    if (img.complete && img.naturalWidth === 0) {
-      makeFallback(img);
-      return;
-    }
+    img.addEventListener("error", () => {
+      const card = img.closest(".media-card") || img.parentElement;
 
-    img.addEventListener('error', () => makeFallback(img), { once: true });
+      const fallback = document.createElement("div");
+      fallback.className = "fallback-box";
+      fallback.innerHTML = `
+        <div>
+          <strong>Image unavailable</strong>
+          <p>This media slot is ready for project documentation or build photos.</p>
+        </div>
+      `;
+
+      img.replaceWith(fallback);
+    });
   });
-})();
+}
+
+function setupVideoFallback() {
+  const video = document.getElementById("elevatorVideo");
+  const fallback = document.getElementById("videoFallback");
+
+  if (!video || !fallback) return;
+
+  const showFallback = () => {
+    video.style.display = "none";
+    fallback.style.display = "grid";
+  };
+
+  video.addEventListener("error", showFallback);
+
+  const source = video.querySelector("source");
+  if (!source || !source.getAttribute("src")) {
+    showFallback();
+    return;
+  }
+
+  video.addEventListener("loadeddata", () => {
+    fallback.style.display = "none";
+    video.style.display = "block";
+  });
+
+  setTimeout(() => {
+    if (video.readyState === 0) {
+      showFallback();
+    }
+  }, 1200);
+}
