@@ -240,7 +240,7 @@ class LockInBoard {
   }
 }
 
-class SlotGameWebAssets {
+class SlotGameWebAssets {  
   constructor() {
     this.assetWarning = document.getElementById("assetWarning");
     this.missingAssets = new Set();
@@ -258,6 +258,8 @@ class SlotGameWebAssets {
     this.overlaySmall = document.getElementById("overlaySmall");
     this.infoModal = document.getElementById("infoModal");
     this.infoImage = document.getElementById("infoImage");
+    this.infoFrame = document.getElementById("infoFrame");
+    this.modalToggleBtn = document.getElementById("modalToggleBtn");
     this.toast = document.getElementById("toast");
 
     this.balanceEl = document.getElementById("balanceAmount");
@@ -288,7 +290,13 @@ class SlotGameWebAssets {
 
     this.reelFinalIndex = Array.from({ length: REELS }, () => Math.floor(Math.random() * BASE_STRIP.length));
     this.reelOffsets = [...this.reelFinalIndex];
-    this.reelSpinState = Array.from({ length: REELS }, () => ({ spinning: false, start: 0, duration: 0, finalIndex: 0, startOffset: 0 }));
+    this.reelSpinState = Array.from({ length: REELS }, () => ({
+      spinning: false,
+      start: 0,
+      duration: 0,
+      finalIndex: 0,
+      startOffset: 0
+    }));
     this.reelsSpinning = false;
     this.fastSpinForced = false;
 
@@ -345,6 +353,10 @@ class SlotGameWebAssets {
     this.lockinNewBlocks = [];
 
     this.infoPage = 1;
+    this.infoUsesHtml = false;
+    this.infoHtmlChecked = false;
+    this.infoHtmlAvailable = false;
+    this.infoHtmlUrl = "gameinfo.html";
 
     this.bindStaticAssetErrorChecks();
     this.bindUI();
@@ -615,11 +627,65 @@ class SlotGameWebAssets {
     const content = this.infoModal.querySelector(".info-content");
     const oldDynamic = content.querySelector(".dynamic-paytable");
     if (oldDynamic) oldDynamic.remove();
+
+    if (!this.infoUsesHtml) {
+      this.infoFrame.style.display = "none";
+      this.infoFrame.removeAttribute("src");
+      this.infoImage.style.display = "block";
+      this.modalToggleBtn.style.display = "block";
+    }
+  }
+
+  async checkInfoHtmlAvailability(force = false) {
+    if (this.infoHtmlChecked && !force) return this.infoHtmlAvailable;
+
+    this.infoHtmlChecked = true;
+    this.infoHtmlAvailable = false;
+
+    const tryUrls = [
+      `${this.infoHtmlUrl}?v=${Date.now()}`,
+      this.infoHtmlUrl,
+      "./gameinfo.html",
+      `./gameinfo.html?v=${Date.now()}`
+    ];
+
+    for (const url of tryUrls) {
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) continue;
+
+        const text = await response.text();
+        if (!text || !text.trim()) continue;
+
+        this.infoHtmlAvailable = true;
+        this.infoHtmlUrl = url.replace(/\?v=\d+$/, "");
+        return true;
+      } catch (err) {
+      }
+    }
+
+    return false;
+  }
+
+  showHtmlInfo() {
+    this.infoUsesHtml = true;
+    this.infoImage.style.display = "none";
+    this.infoFrame.style.display = "block";
+    this.modalToggleBtn.style.display = "none";
+    this.infoFrame.src = `${this.infoHtmlUrl}?v=${Date.now()}`;
+  }
+
+  showImageInfo() {
+    this.infoUsesHtml = false;
+    this.infoFrame.style.display = "none";
+    this.infoFrame.removeAttribute("src");
     this.infoImage.style.display = "block";
-    document.getElementById("modalToggleBtn").style.display = "block";
+    this.modalToggleBtn.style.display = "block";
+    this.infoImage.src = this.infoPage === 1 ? "Assets/Ui/GameInfo1.png" : "Assets/Ui/GameInfo2.png";
   }
 
   openPaytable() {
+    this.infoUsesHtml = false;
     this.closePaytableDynamic();
 
     const wrap = document.createElement("div");
@@ -700,26 +766,40 @@ class SlotGameWebAssets {
 
     wrap.appendChild(table);
     const content = this.infoModal.querySelector(".info-content");
+    this.infoFrame.style.display = "none";
+    this.infoFrame.removeAttribute("src");
     this.infoImage.style.display = "none";
-    document.getElementById("modalToggleBtn").style.display = "none";
+    this.modalToggleBtn.style.display = "none";
     content.appendChild(wrap);
     this.infoModal.style.display = "flex";
   }
 
-  openInfo() {
+  async openInfo() {
+    this.infoUsesHtml = false;
     this.closePaytableDynamic();
     this.infoPage = 1;
-    this.infoImage.src = "Assets/Ui/GameInfo1.png";
+
+    const hasHtml = await this.checkInfoHtmlAvailability();
+    if (hasHtml) {
+      this.showHtmlInfo();
+    } else {
+      this.showImageInfo();
+    }
+
     this.infoModal.style.display = "flex";
   }
 
   toggleInfoPage() {
+    if (this.infoUsesHtml) return;
     this.infoPage = this.infoPage === 1 ? 2 : 1;
-    this.infoImage.src = this.infoPage === 1 ? "Assets/Ui/GameInfo1.png" : "Assets/Ui/GameInfo2.png";
+    this.showImageInfo();
   }
 
   closeInfo() {
+    this.infoUsesHtml = false;
     this.closePaytableDynamic();
+    this.infoFrame.style.display = "none";
+    this.infoFrame.removeAttribute("src");
     this.infoModal.style.display = "none";
   }
 
