@@ -336,6 +336,7 @@
       background: rgba(255,255,255,.03);
       cursor: pointer;
       min-height: 240px;
+      padding: 0;
     }
 
     .gallery-item img {
@@ -588,16 +589,16 @@
       <div class="panel">
         <div class="section-title">
           <div>
-            <h2>Design requirements</h2>
-            <p>Based on the included project specification sheet, the main design target was a realistic four-floor small-scale elevator system.</p>
+            <h2>Design highlights</h2>
+            <p>The page is arranged to show the final working build, the modular CAD work, and the technical drawings all in one place.</p>
           </div>
         </div>
         <ul class="spec-list">
-          <li><strong>Floor system</strong>Four floors with both outside call functionality and inside car floor selection.</li>
-          <li><strong>Door behavior</strong>Door operation should simulate opening at arrival and remain open long enough for loading and unloading.</li>
-          <li><strong>Control logic</strong>Designed to behave like a real elevator by servicing requested floors as it passes them instead of only following press order.</li>
-          <li><strong>Payload target</strong>Lift and deliver a 6 oz payload between floors while also operating unloaded or partially loaded.</li>
-          <li><strong>Physical limits</strong>Project constrained by maximum size requirements for demonstration and transport.</li>
+          <li><strong>Four-floor layout</strong>Built around a compact multi-floor elevator arrangement suited for a classroom prototype and demonstration model.</li>
+          <li><strong>Expandable concept</strong>The structure is described as modular so the frame could be lengthened with a longer lead screw and more supports for added floors later.</li>
+          <li><strong>Mechanical detail</strong>Separate part drawings for rails, base, floors, roof, motor, and gear-driven door parts help show the full assembly process.</li>
+          <li><strong>Interactive presentation</strong>The embedded GLB viewer, exploded animation video, build gallery, and PDF viewer make the project easy to explore directly on the site.</li>
+          <li><strong>Portfolio-ready layout</strong>Everything now points to a local assets folder that sits beside this index file, making it much easier to deploy cleanly.</li>
         </ul>
       </div>
     </div>
@@ -613,7 +614,7 @@
           </div>
         </div>
         <model-viewer
-          src="assets/final%20elevator.glb"
+          src="assets/finalelevator.glb"
           alt="Interactive 3D model of the modular elevator"
           camera-controls
           touch-action="pan-y"
@@ -656,7 +657,7 @@
           <ul class="bullet-list">
             <li><strong>Final physical build photos</strong><br />The gallery uses the cleaned-up build images you provided for the finished version.</li>
             <li><strong>Modularity focus</strong><br />The page text emphasizes that the design can be extended with a longer lead screw and more side supports.</li>
-            <li><strong>Engineering documentation</strong><br />The technical drawing viewer below keeps the CAD drawings and project sheet directly on the website instead of hiding them behind external downloads only.</li>
+            <li><strong>Engineering documentation</strong><br />The technical drawing viewer below keeps the CAD drawings directly on the website instead of hiding them behind external downloads only.</li>
           </ul>
         </div>
       </div>
@@ -672,23 +673,23 @@
         </div>
       </div>
       <div class="gallery-grid">
-        <button class="gallery-item" data-img="assets/IMG_4549.jpeg" data-title="Prototype photo 1" aria-label="Open prototype photo 1">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4549.jpeg" data-title="Prototype photo 1" aria-label="Open prototype photo 1">
           <img src="assets/IMG_4549.jpeg" alt="Top view of the elevator prototype" />
           <span>Top view</span>
         </button>
-        <button class="gallery-item" data-img="assets/IMG_4550.jpeg" data-title="Prototype photo 2" aria-label="Open prototype photo 2">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4550.jpeg" data-title="Prototype photo 2" aria-label="Open prototype photo 2">
           <img src="assets/IMG_4550.jpeg" alt="Angled side view of the elevator prototype" />
           <span>Angle view</span>
         </button>
-        <button class="gallery-item" data-img="assets/IMG_4551.jpeg" data-title="Prototype photo 3" aria-label="Open prototype photo 3">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4551.jpeg" data-title="Prototype photo 3" aria-label="Open prototype photo 3">
           <img src="assets/IMG_4551.jpeg" alt="Floor and door detail on the elevator prototype" />
           <span>Floor detail</span>
         </button>
-        <button class="gallery-item" data-img="assets/IMG_4552.jpeg" data-title="Prototype photo 4" aria-label="Open prototype photo 4">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4552.jpeg" data-title="Prototype photo 4" aria-label="Open prototype photo 4">
           <img src="assets/IMG_4552.jpeg" alt="Front view of the elevator prototype" />
           <span>Front view</span>
         </button>
-        <button class="gallery-item" data-img="assets/IMG_4553.jpeg" data-title="Prototype photo 5" aria-label="Open prototype photo 5">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4553.jpeg" data-title="Prototype photo 5" aria-label="Open prototype photo 5">
           <img src="assets/IMG_4553.jpeg" alt="Controller and wiring setup for the elevator prototype" />
           <span>Electronics</span>
         </button>
@@ -701,60 +702,56 @@
       <div class="section-title">
         <div>
           <h2>Technical drawings and documentation</h2>
-          <p>PDFs are embedded directly on the page. Visitors can switch between the project sheet, assembly views, and part drawings without leaving the site.</p>
+          <p>PDFs are embedded directly on the page. Visitors can switch between full assembly views and individual part drawings without leaving the site.</p>
         </div>
       </div>
       <div class="docs-grid">
         <div class="panel doc-list">
-          <button class="doc-button active" data-pdf="assets/MECH%203100%20-%20Project%20Specifications.pdf" data-title="Project specifications">
-            <strong>Project specifications</strong>
-            <small>Assignment requirements and design constraints</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/final%20elevator.pdf" data-title="Final assembly drawing">
+          <button class="doc-button active" data-pdf="assets/finalelevator.pdf" data-title="Final assembly drawing" type="button">
             <strong>Final assembly drawing</strong>
             <small>Overall assembly documentation</small>
           </button>
-          <button class="doc-button" data-pdf="assets/final%20elevator2.pdf" data-title="Exploded assembly drawing">
+          <button class="doc-button" data-pdf="assets/finalelevator2.pdf" data-title="Exploded assembly drawing" type="button">
             <strong>Exploded assembly</strong>
             <small>Separated component layout view</small>
           </button>
-          <button class="doc-button" data-pdf="assets/final%20elevator3.pdf" data-title="Assembly side view">
-            <strong>Assembly side view</strong>
-            <small>Alternate assembly arrangement</small>
+          <button class="doc-button" data-pdf="assets/finalelevator3.pdf" data-title="Assembly alternate view" type="button">
+            <strong>Alternate assembly view</strong>
+            <small>Additional overall arrangement</small>
           </button>
-          <button class="doc-button" data-pdf="assets/base%20elevator.pdf" data-title="Base drawing">
+          <button class="doc-button" data-pdf="assets/baseelevator.pdf" data-title="Base drawing" type="button">
             <strong>Base</strong>
             <small>Base plate drawing</small>
           </button>
-          <button class="doc-button" data-pdf="assets/floors%20elevator.pdf" data-title="Floors drawing">
+          <button class="doc-button" data-pdf="assets/floorselevator.pdf" data-title="Floors drawing" type="button">
             <strong>Floors</strong>
             <small>Floor platform component</small>
           </button>
-          <button class="doc-button" data-pdf="assets/lift%20elevator.pdf" data-title="Lift drawing">
+          <button class="doc-button" data-pdf="assets/liftelevator.pdf" data-title="Lift drawing" type="button">
             <strong>Lift carriage</strong>
             <small>Carriage and lift-related components</small>
           </button>
-          <button class="doc-button" data-pdf="assets/rails%20elevator1-1.pdf" data-title="Rails drawing">
+          <button class="doc-button" data-pdf="assets/railselevator1-1.pdf" data-title="Rails drawing" type="button">
             <strong>Rails</strong>
             <small>Guide rail geometry</small>
           </button>
-          <button class="doc-button" data-pdf="assets/roof%20elevator.pdf" data-title="Roof drawing">
+          <button class="doc-button" data-pdf="assets/roofelevator.pdf" data-title="Roof drawing" type="button">
             <strong>Roof</strong>
             <small>Top structure and housing</small>
           </button>
-          <button class="doc-button" data-pdf="assets/door%20with%20gear.pdf" data-title="Door with gear drawing">
+          <button class="doc-button" data-pdf="assets/doorwithgear.pdf" data-title="Door with gear drawing" type="button">
             <strong>Door with gear</strong>
             <small>Door panel and gear-linked arrangement</small>
           </button>
-          <button class="doc-button" data-pdf="assets/servo%20gear.pdf" data-title="Servo gear drawing">
+          <button class="doc-button" data-pdf="assets/servogear.pdf" data-title="Servo gear drawing" type="button">
             <strong>Servo gear</strong>
             <small>Door gear detail</small>
           </button>
-          <button class="doc-button" data-pdf="assets/other%20gears.pdf" data-title="Other gears drawing">
+          <button class="doc-button" data-pdf="assets/othergears.pdf" data-title="Other gears drawing" type="button">
             <strong>Other gears</strong>
             <small>Additional gear components</small>
           </button>
-          <button class="doc-button" data-pdf="assets/motor18.pdf" data-title="Motor drawing">
+          <button class="doc-button" data-pdf="assets/motor18.pdf" data-title="Motor drawing" type="button">
             <strong>Motor</strong>
             <small>Motor body reference</small>
           </button>
@@ -762,11 +759,11 @@
 
         <div class="panel">
           <div class="pdf-frame">
-            <iframe id="pdfViewer" src="assets/MECH%203100%20-%20Project%20Specifications.pdf" title="PDF viewer for elevator project drawings"></iframe>
+            <iframe id="pdfViewer" src="assets/finalelevator.pdf" title="PDF viewer for elevator project drawings"></iframe>
           </div>
           <div class="pdf-actions">
-            <p id="pdfTitle">Showing: Project specifications</p>
-            <a id="pdfOpen" href="assets/MECH%203100%20-%20Project%20Specifications.pdf" target="_blank" rel="noreferrer">Open PDF in new tab</a>
+            <p id="pdfTitle">Showing: Final assembly drawing</p>
+            <a id="pdfOpen" href="assets/finalelevator.pdf" target="_blank" rel="noreferrer">Open PDF in new tab</a>
           </div>
         </div>
       </div>
@@ -775,7 +772,7 @@
 
   <section>
     <div class="container footer-note">
-      This layout is designed so you can drop every referenced asset into an <strong>assets</strong> folder inside your project and have the page work without needing separate image conversions for the PDFs.
+      This version is set up for an <strong>index.html</strong> file and an <strong>assets</strong> folder that live in the same project folder, so every image, PDF, video, and model should load directly from <strong>assets/filename</strong>.
     </div>
   </section>
 
