@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4-Floor Arduino Elevator | Logan Dees</title>
+  <link rel="stylesheet" href="elevator.css" />
+</head>
+<body>
+  <header class="project-hero">
+    <div class="hero-overlay"></div>
+    <img
+      class="hero-bg portfolio-img"
+      src="../../assets/projects/elevator/elevator-hero-assembly.png"
+      alt="4-floor elevator project assembly drawing"
+      data-fallback-title="Hero image unavailable"
+      data-fallback-text="Add elevator-hero-assembly.png to assets/projects/elevator/"
+    />
+    <div class="hero-content container">
+      <p class="eyebrow">Mechanical Design • Embedded Control • Fabrication</p>
+      <h1>4-Floor Arduino Elevator</h1>
+      <p class="hero-text">
+        A fully custom elevator system I designed, built, and coded from start to finish in a few days.
+        The build uses an Arduino Mega, a NEMA 17 stepper-driven lead screw lift, floor call logic,
+        in-car controls, and a servo-driven sliding door with hold-open behavior.
+      </p>
+      <div class="hero-tags">
+        <span>Arduino Mega</span>
+        <span>NEMA 17 + Lead Screw</span>
+        <span>Servo Door</span>
+        <span>4 Floors</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container intro-grid">
+      <div class="intro-copy card">
+        <h2>Project Overview</h2>
+        <p>
+          This project was built to simulate a working four-floor elevator with realistic button-based control,
+          automatic floor-to-floor motion, and door behavior. Rather than just making a static model, I focused on
+          making the system behave like a real machine: floor requests are tracked, the lift travels to commanded
+          floors, the door opens on arrival, a hold-open input extends the door timing, and the car returns to the
+          home floor after inactivity.
+        </p>
+        <p>
+          The system combines CAD-designed structure, a vertical lift driven by a stepper motor and lead screw,
+          an Arduino-based control system, and an actuator-driven door. It also includes both external floor call
+          buttons and interior controls so the build feels like a complete elevator system instead of just a moving platform.
+        </p>
+      </div>
+
+      <aside class="card quick-specs">
+        <h2>What it does</h2>
+        <ul>
+          <li>Serves <strong>4 floors</strong> with floor call inputs</li>
+          <li>Uses a <strong>stepper motor + lead screw</strong> for vertical travel</li>
+          <li>Uses a <strong>servo-driven sliding door</strong> at each stop</li>
+          <li>Supports a <strong>door hold / obstruction input</strong></li>
+          <li>Returns to <strong>Floor 1</strong> when idle</li>
+          <li>Built around an <strong>Arduino Mega</strong> control system</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading">
+        <p class="eyebrow">System Breakdown</p>
+        <h2>Integrated engineering, not just documentation</h2>
+        <p>
+          Instead of dumping class files onto the page, this section pulls the most important visuals into the story of the build.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card card">
+          <div class="feature-media">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-assembly-overview.png" alt="CAD assembly overview of elevator project" data-fallback-title="Assembly image unavailable" data-fallback-text="Add elevator-assembly-overview.png to assets/projects/elevator/" />
+          </div>
+          <div class="feature-copy">
+            <h3>Full system layout</h3>
+            <p>
+              The assembly view shows the overall structure of the project: the multi-floor tower, elevator car,
+              support structure, and lower drive area. This is the cleanest way to introduce the whole design before
+              getting into the electrical and control details.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-card card reverse">
+          <div class="feature-media">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-lift-detail.png" alt="Elevator lift CAD detail" data-fallback-title="Lift detail unavailable" data-fallback-text="Add elevator-lift-detail.png to assets/projects/elevator/" />
+          </div>
+          <div class="feature-copy">
+            <h3>Lift mechanism</h3>
+            <p>
+              The car rides on a screw-driven lift system powered by a NEMA 17 stepper motor. That setup gave me
+              precise floor-to-floor positioning and made the motion easier to control in code than a looser drive approach.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-card card">
+          <div class="feature-media">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-electrical-schematic.png" alt="Electrical schematic for elevator project" data-fallback-title="Electrical schematic unavailable" data-fallback-text="Add elevator-electrical-schematic.png to assets/projects/elevator/" />
+          </div>
+          <div class="feature-copy">
+            <h3>Electrical control</h3>
+            <p>
+              The electrical side ties together the Arduino Mega, motor driver hardware, floor inputs, and the door control system.
+              The project needed reliable signal flow between the buttons, the controller, and the actuators so the machine responded
+              correctly every time a floor was requested.
+            </p>
+          </div>
+        </article>
+
+        <article class="feature-card card reverse">
+          <div class="feature-media split-media">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-control-block.png" alt="Control block diagram for elevator project" data-fallback-title="Control diagram unavailable" data-fallback-text="Add elevator-control-block.png to assets/projects/elevator/" />
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-flowchart.png" alt="Programming flowchart for elevator project" data-fallback-title="Flowchart unavailable" data-fallback-text="Add elevator-flowchart.png to assets/projects/elevator/" />
+          </div>
+          <div class="feature-copy">
+            <h3>Logic and code behavior</h3>
+            <p>
+              The software side is what made the build feel complete. The elevator waits for inputs, tracks requested floors,
+              moves to the correct location, opens the door on arrival, responds to a hold-door input, and then returns home
+              after the system is inactive.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section dark-section">
+      <div class="container">
+        <div class="section-heading light">
+          <p class="eyebrow">Final Build</p>
+          <h2>Finished hardware</h2>
+          <p>
+            These are the images that matter most on the portfolio page because they show the final machine, not just the paperwork.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-card card-dark">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-final-angle-1.jpg" alt="Final elevator project side view" data-fallback-title="Final build image unavailable" data-fallback-text="Add elevator-final-angle-1.jpg to assets/projects/elevator/" />
+            <figcaption>Overall view of the final 4-floor elevator build.</figcaption>
+          </figure>
+
+          <figure class="gallery-card card-dark">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-final-angle-2.jpg" alt="Final elevator project front view" data-fallback-title="Final build image unavailable" data-fallback-text="Add elevator-final-angle-2.jpg to assets/projects/elevator/" />
+            <figcaption>Front-facing look at the frame, tower, and car position.</figcaption>
+          </figure>
+
+          <figure class="gallery-card card-dark">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-door-closeup.jpg" alt="Close-up of elevator door mechanism" data-fallback-title="Door image unavailable" data-fallback-text="Add elevator-door-closeup.jpg to assets/projects/elevator/" />
+            <figcaption>Close-up of the sliding door section and gear area.</figcaption>
+          </figure>
+
+          <figure class="gallery-card card-dark">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-wiring-closeup.jpg" alt="Close-up of elevator wiring and electronics" data-fallback-title="Wiring image unavailable" data-fallback-text="Add elevator-wiring-closeup.jpg to assets/projects/elevator/" />
+            <figcaption>Electronics and wiring used to drive the control system.</figcaption>
+          </figure>
+
+          <figure class="gallery-card card-dark tall-card">
+            <img class="portfolio-img" src="../../assets/projects/elevator/elevator-lead-screw-photo.jpg" alt="Lead screw and lower drive photo" data-fallback-title="Lead screw image unavailable" data-fallback-text="Add elevator-lead-screw-photo.jpg to assets/projects/elevator/" />
+            <figcaption>Lead screw drive section responsible for lift travel.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading">
+        <p class="eyebrow">What I focused on</p>
+        <h2>Why this belongs in the portfolio</h2>
+      </div>
+      <div class="bullet-cards">
+        <div class="card mini-card">
+          <h3>Mechanical design</h3>
+          <p>I translated the concept into a physical structure that could actually guide the car, support the tower, and house the drive system.</p>
+        </div>
+        <div class="card mini-card">
+          <h3>Embedded control</h3>
+          <p>I built the logic around floor requests, idle return behavior, and timed door operation so the system behaved like a real elevator instead of a simple demo rig.</p>
+        </div>
+        <div class="card mini-card">
+          <h3>Rapid execution</h3>
+          <p>This was not a long passive concept piece. It was a fast, hands-on build where I designed, fabricated, assembled, and coded the entire system in a compressed timeline.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="elevator.js"></script>
+</body>
+</html>
