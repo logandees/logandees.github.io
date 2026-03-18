@@ -7,16 +7,15 @@
   <style>
     :root {
       --bg1: #16051f;
-      --bg2: #2a0a3a;
-      --panel: rgba(33, 10, 48, 0.88);
-      --panel2: rgba(56, 20, 78, 0.74);
-      --stroke: rgba(255, 255, 255, 0.10);
-      --pink: #ff69c8;
-      --pink2: #ff89d5;
-      --gold: #ffd95a;
+      --bg2: #2b0837;
+      --panel: rgba(40, 11, 56, 0.92);
+      --panel2: rgba(58, 20, 80, 0.85);
+      --stroke: rgba(255,255,255,0.10);
+      --pink: #ff67c7;
+      --pink2: #ff8fda;
+      --gold: #ffe05c;
       --text: #fff7fd;
-      --muted: #f0d8ef;
-      --shadow: rgba(0, 0, 0, 0.45);
+      --muted: #eeddee;
     }
 
     * {
@@ -31,110 +30,112 @@
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top center, rgba(110, 31, 135, 0.55), transparent 45%),
+        radial-gradient(circle at top center, rgba(130, 35, 160, 0.34), transparent 42%),
         linear-gradient(180deg, var(--bg2), var(--bg1));
     }
 
     body {
-      padding: 18px;
+      padding: 10px;
     }
 
     .shell {
       width: 100%;
       height: 100%;
-      border-radius: 26px;
+      border-radius: 20px;
       background:
-        radial-gradient(circle at top center, rgba(255, 105, 200, 0.13), transparent 38%),
-        linear-gradient(180deg, rgba(42,10,58,0.95), rgba(21,6,29,0.96));
+        radial-gradient(circle at top center, rgba(255, 105, 200, 0.10), transparent 36%),
+        linear-gradient(180deg, rgba(42,10,58,0.96), rgba(21,6,29,0.97));
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.04),
-        0 20px 60px rgba(0,0,0,0.35);
-      padding: 22px 22px 18px;
-      display: flex;
-      flex-direction: column;
+        inset 0 0 0 1px rgba(255,255,255,0.03),
+        0 12px 30px rgba(0,0,0,0.28);
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 12px;
       overflow: hidden;
     }
 
     .topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 12px;
-      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: start;
+      min-height: 0;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      padding: 7px 14px;
+      padding: 6px 13px;
       border-radius: 999px;
-      background: rgba(45, 11, 63, 0.95);
+      background: rgba(53, 14, 73, 0.95);
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--gold);
       font-weight: 900;
       letter-spacing: 2px;
-      font-size: 14px;
+      font-size: 11px;
       text-transform: uppercase;
-      margin-bottom: 10px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+      margin-bottom: 8px;
+      width: fit-content;
     }
 
     h1 {
       margin: 0 0 6px 0;
-      font-size: clamp(34px, 4vw, 56px);
-      line-height: 0.95;
       color: var(--pink);
-      text-shadow: 0 4px 0 rgba(0,0,0,0.55);
+      font-weight: 900;
+      line-height: 0.95;
+      font-size: clamp(28px, 4vw, 42px);
+      text-shadow: 0 3px 0 rgba(0,0,0,0.55);
     }
 
     .subtitle {
       margin: 0;
       max-width: 760px;
-      font-size: clamp(16px, 1.5vw, 28px);
-      line-height: 1.35;
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 800;
+      line-height: 1.25;
+      font-size: clamp(14px, 1.45vw, 20px);
     }
 
     .pager {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: auto auto;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      padding-top: 4px;
+      align-content: start;
+      justify-items: end;
     }
 
     .page-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 110px;
+      min-width: 118px;
       height: 48px;
       padding: 0 18px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.12);
-      background: linear-gradient(180deg, rgba(108,33,136,0.95), rgba(65,16,88,0.95));
+      background: linear-gradient(180deg, rgba(125,44,156,0.97), rgba(73,19,95,0.97));
       color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: 900;
       font-size: 18px;
       letter-spacing: 1px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.20);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
     }
 
     .page-btn {
       appearance: none;
       border: 0;
-      border-radius: 16px;
-      padding: 12px 18px;
+      border-radius: 14px;
+      min-width: 118px;
+      height: 44px;
+      padding: 0 16px;
       background: rgba(255,255,255,0.08);
-      color: white;
+      color: #ffffff;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
-      transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+      transition: background 0.12s ease, transform 0.12s ease, opacity 0.12s ease;
     }
 
     .page-btn:hover {
@@ -146,14 +147,14 @@
     }
 
     .page-btn[disabled] {
-      opacity: 0.45;
+      opacity: 0.4;
       cursor: default;
     }
 
     .pages {
       position: relative;
-      flex: 1 1 auto;
       min-height: 0;
+      overflow: hidden;
     }
 
     .page {
@@ -170,53 +171,61 @@
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      gap: 14px;
       height: 100%;
       min-height: 0;
     }
 
     .stack {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
       min-height: 0;
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(53,17,74,0.82), rgba(34,11,48,0.92));
+      background: linear-gradient(180deg, rgba(59,19,82,0.88), rgba(34,11,48,0.95));
       border: 1px solid var(--stroke);
-      border-radius: 22px;
-      padding: 16px 18px;
+      border-radius: 20px;
+      padding: 14px 16px;
+      overflow: auto;
+      min-height: 0;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.18) transparent;
     }
 
-    .card h2,
-    .card h3 {
-      margin: 0 0 8px 0;
-      color: var(--gold);
-      text-shadow: 0 2px 0 rgba(0,0,0,0.45);
+    .card::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .card::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
     }
 
     .card h2 {
-      font-size: clamp(22px, 2vw, 34px);
-    }
-
-    .card h3 {
-      font-size: clamp(18px, 1.4vw, 26px);
+      margin: 0 0 10px 0;
+      color: var(--gold);
+      text-shadow: 0 2px 0 rgba(0,0,0,0.45);
+      font-size: clamp(19px, 2vw, 28px);
+      line-height: 1.05;
     }
 
     .card p {
       margin: 0;
-      font-size: clamp(15px, 1.08vw, 19px);
-      line-height: 1.5;
+      font-size: clamp(13px, 1.03vw, 17px);
+      line-height: 1.42;
       color: var(--text);
+      font-weight: 700;
     }
 
     .card ul {
       margin: 10px 0 0 18px;
       padding: 0;
-      font-size: clamp(15px, 1.04vw, 18px);
-      line-height: 1.5;
+      font-size: clamp(13px, 1vw, 17px);
+      line-height: 1.42;
+      font-weight: 700;
     }
 
     .card li + li {
@@ -225,137 +234,123 @@
 
     .note {
       margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255, 184, 227, 0.08);
-      border: 1px solid rgba(255,255,255,0.10);
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
       color: #ffeaf8;
-      font-size: clamp(14px, 0.98vw, 17px);
-      line-height: 1.45;
+      font-size: clamp(12px, 0.95vw, 15px);
+      line-height: 1.4;
+      font-weight: 700;
     }
 
     .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       margin-top: 12px;
     }
 
     .chip {
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: linear-gradient(180deg, rgba(118,49,143,0.85), rgba(78,28,99,0.88));
+      background: linear-gradient(180deg, rgba(124,53,149,0.90), rgba(82,28,103,0.92));
       border: 1px solid rgba(255,255,255,0.12);
-      color: #fff2fb;
+      color: #fff4fc;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       white-space: nowrap;
     }
 
     .symbol-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
       margin-top: 10px;
     }
 
     .symbol-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.035));
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 14px;
+      border-radius: 16px;
+      padding: 12px;
       text-align: center;
-      min-height: 150px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 8px;
+      display: grid;
+      gap: 6px;
+      align-content: center;
+      min-height: 120px;
     }
 
     .symbol-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 900;
       color: white;
+      line-height: 1.05;
     }
 
     .symbol-text {
-      font-size: 14px;
-      line-height: 1.45;
-      color: #f4dff2;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #f3e0f2;
       font-weight: 700;
     }
 
     .feature-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      gap: 10px;
     }
 
     .feature-item {
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      padding: 14px 15px;
+      border-radius: 16px;
+      padding: 12px 14px;
     }
 
     .feature-item .kicker {
       color: var(--pink2);
       font-weight: 900;
-      font-size: 15px;
+      font-size: 14px;
       margin-bottom: 4px;
     }
 
     .feature-item .body {
       color: white;
-      font-size: 15px;
-      line-height: 1.45;
-      font-weight: 700;
-    }
-
-    .footer {
-      flex: 0 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 12px;
-      gap: 12px;
-    }
-
-    .footer-note {
       font-size: 13px;
-      color: #f5d8f0;
+      line-height: 1.38;
       font-weight: 700;
-      opacity: 0.92;
     }
 
-    .brand-tag {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 12px;
-      font-weight: 800;
-      color: #ffe0f4;
-    }
+    @media (max-width: 900px) {
+      body {
+        padding: 6px;
+      }
 
-    @media (max-width: 980px) {
+      .shell {
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .pager {
+        grid-template-columns: repeat(3, auto);
+        justify-content: start;
+        justify-items: start;
+      }
+
       .grid-2 {
         grid-template-columns: 1fr;
-        overflow: auto;
-        padding-right: 4px;
+      }
+
+      .stack {
+        grid-template-rows: auto auto;
       }
 
       .symbol-grid {
         grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .pager {
-        justify-content: flex-start;
       }
     }
   </style>
@@ -367,7 +362,7 @@
         <div class="eyebrow">Game Info</div>
         <h1>Short n' Sweet Slots</h1>
         <p class="subtitle">
-          Match sweet symbols across 20 fixed lines, trigger free games with Scatters,
+          Match sweet symbols across 10 fixed lines, trigger free games with Scatters,
           and land oversized linked symbols for bigger-feature excitement.
         </p>
       </div>
@@ -380,7 +375,6 @@
     </div>
 
     <div class="pages">
-      <!-- PAGE 1 -->
       <section class="page active" id="page1">
         <div class="grid-2">
           <div class="stack">
@@ -391,6 +385,7 @@
               </p>
               <ul>
                 <li>All wins pay from left to right on active fixed paylines.</li>
+                <li>The game uses 10 fixed lines.</li>
                 <li>Only the highest win on each payline is awarded.</li>
                 <li>Win amounts are based on your current total bet.</li>
                 <li>Wilds substitute for regular paying symbols unless otherwise noted.</li>
@@ -398,12 +393,12 @@
               </ul>
 
               <div class="note">
-                Free Games are triggered by Scatters, while Lock It In features come from linked
-                symbol activity and oversized symbol behavior.
+                Free Games are triggered by Scatter symbols, while Lock It In style action
+                comes from linked and oversized symbol behavior.
               </div>
 
               <div class="chips">
-                <div class="chip">20 Fixed Lines</div>
+                <div class="chip">10 Fixed Lines</div>
                 <div class="chip">Left To Right Pays</div>
                 <div class="chip">Wild Substitutes</div>
                 <div class="chip">Scatter Free Games</div>
@@ -417,21 +412,21 @@
                 <div class="symbol-card">
                   <div class="symbol-title">Wild</div>
                   <div class="symbol-text">
-                    Substitutes for regular paying symbols to help complete line wins.
+                    Substitutes for regular pay symbols to help complete line wins.
                   </div>
                 </div>
 
                 <div class="symbol-card">
                   <div class="symbol-title">Scatter</div>
                   <div class="symbol-text">
-                    Three or more Scatters award free games. Additional Scatters may extend the feature.
+                    Landing 3 or more Scatters awards free games.
                   </div>
                 </div>
 
                 <div class="symbol-card">
                   <div class="symbol-title">Lock It In</div>
                   <div class="symbol-text">
-                    Linked and oversized symbol shapes can create stronger reel coverage and feature-style rewards.
+                    Linked and oversized symbol shapes can create stronger coverage and feature-style rewards.
                   </div>
                 </div>
               </div>
@@ -445,16 +440,16 @@
                 <div class="feature-item">
                   <div class="kicker">Free Games Feature</div>
                   <div class="body">
-                    Land 3 or more Scatter symbols to trigger free games. Extra Scatters during the
-                    feature may award additional spins depending on the result.
+                    Land 3 or more Scatter symbols to trigger free games. Extra Scatters during
+                    the feature may award additional spins depending on the result.
                   </div>
                 </div>
 
                 <div class="feature-item">
                   <div class="kicker">Wild Symbol</div>
                   <div class="body">
-                    The Wild symbol substitutes for regular pay symbols to improve your chances of
-                    completing winning combinations on paylines.
+                    The Wild symbol substitutes for regular pay symbols to improve your chances
+                    of completing winning combinations on paylines.
                   </div>
                 </div>
 
@@ -462,7 +457,7 @@
                   <div class="kicker">Lock It In Bonus</div>
                   <div class="body">
                     Oversized linked symbol shapes may appear and can merge into larger blocks.
-                    These can create stronger line coverage and also feed special bonus-style outcomes.
+                    These can create stronger line coverage and special feature outcomes.
                   </div>
                 </div>
 
@@ -470,7 +465,7 @@
                   <div class="kicker">Jackpot-Style Awards</div>
                   <div class="body">
                     Certain Lock It In outcomes can award Mini, Minor, Major, or Grand-style prizes
-                    based on the achieved block and result tier.
+                    depending on the completed block and result tier.
                   </div>
                 </div>
               </div>
@@ -479,17 +474,16 @@
             <div class="card">
               <h2>Quick Notes</h2>
               <ul>
-                <li>The game uses fixed paylines, so every spin evaluates the full line set.</li>
-                <li>Feature outcomes vary by symbol placement and final reel result.</li>
-                <li>Some special outcomes are only available when bonus conditions are met.</li>
-                <li>Use the PAYTABLE button on the main game screen for payout values.</li>
+                <li>The game uses fixed paylines, so each paid spin checks the full line set.</li>
+                <li>Scatter awards do not need to complete a normal payline pattern.</li>
+                <li>Feature results vary depending on symbol placement and final reel outcomes.</li>
+                <li>Use the PAYTABLE button on the main game for exact payout values.</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- PAGE 2 -->
       <section class="page" id="page2">
         <div class="grid-2">
           <div class="stack">
@@ -503,7 +497,7 @@
               <ul>
                 <li>Triggered by landing 3 or more Scatters.</li>
                 <li>Extra Scatters during the feature may award more free games.</li>
-                <li>Free Games can create strong combo potential across the fixed lines.</li>
+                <li>Free Games can create strong combo potential across the 10 fixed lines.</li>
                 <li>Total feature winnings are added together before the feature ends.</li>
               </ul>
             </div>
@@ -517,9 +511,9 @@
               </p>
               <ul>
                 <li>Linked shapes can expand into larger blocks.</li>
-                <li>Larger blocks can improve line coverage.</li>
+                <li>Larger blocks can improve payline coverage.</li>
                 <li>Some results may lead to bonus-style prize awards.</li>
-                <li>Feature presentation and final results depend on the completed symbol pattern.</li>
+                <li>Final feature results depend on the completed symbol pattern.</li>
               </ul>
             </div>
           </div>
@@ -528,7 +522,7 @@
             <div class="card">
               <h2>General Rules</h2>
               <ul>
-                <li>Wins are evaluated on fixed paylines only.</li>
+                <li>Wins are evaluated on 10 fixed paylines only.</li>
                 <li>Only the highest win per payline is paid.</li>
                 <li>Scatter awards do not need to land on a payline to trigger features.</li>
                 <li>Wild substitutes do not replace Scatter symbols.</li>
@@ -536,8 +530,8 @@
               </ul>
 
               <div class="note">
-                For exact symbol payouts and values, use the separate PAYTABLE button on the main cabinet.
-                This Game Info section is only for rules, features, and how the game works.
+                For exact symbol payouts and values, use the separate PAYTABLE button on the main
+                cabinet. This Game Info section is only for rules, features, and how the game works.
               </div>
             </div>
 
@@ -546,18 +540,13 @@
               <ul>
                 <li>Changing denomination changes the value scale of your wager and wins.</li>
                 <li>Watching for Scatters is the clearest sign that a free games trigger may be near.</li>
-                <li>Oversized linked symbols are especially important during Lock It In-style outcomes.</li>
-                <li>Use Game Info for rules and the Paytable for exact payouts.</li>
+                <li>Oversized linked symbols are especially important during Lock It In outcomes.</li>
+                <li>Use Game Info for rules and feature explanation, and Paytable for exact values.</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
-    </div>
-
-    <div class="footer">
-      <div class="footer-note">Use the buttons inside this page to switch between Game Info pages.</div>
-      <div class="brand-tag">Short n' Sweet Slots</div>
     </div>
   </div>
 
