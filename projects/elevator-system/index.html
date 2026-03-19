@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modular Elevator Project</title>
-  <meta name="description" content="Portfolio page for a modular four-floor lead-screw elevator project with interactive 3D model, animation video, gallery, and technical drawings." />
+  <title>Elevator Design Project</title>
+  <meta name="description" content="Portfolio page for a four-floor elevator design project with a GLB model, build videos, drawings, electrical schematic, and real prototype photos." />
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: rgba(15, 23, 42, 0.78);
+      --bg: #0a1020;
+      --panel: rgba(15, 23, 42, 0.82);
       --panel-2: rgba(30, 41, 59, 0.72);
-      --line: rgba(148, 163, 184, 0.18);
-      --text: #e5eefc;
-      --muted: #b6c4dd;
-      --accent: #ff4d4d;
+      --line: rgba(148, 163, 184, 0.16);
+      --text: #eaf1ff;
+      --muted: #b8c5dc;
+      --accent: #ff5555;
       --accent-2: #60a5fa;
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
       --radius: 24px;
@@ -28,9 +28,9 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(96,165,250,.18), transparent 30%),
-        radial-gradient(circle at top right, rgba(255,77,77,.16), transparent 28%),
-        linear-gradient(180deg, #09101d 0%, #0b1020 42%, #0c1428 100%);
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 85, 85, 0.16), transparent 26%),
+        linear-gradient(180deg, #08101b 0%, #0b1020 42%, #0d1528 100%);
       line-height: 1.6;
     }
 
@@ -44,12 +44,12 @@
       gap: 10px;
       align-items: center;
       padding: 8px 14px;
-      background: rgba(96,165,250,.12);
+      background: rgba(96, 165, 250, 0.12);
       color: #d7e9ff;
-      border: 1px solid rgba(96,165,250,.2);
+      border: 1px solid rgba(96, 165, 250, 0.2);
       border-radius: 999px;
-      font-size: .92rem;
-      letter-spacing: .02em;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
     }
 
     .hero {
@@ -59,13 +59,14 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.08fr .92fr;
+      grid-template-columns: 1.06fr 0.94fr;
       gap: 26px;
       align-items: stretch;
     }
 
-    .card {
-      background: linear-gradient(180deg, rgba(15,23,42,.9), rgba(15,23,42,.75));
+    .card,
+    .panel {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.76));
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -73,12 +74,14 @@
       backdrop-filter: blur(12px);
     }
 
+    .panel { padding: 28px; overflow: visible; }
+
     .hero-copy {
       padding: 34px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      min-height: 560px;
+      min-height: 610px;
     }
 
     h1, h2, h3 {
@@ -88,7 +91,7 @@
     }
 
     h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-size: clamp(2.6rem, 6vw, 5rem);
       margin-top: 18px;
       max-width: 11ch;
     }
@@ -97,7 +100,7 @@
       margin: 18px 0 0;
       color: var(--muted);
       font-size: 1.08rem;
-      max-width: 62ch;
+      max-width: 64ch;
     }
 
     .hero-actions {
@@ -116,18 +119,20 @@
       border-radius: 14px;
       font-weight: 700;
       text-decoration: none;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      border: 1px solid rgba(255,255,255,.08);
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .btn:hover { transform: translateY(-2px); }
+
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #ff6b6b);
+      background: linear-gradient(135deg, var(--accent), #ff7a7a);
       color: white;
-      border-color: rgba(255,255,255,.12);
+      border-color: rgba(255, 255, 255, 0.14);
     }
+
     .btn-secondary {
-      background: rgba(255,255,255,.04);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text);
     }
 
@@ -140,8 +145,8 @@
 
     .stat {
       padding: 16px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 18px;
     }
 
@@ -151,12 +156,12 @@
       margin-bottom: 4px;
     }
 
-    .stat span { color: var(--muted); font-size: .92rem; }
+    .stat span { color: var(--muted); font-size: 0.92rem; }
 
     .hero-media {
       display: grid;
       grid-template-rows: 1fr auto;
-      min-height: 560px;
+      min-height: 610px;
     }
 
     .hero-media img {
@@ -169,7 +174,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: rgba(255,255,255,.05);
+      background: rgba(255, 255, 255, 0.04);
       border-top: 1px solid var(--line);
     }
 
@@ -191,336 +196,318 @@
     .section-title p {
       margin: 8px 0 0;
       color: var(--muted);
-      max-width: 66ch;
-    }
-
-    .panel {
-      padding: 28px;
-      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.68));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      max-width: 70ch;
     }
 
     .overview-grid,
     .showcase-grid,
     .docs-grid,
-    .gallery-grid {
+    .gallery-grid,
+    .system-grid,
+    .video-grid,
+    .extra-grid {
       display: grid;
       gap: 20px;
     }
 
-    .overview-grid {
-      grid-template-columns: 1.05fr .95fr;
+    .overview-grid,
+    .showcase-grid,
+    .extra-grid {
+      grid-template-columns: 1.05fr 0.95fr;
       align-items: start;
     }
 
-    .feature-list {
-      display: grid;
+    .feature-list,
+    .system-grid,
+    .video-grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-top: 20px;
     }
 
-    .feature {
-      padding: 18px;
+    .feature,
+    .system-card {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.03);
     }
 
-    .feature h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .feature p { margin: 0; color: var(--muted); font-size: .97rem; }
+    .feature p,
+    .system-card p,
+    .spec-list,
+    .bullet-list,
+    .caption,
+    .footer-note,
+    .viewer-tip { color: var(--muted); }
 
-    .spec-list {
-      margin: 0;
-      padding: 0;
+    .feature h3,
+    .system-card h3 {
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+    }
+
+    .spec-list,
+    .bullet-list {
       list-style: none;
+      padding: 0;
+      margin: 0;
       display: grid;
       gap: 14px;
     }
 
-    .spec-list li {
+    .spec-list li,
+    .bullet-list li {
       padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 18px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
-      color: var(--muted);
     }
 
-    .spec-list strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 3px;
-      font-size: .98rem;
-    }
+    .spec-list strong,
+    .bullet-list strong { display: block; color: var(--text); margin-bottom: 4px; }
 
-    .showcase-grid {
-      grid-template-columns: 1.1fr .9fr;
-      align-items: stretch;
-    }
-
-    .viewer-shell {
-      min-height: 700px;
-      position: relative;
+    .viewer-shell model-viewer,
+    model-viewer {
+      width: 100%;
+      height: 650px;
+      min-height: 650px;
+      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      border-radius: 18px;
       overflow: hidden;
     }
 
-    model-viewer {
-      width: 100%;
-      height: 700px;
-      background: radial-gradient(circle at top, rgba(96,165,250,.16), rgba(15,23,42,0) 38%), linear-gradient(180deg, #0d152b 0%, #0a1223 100%);
-    }
-
-    .viewer-tip {
-      position: absolute;
-      left: 20px;
-      bottom: 20px;
-      background: rgba(15, 23, 42, .82);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: var(--muted);
-      max-width: 320px;
-      font-size: .95rem;
-      pointer-events: none;
-    }
-
-    .showcase-side {
+    .showcase-side,
+    .stack {
       display: grid;
-      grid-template-rows: auto 1fr;
       gap: 20px;
     }
 
-    .video-card video {
+    .video-card video,
+    .media-card img,
+    .media-card video {
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.06);
-      aspect-ratio: 16/10;
-      object-fit: cover;
-      background: #050a14;
+      border: 1px solid rgba(255,255,255,0.06);
+      width: 100%;
+      background: rgba(0,0,0,0.18);
+    }
+
+    .video-grid .video-card {
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(15,23,42,.72));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
     }
 
     .caption {
-      color: var(--muted);
-      margin-top: 12px;
-      font-size: .96rem;
+      margin: 12px 0 0;
+      font-size: 0.95rem;
     }
-
-    .bullet-list {
-      display: grid;
-      gap: 14px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .bullet-list li {
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.06);
-      color: var(--muted);
-    }
-
-    .bullet-list strong { color: var(--text); }
 
     .gallery-grid {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
 
     .gallery-item {
       position: relative;
-      overflow: hidden;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.03);
-      cursor: pointer;
-      min-height: 240px;
+      display: block;
       padding: 0;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96,165,250,0.45);
     }
 
     .gallery-item img {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 4 / 3;
       object-fit: cover;
-      transition: transform .35s ease;
     }
-
-    .gallery-item:hover img { transform: scale(1.03); }
 
     .gallery-item span {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      background: rgba(7, 12, 24, .76);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: .84rem;
-      color: #e8eefc;
+      display: block;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
     }
 
-    .docs-grid {
-      grid-template-columns: 340px 1fr;
-      align-items: stretch;
-    }
+    .docs-grid { grid-template-columns: 360px 1fr; align-items: start; }
 
     .doc-list {
       display: grid;
       gap: 12px;
-      align-content: start;
+      position: sticky;
+      top: 24px;
     }
 
     .doc-button {
       width: 100%;
       text-align: left;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
       color: var(--text);
-      border-radius: 16px;
-      padding: 14px 16px;
       cursor: pointer;
-      transition: background .18s ease, border-color .18s ease, transform .18s ease;
+      transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
     }
 
     .doc-button:hover,
     .doc-button.active {
-      background: rgba(96,165,250,.12);
-      border-color: rgba(96,165,250,.28);
+      border-color: rgba(96,165,250,0.44);
+      background: rgba(96,165,250,0.1);
       transform: translateY(-1px);
     }
 
     .doc-button strong {
       display: block;
       margin-bottom: 3px;
-      font-size: .96rem;
     }
 
-    .doc-button small { color: var(--muted); }
-
-    .pdf-frame {
-      min-height: 760px;
-      width: 100%;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 20px;
-      background: #0a1020;
-      overflow: hidden;
-      position: relative;
+    .doc-button small {
+      color: var(--muted);
+      display: block;
+      line-height: 1.45;
     }
 
     .pdf-frame iframe {
       width: 100%;
-      height: 760px;
+      height: 920px;
       border: 0;
+      border-radius: 18px;
       background: white;
     }
 
     .pdf-actions {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 16px;
+      align-items: center;
       margin-top: 14px;
       flex-wrap: wrap;
-      align-items: center;
     }
 
     .pdf-actions p {
       margin: 0;
       color: var(--muted);
-      font-size: .94rem;
     }
 
     .pdf-actions a {
       text-decoration: none;
-      color: white;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.09);
-      padding: 10px 14px;
-      border-radius: 12px;
       font-weight: 700;
+      color: #dbeafe;
+    }
+
+    .media-card {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
     }
 
     .footer-note {
-      color: var(--muted);
+      padding: 22px 26px;
       text-align: center;
-      font-size: .96rem;
-      padding-bottom: 60px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
     }
 
     dialog {
-      width: min(1100px, calc(100vw - 32px));
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 28px;
+      width: min(1100px, calc(100vw - 24px));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      background: #0b1020;
+      color: var(--text);
       padding: 0;
-      background: #09101d;
-      color: white;
-      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+      box-shadow: var(--shadow);
     }
 
-    dialog::backdrop { background: rgba(2,6,16,.78); }
+    dialog::backdrop { background: rgba(0,0,0,0.72); }
 
     .lightbox-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      padding: 18px 22px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-
-    .lightbox-body {
-      padding: 20px;
-      background: #040912;
-    }
-
-    .lightbox-body img {
-      width: 100%;
-      max-height: 78vh;
-      object-fit: contain;
-      border-radius: 18px;
-      background: #040912;
+      gap: 18px;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
     .close-btn {
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: white;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px;
       padding: 10px 14px;
-      font-weight: 700;
       cursor: pointer;
+      font-weight: 700;
+    }
+
+    .lightbox-body { padding: 18px; }
+
+    .lightbox-body img {
+      width: 100%;
+      max-height: calc(100vh - 160px);
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.02);
     }
 
     @media (max-width: 1100px) {
       .hero-grid,
       .overview-grid,
       .showcase-grid,
-      .docs-grid { grid-template-columns: 1fr; }
+      .extra-grid,
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-list {
+        position: static;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       .gallery-grid { grid-template-columns: repeat(3, 1fr); }
-      .hero-copy,
-      .hero-media { min-height: unset; }
-      .viewer-shell,
+      .viewer-shell model-viewer,
       model-viewer { min-height: 580px; height: 580px; }
     }
 
     @media (max-width: 760px) {
       .stats,
-      .feature-list { grid-template-columns: repeat(2, 1fr); }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .panel, .hero-copy { padding: 22px; }
+      .feature-list,
+      .system-grid,
+      .video-grid,
+      .gallery-grid,
+      .doc-list { grid-template-columns: repeat(2, 1fr); }
+      .panel,
+      .hero-copy,
+      .video-grid .video-card,
+      .media-card { padding: 22px; }
       h1 { max-width: none; }
-      .viewer-shell,
-      model-viewer { min-height: 460px; height: 460px; }
-      .pdf-frame iframe { height: 560px; }
+      .pdf-frame iframe { height: 620px; }
+      .viewer-shell model-viewer,
+      model-viewer { min-height: 470px; height: 470px; }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 560px) {
       .stats,
       .feature-list,
-      .gallery-grid { grid-template-columns: 1fr; }
+      .system-grid,
+      .video-grid,
+      .gallery-grid,
+      .doc-list,
+      .hero-strip { grid-template-columns: 1fr; }
       .hero-actions { flex-direction: column; }
       .btn { width: 100%; }
-      .hero-strip { grid-template-columns: 1fr; }
+      .pdf-actions { align-items: flex-start; }
     }
   </style>
 </head>
@@ -528,28 +515,28 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="card hero-copy">
-        <span class="eyebrow">MECH 3100 • Automated Systems • Modular CAD + Working Prototype</span>
-        <h1>Four-Floor Modular Elevator</h1>
+        <span class="eyebrow">MECH 3100 • Principles of Automatic Control • Spring 2025</span>
+        <h1>Elevator Design Project</h1>
         <p class="lead">
-          A lead-screw driven small-scale elevator designed around a modular frame, expandable floor spacing, and a working carriage and door system. This page combines the real build photos, exploded animation, interactive 3D model, and technical drawings into one project showcase.
+          A four-floor elevator prototype built around a 3D-printed structure, an Arduino MEGA control system, a NEMA 17 stepper-driven lift, and a servo-actuated sliding door. This page combines the finished build, interactive CAD model, exploded animation, real operation footage, schematic, and mechanical drawings in one place.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#interactive-model">Open interactive model</a>
           <a class="btn btn-secondary" href="#drawings">View drawings and PDFs</a>
         </div>
         <div class="stats">
-          <div class="stat"><strong>4</strong><span>Floors in the working design</span></div>
-          <div class="stat"><strong>TR8x4</strong><span>Lead screw drive concept</span></div>
-          <div class="stat"><strong>Modular</strong><span>Frame allows future expansion</span></div>
-          <div class="stat"><strong>3D + Video</strong><span>Interactive model and exploded animation</span></div>
+          <div class="stat"><strong>4 Floors</strong><span>Exterior and interior floor calls</span></div>
+          <div class="stat"><strong>Arduino MEGA</strong><span>Main control platform for the system</span></div>
+          <div class="stat"><strong>NEMA 17</strong><span>Stepper-driven vertical lift motion</span></div>
+          <div class="stat"><strong>Servo Door</strong><span>Sliding door with hold-open behavior</span></div>
         </div>
       </div>
       <div class="card hero-media">
         <img src="assets/IMG_4552.jpeg" alt="Front view of the completed elevator prototype" />
         <div class="hero-strip">
-          <img src="assets/IMG_4549.jpeg" alt="Top angled view of elevator prototype" />
-          <img src="assets/IMG_4550.jpeg" alt="Side angled view of elevator prototype" />
-          <img src="assets/IMG_4553.jpeg" alt="Electronics and controller setup for the elevator prototype" />
+          <img src="assets/IMG_6273.JPG" alt="Clean front view of the final elevator build" />
+          <img src="assets/IMG_6276.JPG" alt="Top electronics view of the elevator build" />
+          <img src="assets/IMG_6277.JPG" alt="Elevator carriage and gear view" />
         </div>
       </div>
     </div>
@@ -562,26 +549,26 @@
           <div>
             <h2>Project overview</h2>
             <p>
-              This elevator was built as a working mechanical and controls project, but the design was also set up to be extendable. The frame can be lengthened with a longer lead screw and additional side supports so more floors can be added without redesigning the whole structure.
+              The project goal was to build a working four-floor elevator that could be called from each floor, accept interior floor requests, open and close its door automatically, keep the door open when the hold button is pressed, and return to Floor 1 when idle. The final build used a stepper-driven lift, a servo-powered door system, and a mostly 3D-printed structure.
             </p>
           </div>
         </div>
         <div class="feature-list">
           <article class="feature">
-            <h3>Modular frame design</h3>
-            <p>Side supports, rail sections, and stacked floor spacing make the system easier to scale upward in future revisions.</p>
+            <h3>Control logic</h3>
+            <p>The Arduino MEGA stores floor requests, moves the car to requested floors, opens the door at stops, and sends the car back to the ground floor after inactivity.</p>
           </article>
           <article class="feature">
-            <h3>Lead-screw vertical motion</h3>
-            <p>The carriage is driven vertically through a screw-based lift mechanism suited to controlled floor-to-floor movement.</p>
+            <h3>Mechanical system</h3>
+            <p>The elevator car travels vertically on a lead-screw lift system, while the door mechanism uses servo-driven gears to create sliding motion at each stop.</p>
           </article>
           <article class="feature">
-            <h3>Integrated door concept</h3>
-            <p>The project includes a door system and servo gear components that visually communicate the full elevator behavior, not just lift travel.</p>
+            <h3>Modular construction</h3>
+            <p>The design separates the base, rails, floors, roof, carriage, and door components into distinct modeled parts, which makes the assembly easier to document and revise.</p>
           </article>
           <article class="feature">
-            <h3>Physical + digital documentation</h3>
-            <p>Prototype photos, CAD drawings, exploded views, and an interactive GLB model present both the final result and the engineering process behind it.</p>
+            <h3>Documentation package</h3>
+            <p>This page keeps the CAD model, exploded view, prototype photos, schematic image, demo video, and part drawings together so the project reads like a full engineering showcase.</p>
           </article>
         </div>
       </div>
@@ -590,16 +577,45 @@
         <div class="section-title">
           <div>
             <h2>Design highlights</h2>
-            <p>The page is arranged to show the final working build, the modular CAD work, and the technical drawings all in one place.</p>
+            <p>The writeup and drawings make it clear that this was built as both a working prototype and a documented controls project.</p>
           </div>
         </div>
         <ul class="spec-list">
-          <li><strong>Four-floor layout</strong>Built around a compact multi-floor elevator arrangement suited for a classroom prototype and demonstration model.</li>
-          <li><strong>Expandable concept</strong>The structure is described as modular so the frame could be lengthened with a longer lead screw and more supports for added floors later.</li>
-          <li><strong>Mechanical detail</strong>Separate part drawings for rails, base, floors, roof, motor, and gear-driven door parts help show the full assembly process.</li>
-          <li><strong>Interactive presentation</strong>The embedded GLB viewer, exploded animation video, build gallery, and PDF viewer make the project easy to explore directly on the site.</li>
-          <li><strong>Portfolio-ready layout</strong>Everything now points to a local assets folder that sits beside this index file, making it much easier to deploy cleanly.</li>
+          <li><strong>Four-floor call system</strong>Each floor has a call input, and the top control area represents the interior floor controls.</li>
+          <li><strong>Automatic door cycle</strong>The door opens at floor arrival, stays open for the required time, and remains open while the hold input is active.</li>
+          <li><strong>Nearest-stop behavior</strong>The motion logic prioritizes requested stops based on the elevator's current position and direction of travel.</li>
+          <li><strong>Return-to-home behavior</strong>When the system is not in use, the elevator returns to Floor 1 for the next request.</li>
+          <li><strong>Future improvement path</strong>Possible next steps include adding the planned buzzer and LED warning behavior, strengthening the frame, and refining the door system.</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>System behavior</h2>
+          <p>These were the main behaviors and design requirements carried through the final project.</p>
+        </div>
+      </div>
+      <div class="system-grid">
+        <div class="system-card">
+          <h3>Floor requests</h3>
+          <p>Exterior call buttons and interior floor buttons send requests to the controller so the elevator can travel to the selected floors.</p>
+        </div>
+        <div class="system-card">
+          <h3>Door hold function</h3>
+          <p>A dedicated hold button simulates an obstruction response by keeping the door open while the input remains active.</p>
+        </div>
+        <div class="system-card">
+          <h3>Step-by-step positioning</h3>
+          <p>The stepper system uses measured floor positions so the car can stop repeatedly at each floor location rather than just running continuously.</p>
+        </div>
+        <div class="system-card">
+          <h3>Physical demonstration</h3>
+          <p>The final build favors reliable motion and visible operation over speed, making it a better classroom demonstration system.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -610,12 +626,12 @@
         <div class="section-title">
           <div>
             <h2>Interactive 3D model</h2>
-            <p>Drag to rotate, scroll to zoom, and inspect the CAD model from any angle.</p>
+            <p>Drag to rotate, zoom in on the lift, and inspect the modeled assembly from any angle.</p>
           </div>
         </div>
         <model-viewer
           src="assets/finalelevator.glb"
-          alt="Interactive 3D model of the modular elevator"
+          alt="Interactive 3D model of the elevator design project"
           camera-controls
           touch-action="pan-y"
           interaction-prompt="auto"
@@ -624,41 +640,78 @@
           ar
           auto-rotate
           auto-rotate-delay="3000"
-          camera-orbit="35deg 75deg 125%"
+          camera-orbit="38deg 76deg 130%"
           field-of-view="28deg"
           environment-image="neutral"
           poster="assets/IMG_4552.jpeg">
         </model-viewer>
-        <div class="viewer-tip">Best viewed on desktop. Drag to orbit, right-click or two-finger drag to pan, and use your mouse wheel or pinch to zoom in on the modular frame, carriage, and floor structure.</div>
+        <div class="viewer-tip">Use the model with the drawings below to compare the full assembly to the individual part files for the base, floors, rails, lift, roof, gears, and motor.</div>
       </div>
 
       <div class="showcase-side">
-        <div class="panel video-card">
+        <div class="panel">
           <div class="section-title">
             <div>
-              <h2>Exploded animation</h2>
-              <p>The embedded video gives a quick visual breakdown of how the elevator assembly is organized.</p>
+              <h2>Project summary</h2>
+              <p>This layout focuses on the final working version and the engineering documentation behind it.</p>
+            </div>
+          </div>
+          <ul class="bullet-list">
+            <li><strong>Final build first</strong>The opening images and gallery now highlight the completed working prototype instead of the earlier prototype stage.</li>
+            <li><strong>Controls + mechanics together</strong>The page pairs the code-driven behavior with the physical parts so the project reads clearly as a controls and mechanical design build.</li>
+            <li><strong>Portfolio-friendly structure</strong>All media points to a local <code>assets</code> folder beside <code>index.html</code>, which keeps deployment simple on GitHub Pages.</li>
+          </ul>
+        </div>
+
+        <div class="panel media-card">
+          <div class="section-title">
+            <div>
+              <h2>Electrical schematic</h2>
+              <p>The schematic image gives a quick view of how the Arduino MEGA ties the inputs and outputs together.</p>
+            </div>
+          </div>
+          <img src="assets/electrical.png" alt="Electrical schematic for the elevator project" />
+          <p class="caption">Add <strong>electrical.png</strong> to the assets folder and it will appear here automatically.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>Videos</h2>
+          <p>One video explains the CAD assembly and one shows the real system in operation.</p>
+        </div>
+      </div>
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="section-title">
+            <div>
+              <h2>Exploded CAD animation</h2>
+              <p>The exploded animation breaks down how the assembly is organized before re-forming the full structure.</p>
             </div>
           </div>
           <video controls playsinline preload="metadata" poster="assets/IMG_4551.jpeg">
             <source src="assets/ElevatorExCad.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p class="caption">Use this alongside the 3D model to understand how the base, rails, carriage, floors, and roof come together in the full assembly.</p>
+          <p class="caption">This is useful for showing the relationship between the base, floors, rails, carriage, roof, and door components.</p>
         </div>
 
-        <div class="panel">
+        <div class="video-card">
           <div class="section-title">
             <div>
-              <h2>What this page shows</h2>
-              <p>This section is laid out to highlight the final working version rather than the earlier non-working prototype.</p>
+              <h2>Real-life demo</h2>
+              <p>This slot is reserved for the actual operation video of the final physical build.</p>
             </div>
           </div>
-          <ul class="bullet-list">
-            <li><strong>Final physical build photos</strong><br />The gallery uses the cleaned-up build images you provided for the finished version.</li>
-            <li><strong>Modularity focus</strong><br />The page text emphasizes that the design can be extended with a longer lead screw and more side supports.</li>
-            <li><strong>Engineering documentation</strong><br />The technical drawing viewer below keeps the CAD drawings directly on the website instead of hiding them behind external downloads only.</li>
-          </ul>
+          <video controls playsinline preload="metadata" poster="assets/IMG_6273.JPG">
+            <source src="assets/ElevatorDemo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p class="caption">Drop <strong>ElevatorDemo.mp4</strong> into the assets folder and the page will show the live demonstration alongside the CAD animation.</p>
         </div>
       </div>
     </div>
@@ -669,110 +722,144 @@
       <div class="section-title">
         <div>
           <h2>Build gallery</h2>
-          <p>Click any image for a larger view. These are the real prototype photos included in your asset pack.</p>
+          <p>Click any image for a larger view. The gallery combines the original build photos with the newer cleaned-up photos.</p>
         </div>
       </div>
       <div class="gallery-grid">
-        <button class="gallery-item" type="button" data-img="assets/IMG_4549.jpeg" data-title="Prototype photo 1" aria-label="Open prototype photo 1">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4549.jpeg" data-title="Top view" aria-label="Open top view image">
           <img src="assets/IMG_4549.jpeg" alt="Top view of the elevator prototype" />
           <span>Top view</span>
         </button>
-        <button class="gallery-item" type="button" data-img="assets/IMG_4550.jpeg" data-title="Prototype photo 2" aria-label="Open prototype photo 2">
-          <img src="assets/IMG_4550.jpeg" alt="Angled side view of the elevator prototype" />
+        <button class="gallery-item" type="button" data-img="assets/IMG_4550.jpeg" data-title="Angle view" aria-label="Open angle view image">
+          <img src="assets/IMG_4550.jpeg" alt="Angled view of the elevator prototype" />
           <span>Angle view</span>
         </button>
-        <button class="gallery-item" type="button" data-img="assets/IMG_4551.jpeg" data-title="Prototype photo 3" aria-label="Open prototype photo 3">
-          <img src="assets/IMG_4551.jpeg" alt="Floor and door detail on the elevator prototype" />
+        <button class="gallery-item" type="button" data-img="assets/IMG_4551.jpeg" data-title="Floor and door detail" aria-label="Open floor and door detail image">
+          <img src="assets/IMG_4551.jpeg" alt="Floor and door detail on the prototype" />
           <span>Floor detail</span>
         </button>
-        <button class="gallery-item" type="button" data-img="assets/IMG_4552.jpeg" data-title="Prototype photo 4" aria-label="Open prototype photo 4">
+        <button class="gallery-item" type="button" data-img="assets/IMG_4552.jpeg" data-title="Front view" aria-label="Open front view image">
           <img src="assets/IMG_4552.jpeg" alt="Front view of the elevator prototype" />
           <span>Front view</span>
         </button>
-        <button class="gallery-item" type="button" data-img="assets/IMG_4553.jpeg" data-title="Prototype photo 5" aria-label="Open prototype photo 5">
-          <img src="assets/IMG_4553.jpeg" alt="Controller and wiring setup for the elevator prototype" />
+        <button class="gallery-item" type="button" data-img="assets/IMG_4553.jpeg" data-title="Electronics and wiring" aria-label="Open electronics and wiring image">
+          <img src="assets/IMG_4553.jpeg" alt="Controller and wiring setup for the prototype" />
           <span>Electronics</span>
+        </button>
+        <button class="gallery-item" type="button" data-img="assets/IMG_6273.JPG" data-title="Final build front" aria-label="Open final build front image">
+          <img src="assets/IMG_6273.JPG" alt="Final front view of the elevator build" />
+          <span>Final build front</span>
+        </button>
+        <button class="gallery-item" type="button" data-img="assets/IMG_6276.JPG" data-title="Top electronics view" aria-label="Open top electronics image">
+          <img src="assets/IMG_6276.JPG" alt="Top electronics view of the elevator" />
+          <span>Top electronics</span>
+        </button>
+        <button class="gallery-item" type="button" data-img="assets/IMG_6277.JPG" data-title="Carriage and gears" aria-label="Open carriage and gears image">
+          <img src="assets/IMG_6277.JPG" alt="Carriage and gear area of the elevator build" />
+          <span>Carriage and gears</span>
         </button>
       </div>
     </div>
   </section>
 
   <section id="drawings">
-    <div class="container">
-      <div class="section-title">
-        <div>
-          <h2>Technical drawings and documentation</h2>
-          <p>PDFs are embedded directly on the page. Visitors can switch between full assembly views and individual part drawings without leaving the site.</p>
-        </div>
+    <div class="container docs-grid">
+      <div class="panel doc-list">
+        <button class="doc-button active" data-pdf="assets/finalelevator.pdf" data-title="Final assembly drawing" type="button">
+          <strong>Final assembly drawing</strong>
+          <small>Overall project assembly layout</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/finalelevator2.pdf" data-title="Exploded assembly drawing" type="button">
+          <strong>Exploded assembly</strong>
+          <small>Separated component arrangement</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/finalelevator3.pdf" data-title="Alternate assembly drawing" type="button">
+          <strong>Alternate assembly</strong>
+          <small>Additional overall assembly view</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/baseelevator.pdf" data-title="Base drawing" type="button">
+          <strong>Base</strong>
+          <small>Ground/base component drawing</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/floorselevator.pdf" data-title="Floors drawing" type="button">
+          <strong>Floors</strong>
+          <small>Floor platform geometry</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/liftelevator.pdf" data-title="Lift drawing" type="button">
+          <strong>Lift carriage</strong>
+          <small>Elevator car and lift details</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/railselevator1-1.pdf" data-title="Rails drawing" type="button">
+          <strong>Rails</strong>
+          <small>Guide rail geometry</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/roofelevator.pdf" data-title="Roof drawing" type="button">
+          <strong>Roof</strong>
+          <small>Top structure and upper housing</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/doorwithgear.pdf" data-title="Door with gear drawing" type="button">
+          <strong>Door with gear</strong>
+          <small>Sliding door and driven gear arrangement</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/servogear.pdf" data-title="Servo gear drawing" type="button">
+          <strong>Servo gear</strong>
+          <small>Servo-driven door gear detail</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/othergears.pdf" data-title="Other gears drawing" type="button">
+          <strong>Other gears</strong>
+          <small>Additional gear components</small>
+        </button>
+        <button class="doc-button" data-pdf="assets/motor18.pdf" data-title="Motor drawing" type="button">
+          <strong>Motor</strong>
+          <small>Motor body reference drawing</small>
+        </button>
       </div>
-      <div class="docs-grid">
-        <div class="panel doc-list">
-          <button class="doc-button active" data-pdf="assets/finalelevator.pdf" data-title="Final assembly drawing" type="button">
-            <strong>Final assembly drawing</strong>
-            <small>Overall assembly documentation</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/finalelevator2.pdf" data-title="Exploded assembly drawing" type="button">
-            <strong>Exploded assembly</strong>
-            <small>Separated component layout view</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/finalelevator3.pdf" data-title="Assembly alternate view" type="button">
-            <strong>Alternate assembly view</strong>
-            <small>Additional overall arrangement</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/baseelevator.pdf" data-title="Base drawing" type="button">
-            <strong>Base</strong>
-            <small>Base plate drawing</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/floorselevator.pdf" data-title="Floors drawing" type="button">
-            <strong>Floors</strong>
-            <small>Floor platform component</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/liftelevator.pdf" data-title="Lift drawing" type="button">
-            <strong>Lift carriage</strong>
-            <small>Carriage and lift-related components</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/railselevator1-1.pdf" data-title="Rails drawing" type="button">
-            <strong>Rails</strong>
-            <small>Guide rail geometry</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/roofelevator.pdf" data-title="Roof drawing" type="button">
-            <strong>Roof</strong>
-            <small>Top structure and housing</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/doorwithgear.pdf" data-title="Door with gear drawing" type="button">
-            <strong>Door with gear</strong>
-            <small>Door panel and gear-linked arrangement</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/servogear.pdf" data-title="Servo gear drawing" type="button">
-            <strong>Servo gear</strong>
-            <small>Door gear detail</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/othergears.pdf" data-title="Other gears drawing" type="button">
-            <strong>Other gears</strong>
-            <small>Additional gear components</small>
-          </button>
-          <button class="doc-button" data-pdf="assets/motor18.pdf" data-title="Motor drawing" type="button">
-            <strong>Motor</strong>
-            <small>Motor body reference</small>
-          </button>
-        </div>
 
-        <div class="panel">
-          <div class="pdf-frame">
-            <iframe id="pdfViewer" src="assets/finalelevator.pdf" title="PDF viewer for elevator project drawings"></iframe>
+      <div class="panel">
+        <div class="section-title">
+          <div>
+            <h2>Technical drawings and documentation</h2>
+            <p>Use the buttons to switch between overall assembly views and individual part drawings without leaving the project page.</p>
           </div>
-          <div class="pdf-actions">
-            <p id="pdfTitle">Showing: Final assembly drawing</p>
-            <a id="pdfOpen" href="assets/finalelevator.pdf" target="_blank" rel="noreferrer">Open PDF in new tab</a>
-          </div>
+        </div>
+        <div class="pdf-frame">
+          <iframe id="pdfViewer" src="assets/finalelevator.pdf" title="PDF viewer for elevator project drawings"></iframe>
+        </div>
+        <div class="pdf-actions">
+          <p id="pdfTitle">Showing: Final assembly drawing</p>
+          <a id="pdfOpen" href="assets/finalelevator.pdf" target="_blank" rel="noreferrer">Open PDF in new tab</a>
         </div>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="container footer-note">
-      This version is set up for an <strong>index.html</strong> file and an <strong>assets</strong> folder that live in the same project folder, so every image, PDF, video, and model should load directly from <strong>assets/filename</strong>.
+    <div class="container extra-grid">
+      <div class="panel">
+        <div class="section-title">
+          <div>
+            <h2>Future work</h2>
+            <p>The report pointed to a few clear improvements that would make a next version even stronger.</p>
+          </div>
+        </div>
+        <ul class="bullet-list">
+          <li><strong>Door alarm and LED feedback</strong>The intended long-hold warning behavior was planned but not fully finished before demonstration day.</li>
+          <li><strong>Frame reinforcement</strong>Additional rear or side supports would reduce shaking and make the structure feel more rigid during travel.</li>
+          <li><strong>Door redesign options</strong>A center-opening two-door arrangement would better match a full-scale elevator experience.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">
+          <div>
+            <h2>Folder setup</h2>
+            <p>This version assumes your project folder has <strong>index.html</strong> and an <strong>assets</strong> folder directly beside each other.</p>
+          </div>
+        </div>
+        <div class="footer-note">
+          All image, video, PDF, and model paths now use <strong>assets/filename</strong>. Add <strong>electrical.png</strong> and <strong>ElevatorDemo.mp4</strong> to that folder and those sections will work automatically.
+        </div>
+      </div>
     </div>
   </section>
 
