@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Full Send | Logan Dees</title>
+  <style>
+    :root{
+      --bg:#091019;
+      --bg-2:#0f1724;
+      --panel:rgba(16,24,37,0.88);
+      --panel-2:rgba(10,17,28,0.92);
+      --text:#edf5ff;
+      --muted:#b8c7d9;
+      --line:rgba(255,255,255,0.08);
+      --accent:#67d4ff;
+      --accent-2:#82f0c5;
+      --accent-3:#9db7ff;
+      --shadow:0 20px 55px rgba(0,0,0,0.35);
+      --radius:24px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(103,212,255,0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(130,240,197,0.10), transparent 22%),
+        linear-gradient(180deg, #0b1119 0%, #0a1220 40%, #08111b 100%);
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .topbar{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:22px 24px 0;
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:.96rem;
+      text-decoration:none;
+      transition:color .18s ease, transform .18s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent-2);
+      transform:translateX(-2px);
+    }
+
+    .page{
+      width:min(var(--max), 94vw);
+      margin:0 auto;
+      padding:22px 0 72px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      margin-bottom:28px;
+      align-items:stretch;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(18,27,40,0.96), rgba(9,15,25,0.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero-copy{padding:34px}
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      color:var(--accent-2);
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(34px, 5vw, 64px);
+      line-height:.95;
+      letter-spacing:-0.03em;
+    }
+
+    .hero-copy p{
+      color:var(--muted);
+      line-height:1.7;
+      margin:0 0 14px;
+      font-size:16px;
+    }
+
+    .subhead{
+      font-size:clamp(18px, 1.7vw, 24px);
+      color:#f6fbff;
+      margin:0 0 18px;
+      font-weight:800;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 18px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid var(--line);
+      transition:transform .12s ease, filter .12s ease, background .18s ease;
+    }
+
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform:translateY(1px) scale(.99)}
+
+    .btn-primary{
+      background:linear-gradient(180deg, var(--accent), #34a8d7);
+      color:#041018;
+      border:0;
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,0.05);
+      color:var(--text);
+    }
+
+    .hero-side{
+      padding:24px;
+      display:grid;
+      gap:14px;
+      align-content:start;
+    }
+
+    .stat{
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px 18px;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+
+    .stat-value{
+      font-size:24px;
+      line-height:1.2;
+      font-weight:900;
+      color:var(--accent);
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:2px;
+    }
+
+    .chip{
+      padding:9px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--line);
+      color:var(--text);
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .section{
+      margin-bottom:28px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:14px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .section-title{
+      font-size:clamp(24px, 2.3vw, 36px);
+      margin:0;
+      color:var(--text);
+    }
+
+    .section-note{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .demo-card,.content-card,.gallery-card,.timeline-card,.footer-card{padding:24px}
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:24px;
+      margin-bottom:28px;
+    }
+
+    p, li{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15.5px;
+    }
+
+    ul{
+      margin:0;
+      padding-left:20px;
+    }
+
+    .feature-list li + li{margin-top:8px}
+
+    .image-frame{
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#060c14;
+      min-height:220px;
+    }
+
+    .image-frame img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr .9fr;
+      gap:14px;
+    }
+
+    .gallery-grid .wide{
+      grid-row:span 2;
+      min-height:460px;
+    }
+
+    .video-wrap{
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#050a11;
+      aspect-ratio:16/9;
+    }
+
+    video{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+      background:#050a11;
+    }
+
+    .callout{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(103,212,255,0.08);
+      border:1px solid rgba(103,212,255,0.15);
+      color:#d7f5ff;
+      line-height:1.65;
+    }
+
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .metric{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+    }
+
+    .metric strong{
+      display:block;
+      font-size:28px;
+      color:var(--accent-2);
+      margin-bottom:6px;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+    }
+
+    .timeline{
+      display:grid;
+      gap:12px;
+      margin-top:10px;
+    }
+
+    .timeline-item{
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:14px;
+      padding:14px 0;
+      border-top:1px solid var(--line);
+    }
+
+    .timeline-item:first-child{border-top:0;padding-top:0}
+    .timeline-phase{
+      color:var(--accent);
+      font-weight:800;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .timeline-item h3{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+    .timeline-item p{
+      margin:0;
+    }
+
+    .footer-card{
+      text-align:center;
+    }
+
+    .footer-card p{
+      max-width:900px;
+      margin:0 auto 18px;
+    }
+
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    @media (max-width: 1020px){
+      .hero,.grid-2,.split,.metric-grid,.gallery-grid{grid-template-columns:1fr}
+      .gallery-grid .wide{grid-row:auto;min-height:260px}
+      .timeline-item{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 640px){
+      .page{width:min(94vw, var(--max))}
+      .hero-copy,.hero-side,.demo-card,.content-card,.gallery-card,.timeline-card,.footer-card{padding:20px}
+      .topbar{padding:18px 16px 0}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="../../index.html">← Back to Portfolio</a>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <div class="card hero-copy">
+        <div class="eyebrow">Featured Robotics Project</div>
+        <h1>Project Full Send</h1>
+        <div class="subhead">FPV Racing Simulator for the Redcat Racing Volcano EPX</div>
+        <p>
+          Project Full Send is a real-world RC racing simulator that combines a physical RC vehicle, a full driver interface, and a live first-person video feed into one immersive system. The goal is to let a user drive the vehicle using a steering wheel and custom pedal inputs while viewing the track from the car’s onboard perspective.
+        </p>
+        <p>
+          The project blends robotics, embedded control, simulator design, RF video transmission, and mechanical integration. Instead of relying on expensive commercial simulator hardware, the system is built around modular, accessible components and a custom simulator rig that can continue evolving over time.
+        </p>
+        <p>
+          My work on the project includes research into GPS integration, early Python interface development, electronics sourcing, and system planning as part of the larger team effort to connect the driver controls, vehicle platform, and FPV pipeline into one usable prototype.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#overview">Project Overview</a>
+          <a class="btn btn-secondary" href="#architecture">System Architecture</a>
+          <a class="btn btn-secondary" href="#roadmap">Development Roadmap</a>
+        </div>
+        <div class="callout">
+          This page is written at a project and systems level. It focuses on the engineering concept, architecture, and progress of the build while keeping the presentation portfolio-friendly.
+        </div>
+      </div>
+
+      <aside class="card hero-side">
+        <div class="stat">
+          <div class="stat-label">Project Type</div>
+          <div class="stat-value">Robotics System Capstone</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Core Experience</div>
+          <div class="stat-value">FPV + RC + Simulator Controls</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Primary Focus</div>
+          <div class="stat-value">Immersive Remote Vehicle Operation</div>
+        </div>
+        <div class="chips">
+          <span class="chip">Arduino</span>
+          <span class="chip">Python</span>
+          <span class="chip">PWM Control</span>
+          <span class="chip">FPV Video</span>
+          <span class="chip">RC Systems</span>
+          <span class="chip">GPS / Telemetry</span>
+          <span class="chip">CAD</span>
+          <span class="chip">System Integration</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-head">
+        <h2 class="section-title">What the System Does</h2>
+        <div class="section-note">Immersive control interface paired with a real RC platform</div>
+      </div>
+      <div class="grid-2">
+        <div class="card content-card">
+          <p>
+            The finished simulator is intended to let a user control a Redcat Racing Volcano EPX using a steering wheel and custom gas and brake pedals rather than a handheld RC transmitter. A live 5.8GHz FPV camera mounted on the vehicle streams video to a headset or monitor so the user drives from the vehicle’s point of view.
+          </p>
+          <p>
+            The broader vision also includes optional telemetry, lap timing, and coordinate-based mapping so the simulator becomes more than a basic RC setup. It becomes a platform for control-system experimentation, driver feedback, and future expansion into more advanced remote-operation concepts.
+          </p>
+        </div>
+        <div class="card content-card">
+          <ul class="feature-list">
+            <li>Real RC vehicle platform used as the physical base system</li>
+            <li>Steering wheel and pedal conversion for more realistic driving input</li>
+            <li>FPV video feed transmitted from the car to a display or headset</li>
+            <li>PWM-based steering and throttle signal generation</li>
+            <li>Potential HUD and telemetry features for lap timing and track awareness</li>
+            <li>Modular design intended for continued upgrades and testing</li>
+          </ul>
+          <div class="metric-grid">
+            <div class="metric"><strong>RC</strong><span>Vehicle platform</span></div>
+            <div class="metric"><strong>FPV</strong><span>Live onboard video</span></div>
+            <div class="metric"><strong>PWM</strong><span>Control mapping</span></div>
+            <div class="metric"><strong>Modular</strong><span>Expandable architecture</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Project Highlights</h2>
+        <div class="section-note">Combining simulator design with physical robotics hardware</div>
+      </div>
+      <div class="card gallery-card">
+        <div class="gallery-grid">
+          <div class="image-frame wide">
+            <img src="assets/hero-main.jpg" alt="Main project image for Project Full Send" onerror="this.style.display='none'">
+          </div>
+          <div class="image-frame">
+            <img src="assets/fpv-testing.jpg" alt="FPV testing image" onerror="this.style.display='none'">
+          </div>
+          <div class="image-frame">
+            <img src="assets/rc-platform.jpg" alt="RC platform image" onerror="this.style.display='none'">
+          </div>
+          <div class="image-frame">
+            <img src="assets/cad-base.png" alt="CAD base model image" onerror="this.style.display='none'">
+          </div>
+          <div class="image-frame">
+            <img src="assets/system-diagram.png" alt="System architecture image" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <p class="small" style="margin-top:14px;">
+          This layout is ready for your actual project media. Replace the placeholder filenames in the assets folder with your real images or keep the names and drop the matching files in.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="section-head">
+        <h2 class="section-title">System Architecture</h2>
+        <div class="section-note">Driver controls, vehicle control electronics, video transmission, and optional telemetry working together</div>
+      </div>
+      <div class="grid-2">
+        <div class="card content-card">
+          <h3 style="margin-top:0;">Core Hardware Layers</h3>
+          <ul class="feature-list">
+            <li><strong>Vehicle platform:</strong> Redcat Racing Volcano EPX chassis, drivetrain, steering servo, ESC, and battery system</li>
+            <li><strong>Driver interface:</strong> steering wheel, gas pedal, and brake pedal adapted into a simulator-style control station</li>
+            <li><strong>FPV subsystem:</strong> 5.8GHz camera and receiver pipeline for low-latency first-person driving</li>
+            <li><strong>Control electronics:</strong> Arduino and related controller hardware used to process inputs and generate steering / throttle outputs</li>
+            <li><strong>Optional navigation layer:</strong> GPS, telemetry radios, and additional data systems for tracking and future expansion</li>
+          </ul>
+        </div>
+        <div class="card content-card">
+          <h3 style="margin-top:0;">How It Is Intended to Operate</h3>
+          <p>
+            Steering wheel and pedal inputs are read, normalized, and converted into usable control signals. Those signals are then mapped into proportional outputs for the steering servo and throttle system so the vehicle can respond more like a real driving interface instead of an all-or-nothing RC trigger.
+          </p>
+          <p>
+            In parallel, the onboard camera transmits a live view from the car. That feed is received and displayed to the driver through a headset or monitor, creating the simulator’s first-person perspective. Optional telemetry and GPS data can later support lap timing, position tracking, and richer feedback systems.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Engineering Focus Areas</h2>
+        <div class="section-note">The project is as much about integration and testing as it is about the final demo</div>
+      </div>
+      <div class="grid-2">
+        <div class="card content-card">
+          <h3 style="margin-top:0;">Mechanical + User Interface</h3>
+          <ul class="feature-list">
+            <li>Building a custom simulator frame for the seat, steering wheel, pedal assembly, and monitor</li>
+            <li>Designing the rig to be stable, ergonomic, and usable for demonstrations</li>
+            <li>Evaluating pedal travel, steering range, and mounting positions for better control feel</li>
+            <li>Developing CAD-supported layouts for camera mounting and supporting structures</li>
+          </ul>
+        </div>
+        <div class="card content-card">
+          <h3 style="margin-top:0;">Control + Electronics</h3>
+          <ul class="feature-list">
+            <li>Mapping steering and throttle inputs into proportional PWM outputs</li>
+            <li>Improving throttle behavior to avoid abrupt 0–100% acceleration</li>
+            <li>Testing compatibility between RC electronics, controller hardware, and microcontrollers</li>
+            <li>Managing power distribution, wiring organization, and expansion paths for telemetry and sensors</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">My Contributions</h2>
+        <div class="section-note">Project responsibilities documented in the weekly report</div>
+      </div>
+      <div class="card content-card">
+        <div class="split">
+          <div>
+            <p>
+              My documented contributions included researching how to program an unknown GPS module from the parts car, helping begin construction of the seating platform, creating an initial Python/Pygame interface prototype with a toggleable menu for future input ideas, and researching plus ordering the microcontroller and 5.8GHz receiver planned for the final system.
+            </p>
+          </div>
+          <div>
+            <ul class="feature-list">
+              <li>GPS integration research</li>
+              <li>Early Python/Pygame interface work</li>
+              <li>Simulator platform build support</li>
+              <li>Microcontroller and FPV receiver sourcing</li>
+              <li>System planning and risk-aware development support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Progress and Challenges</h2>
+        <div class="section-note">A realistic engineering project means testing, redesign, and fallback plans</div>
+      </div>
+      <div class="grid-2">
+        <div class="card content-card">
+          <h3 style="margin-top:0;">Progress So Far</h3>
+          <ul class="feature-list">
+            <li>RC vehicle and camera systems tested independently</li>
+            <li>FPV feed successfully connected from vehicle to viewing hardware</li>
+            <li>Initial frame and simulator-station construction started</li>
+            <li>Wheel, pedals, and controller hardware opened up for reverse engineering and mapping</li>
+            <li>Initial control architecture, component list, and expansion plan documented</li>
+          </ul>
+        </div>
+        <div class="card content-card">
+          <h3 style="margin-top:0;">Main Challenges</h3>
+          <ul class="feature-list">
+            <li>Hardware compatibility across mixed donated and purchased components</li>
+            <li>Signal quality and communication reliability for FPV transmission</li>
+            <li>Power management as more electronics are added to the platform</li>
+            <li>Balancing smooth, realistic control feel with RC safety and drivability</li>
+            <li>System integration across mechanics, electronics, video, and software</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Why This Project Stands Out</h2>
+        <div class="section-note">It combines multiple engineering disciplines into one demonstrable platform</div>
+      </div>
+      <div class="card content-card">
+        <p>
+          This project is a strong portfolio piece because it is not just one isolated subsystem. It ties together embedded control, RC vehicle dynamics, simulator ergonomics, FPV video systems, structural design, hardware reuse, and future telemetry concepts into a single build. It also shows the ability to work within real constraints: donated components, evolving requirements, testing-driven decisions, and staged integration.
+        </p>
+        <p>
+          The result is a platform that has value beyond the class itself. It can serve as a robotics demonstration system, a controls-learning tool, a simulator prototype, and a base for future experiments involving GPS, path tracking, and remote operation concepts.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-head">
+        <h2 class="section-title">Development Roadmap</h2>
+        <div class="section-note">Based on the project schedule and weekly planning documents</div>
+      </div>
+      <div class="card timeline-card">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 01</div>
+            <div>
+              <h3>Research, Parts, and Vehicle Testing</h3>
+              <p>Establish the project scope, gather donated and purchased components, test the RC platform and FPV hardware, and confirm the base system is viable.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 02</div>
+            <div>
+              <h3>Simulator Rig Construction</h3>
+              <p>Build the physical frame, mount the seat and controls, evaluate ergonomics, and prepare the driver station for electronics integration.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 03</div>
+            <div>
+              <h3>Controller Conversion and Signal Mapping</h3>
+              <p>Study the steering wheel, pedals, and RC controller hardware; then develop the signal-routing and PWM-mapping logic required for realistic vehicle control.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 04</div>
+            <div>
+              <h3>Integration, Calibration, and Validation</h3>
+              <p>Combine the control system, vehicle platform, video system, and any telemetry features, then refine the behavior through testing and debugging.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-phase">Phase 05</div>
+            <div>
+              <h3>Future Expansion</h3>
+              <p>Continue with advanced HUD ideas, GPS mapping, waypoint or lap-based features, and overall system polish for a stronger demonstration platform.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">Media / Demo Section</h2>
+        <div class="section-note">Ready for your actual files</div>
+      </div>
+      <div class="card demo-card">
+        <div class="video-wrap">
+          <video controls preload="metadata">
+            <source src="assets/ProjectFullSendDemo.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p class="small" style="margin-top:14px;">
+          Drop your demo video into the assets folder with the name <strong>ProjectFullSendDemo.mp4</strong>, or change the source path in the HTML to match your real filename.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card footer-card">
+        <h2 class="section-title">Project Summary</h2>
+        <p>
+          Project Full Send shows how a low-cost collection of RC hardware, embedded control electronics, custom structure, and live video systems can be engineered into a compelling robotics and simulator platform. It highlights system thinking, practical troubleshooting, and the ability to turn a broad concept into a working engineering build through staged testing and integration.
+        </p>
+        <div class="cta-row" style="justify-content:center;">
+          <a class="btn btn-primary" href="#overview">Back to Top Sections</a>
+          <a class="btn btn-secondary" href="../../index.html">Return to Portfolio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
