@@ -532,9 +532,9 @@
         </div>
       </div>
       <div class="card hero-media">
-        <img src="assets/IMG_4552.jpeg" alt="Front view of the completed elevator prototype" />
+        <img src="assets/IMG_6273.JPG" alt="Front view of the completed elevator prototype" />
         <div class="hero-strip">
-          <img src="assets/IMG_6273.JPG" alt="Clean front view of the final elevator build" />
+          <img src="assets/IMG_4552.jpeg" alt="Clean front view of the final elevator build" />
           <img src="assets/IMG_6276.JPG" alt="Top electronics view of the elevator build" />
           <img src="assets/IMG_6277.JPG" alt="Elevator carriage and gear view" />
         </div>
@@ -577,15 +577,15 @@
         <div class="section-title">
           <div>
             <h2>Design highlights</h2>
-            <p>The writeup and drawings make it clear that this was built as both a working prototype and a documented controls project.</p>
+            <p>This project was built as both a working prototype and a documented controls project.</p>
           </div>
         </div>
         <ul class="spec-list">
           <li><strong>Four-floor call system</strong>Each floor has a call input, and the top control area represents the interior floor controls.</li>
           <li><strong>Automatic door cycle</strong>The door opens at floor arrival, stays open for the required time, and remains open while the hold input is active.</li>
-          <li><strong>Nearest-stop behavior</strong>The motion logic prioritizes requested stops based on the elevator's current position and direction of travel.</li>
-          <li><strong>Return-to-home behavior</strong>When the system is not in use, the elevator returns to Floor 1 for the next request.</li>
-          <li><strong>Future improvement path</strong>Possible next steps include adding the planned buzzer and LED warning behavior, strengthening the frame, and refining the door system.</li>
+          <li><strong>Nearest-stop behavior</strong>The motion logic prioritizes requested stops based on the elevator's current position and direction of travel. For example if floor 3 is called while the elevator is in route to floor 4 from floor 2, as long as it hasn't passed the floor yet, it will inturrupt and stop</li>
+          <li><strong>Return-to-home behavior</strong>When the system is not in use, the elevator returns to Floor 1 after some time for the next request.</li>
+          <li><strong>Future improvement path</strong>Possible next steps include adding the planned buzzer and LED warning behavior. As the whole design is essentially a skeleton, it leaves opportunity for a proper shaft which was neglected in this build due to material saving. Another feature that was intended to be added was a homing switch at the bottom using a limit switch, however this was not implimented simply because of lack of limit switches available. Finally the final product is not very fast, this is due to the pitch of the threading on the lead rod. This could be fixed with a more coarse thread or a gear system.</li>
         </ul>
       </div>
     </div>
@@ -606,15 +606,15 @@
         </div>
         <div class="system-card">
           <h3>Door hold function</h3>
-          <p>A dedicated hold button simulates an obstruction response by keeping the door open while the input remains active.</p>
+          <p>A dedicated hold button simulates an obstruction response by using interrupts to hold the door open while the input remains active.</p>
         </div>
         <div class="system-card">
           <h3>Step-by-step positioning</h3>
-          <p>The stepper system uses measured floor positions so the car can stop repeatedly at each floor location rather than just running continuously.</p>
+          <p>The stepper motor system uses a premeasured floor position along with an amount of steps so the car can stop repeatedly at each floor location without needing a closed-loop control system using sensors.</p>
         </div>
         <div class="system-card">
           <h3>Physical demonstration</h3>
-          <p>The final build favors reliable motion and visible operation over speed, making it a better classroom demonstration system.</p>
+          <p>The final build favors reliable motion and visible operation over speed, making for a very accurate but slow system.</p>
         </div>
       </div>
     </div>
@@ -648,21 +648,6 @@
         <div class="viewer-tip">Use the model with the drawings below to compare the full assembly to the individual part files for the base, floors, rails, lift, roof, gears, and motor.</div>
       </div>
 
-      <div class="showcase-side">
-        <div class="panel">
-          <div class="section-title">
-            <div>
-              <h2>Project summary</h2>
-              <p>This layout focuses on the final working version and the engineering documentation behind it.</p>
-            </div>
-          </div>
-          <ul class="bullet-list">
-            <li><strong>Final build first</strong>The opening images and gallery now highlight the completed working prototype instead of the earlier prototype stage.</li>
-            <li><strong>Controls + mechanics together</strong>The page pairs the code-driven behavior with the physical parts so the project reads clearly as a controls and mechanical design build.</li>
-            <li><strong>Portfolio-friendly structure</strong>All media points to a local <code>assets</code> folder beside <code>index.html</code>, which keeps deployment simple on GitHub Pages.</li>
-          </ul>
-        </div>
-
         <div class="panel media-card">
           <div class="section-title">
             <div>
@@ -671,7 +656,6 @@
             </div>
           </div>
           <img src="assets/electrical.png" alt="Electrical schematic for the elevator project" />
-          <p class="caption">Add <strong>electrical.png</strong> to the assets folder and it will appear here automatically.</p>
         </div>
       </div>
     </div>
@@ -704,14 +688,13 @@
           <div class="section-title">
             <div>
               <h2>Real-life demo</h2>
-              <p>This slot is reserved for the actual operation video of the final physical build.</p>
+              <p>This is the actual operation video of the final physical build.</p>
             </div>
           </div>
           <video controls playsinline preload="metadata" poster="assets/IMG_6273.JPG">
             <source src="assets/ElevatorDemo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p class="caption">Drop <strong>ElevatorDemo.mp4</strong> into the assets folder and the page will show the live demonstration alongside the CAD animation.</p>
         </div>
       </div>
     </div>
@@ -722,13 +705,13 @@
       <div class="section-title">
         <div>
           <h2>Build gallery</h2>
-          <p>Click any image for a larger view. The gallery combines the original build photos with the newer cleaned-up photos.</p>
+          <p>Click any image for a larger view.</p>
         </div>
       </div>
       <div class="gallery-grid">
         <button class="gallery-item" type="button" data-img="assets/IMG_4549.jpeg" data-title="Top view" aria-label="Open top view image">
           <img src="assets/IMG_4549.jpeg" alt="Top view of the elevator prototype" />
-          <span>Top view</span>
+          <span>Front view</span>
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_4550.jpeg" data-title="Angle view" aria-label="Open angle view image">
           <img src="assets/IMG_4550.jpeg" alt="Angled view of the elevator prototype" />
@@ -736,15 +719,15 @@
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_4551.jpeg" data-title="Floor and door detail" aria-label="Open floor and door detail image">
           <img src="assets/IMG_4551.jpeg" alt="Floor and door detail on the prototype" />
-          <span>Floor detail</span>
+          <span>Door and carriage view</span>
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_4552.jpeg" data-title="Front view" aria-label="Open front view image">
           <img src="assets/IMG_4552.jpeg" alt="Front view of the elevator prototype" />
-          <span>Front view</span>
+          <span>Lead screw</span>
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_4553.jpeg" data-title="Electronics and wiring" aria-label="Open electronics and wiring image">
           <img src="assets/IMG_4553.jpeg" alt="Controller and wiring setup for the prototype" />
-          <span>Electronics</span>
+          <span>Top view of electronics</span>
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_6273.JPG" data-title="Final build front" aria-label="Open final build front image">
           <img src="assets/IMG_6273.JPG" alt="Final front view of the elevator build" />
@@ -756,7 +739,7 @@
         </button>
         <button class="gallery-item" type="button" data-img="assets/IMG_6277.JPG" data-title="Carriage and gears" aria-label="Open carriage and gears image">
           <img src="assets/IMG_6277.JPG" alt="Carriage and gear area of the elevator build" />
-          <span>Carriage and gears</span>
+          <span>Carriage and gears with floors removed</span>
         </button>
       </div>
     </div>
@@ -799,19 +782,19 @@
         </button>
         <button class="doc-button" data-pdf="assets/doorwithgear.pdf" data-title="Door with gear drawing" type="button">
           <strong>Door with gear</strong>
-          <small>Sliding door and driven gear arrangement</small>
+          <small>Sliding door with gear rail on bottom</small>
         </button>
         <button class="doc-button" data-pdf="assets/servogear.pdf" data-title="Servo gear drawing" type="button">
           <strong>Servo gear</strong>
-          <small>Servo-driven door gear detail</small>
+          <small>Servo-driven door gear</small>
         </button>
         <button class="doc-button" data-pdf="assets/othergears.pdf" data-title="Other gears drawing" type="button">
           <strong>Other gears</strong>
           <small>Additional gear components</small>
         </button>
         <button class="doc-button" data-pdf="assets/motor18.pdf" data-title="Motor drawing" type="button">
-          <strong>Motor</strong>
-          <small>Motor body reference drawing</small>
+          <strong>Lead screw adapter</strong>
+          <small>Motor to lead screw adapter</small>
         </button>
       </div>
 
@@ -828,36 +811,6 @@
         <div class="pdf-actions">
           <p id="pdfTitle">Showing: Final assembly drawing</p>
           <a id="pdfOpen" href="assets/finalelevator.pdf" target="_blank" rel="noreferrer">Open PDF in new tab</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container extra-grid">
-      <div class="panel">
-        <div class="section-title">
-          <div>
-            <h2>Future work</h2>
-            <p>The report pointed to a few clear improvements that would make a next version even stronger.</p>
-          </div>
-        </div>
-        <ul class="bullet-list">
-          <li><strong>Door alarm and LED feedback</strong>The intended long-hold warning behavior was planned but not fully finished before demonstration day.</li>
-          <li><strong>Frame reinforcement</strong>Additional rear or side supports would reduce shaking and make the structure feel more rigid during travel.</li>
-          <li><strong>Door redesign options</strong>A center-opening two-door arrangement would better match a full-scale elevator experience.</li>
-        </ul>
-      </div>
-
-      <div class="panel">
-        <div class="section-title">
-          <div>
-            <h2>Folder setup</h2>
-            <p>This version assumes your project folder has <strong>index.html</strong> and an <strong>assets</strong> folder directly beside each other.</p>
-          </div>
-        </div>
-        <div class="footer-note">
-          All image, video, PDF, and model paths now use <strong>assets/filename</strong>. Add <strong>electrical.png</strong> and <strong>ElevatorDemo.mp4</strong> to that folder and those sections will work automatically.
         </div>
       </div>
     </div>
