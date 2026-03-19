@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mechatronics Capstone | Logan Dees</title>
+  <style>
+    :root {
+      --bg: #081015;
+      --bg-2: #0d1720;
+      --panel: rgba(13, 23, 32, 0.92);
+      --panel-2: rgba(18, 32, 43, 0.95);
+      --text: #eef7fb;
+      --muted: #b1c5d2;
+      --line: rgba(255,255,255,0.08);
+      --accent: #7ef0c5;
+      --accent-2: #6cbcff;
+      --shadow: 0 18px 48px rgba(0,0,0,0.34);
+      --radius: 24px;
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, #142733 0%, #0c161f 38%, #070c10 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 22px 24px 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.96rem;
+      text-decoration: none;
+      transition: color 0.18s ease, transform 0.18s ease;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+      transform: translateX(-2px);
+    }
+
+    .back-link:focus-visible {
+      outline: 2px solid rgba(126, 240, 197, 0.7);
+      outline-offset: 6px;
+      border-radius: 8px;
+    }
+
+    .page {
+      width: min(var(--max), 92vw);
+      margin: 0 auto;
+      padding: 20px 0 70px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+
+    .subhead {
+      margin: 0 0 18px;
+      color: #d9f3ff;
+      font-size: clamp(18px, 1.8vw, 24px);
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .hero-copy p,
+    .content-card p,
+    .footer-card p,
+    .media-copy p,
+    .notice p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15.5px;
+      margin: 0 0 14px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      border: 1px solid var(--line);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+
+    .btn-primary {
+      background: linear-gradient(180deg, var(--accent), #4fc7a0);
+      color: #062019;
+      border: 0;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 18px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent-2);
+      line-height: 1.2;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .notice {
+      padding: 18px 22px;
+      margin-bottom: 26px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      font-size: clamp(24px, 2.3vw, 36px);
+      line-height: 1.1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .content-card,
+    .footer-card,
+    .media-card,
+    .timeline-card {
+      padding: 24px;
+    }
+
+    ul.feature-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .media-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .media-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #050a0d;
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .media-frame img,
+    .media-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .timeline-step {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .timeline-step strong {
+      display: block;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .timeline-step span {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .footer-card {
+      text-align: center;
+    }
+
+    .footer-card .cta-row {
+      justify-content: center;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid,
+      .media-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page { width: min(var(--max), 94vw); }
+      .hero-copy,
+      .hero-side,
+      .content-card,
+      .footer-card,
+      .media-card,
+      .timeline-card {
+        padding: 20px;
+      }
+      .topbar { padding: 18px 18px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="../../index.html">← Back to Portfolio</a>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <div class="card hero-copy">
+        <div class="eyebrow">Featured Mechatronics / Automation Project</div>
+        <h1>Industrial Stock Car<br />Automation Capstone</h1>
+        <div class="subhead">Scaled automation model based on a real industrial material-handling process</div>
+        <p>
+          For my mechatronics capstone, our team is designing and building a scaled model of an industrial stock car system and developing the control logic needed to automate its operation. The project is based on a real blast furnace charging workflow, so the public version of this page focuses on the system architecture, control goals, and engineering approach rather than confidential implementation details.
+        </p>
+        <p>
+          The work combines mechanical modeling, automation design, PLC-oriented control strategy, sensor integration, position tracking, sequence handling, and safe transitions between manual and automatic operation.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#overview">Project Overview</a>
+          <a class="btn btn-secondary" href="#withheld">Why Details Are Limited</a>
+        </div>
+      </div>
+
+      <aside class="card hero-side">
+        <div class="stat">
+          <div class="stat-label">Project Type</div>
+          <div class="stat-value">Industrial Automation Scale Model</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Core Focus</div>
+          <div class="stat-value">Sequencing, Positioning, Safety</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Public Presentation Style</div>
+          <div class="stat-value">High-Level Systems View</div>
+        </div>
+        <div class="chips">
+          <span class="chip">PLC Logic</span>
+          <span class="chip">Automation</span>
+          <span class="chip">Sensor Integration</span>
+          <span class="chip">Position Tracking</span>
+          <span class="chip">Manual / Auto Modes</span>
+          <span class="chip">Scale Modeling</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card notice" id="withheld">
+      <p>
+        This page is intentionally written at a system level. Because the project is tied to a real industrial process, I am only sharing portfolio-safe information about the design goals, control concepts, and engineering work involved.
+      </p>
+    </section>
+
+    <section class="grid" id="overview">
+      <div class="card content-card">
+        <h2 class="section-title">Project Overview</h2>
+        <p>
+          The capstone centers on automating a stock car process used in industrial material handling. In the full-scale system, the car moves along a track, positions under specific material bins, receives a target sequence, and then returns to a dump location as part of the charging workflow. Our capstone translates those ideas into a scaled model that demonstrates the motion control and automation logic in a more accessible prototype format.
+        </p>
+        <p>
+          The engineering challenge is not just making the model move. It is making the system behave predictably under sequence commands, maintain awareness of position, identify valid operating states, and respond safely to faults or interruptions.
+        </p>
+      </div>
+
+      <div class="card content-card">
+        <h2 class="section-title">What the System Demonstrates</h2>
+        <ul class="feature-list">
+          <li>Automatic and manual operating modes</li>
+          <li>Position tracking along the system travel path</li>
+          <li>Defined home position behavior</li>
+          <li>Targeting of the correct loading location or process state</li>
+          <li>Sequence-driven movement and operation</li>
+          <li>Emergency stop and permissive logic concepts</li>
+          <li>Sensor-based response to obstructions or invalid conditions</li>
+          <li>Monitoring of communication-dependent system states</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="media-layout">
+      <div class="card media-card">
+        <h2 class="section-title">Project Media</h2>
+        <div class="media-frame">
+          Add a project image, render, or demo video here later.<br /><br />
+          Suggested path examples:<br />
+          <code>assets/capstone-hero.jpg</code> or <code>assets/capstone-demo.mp4</code>
+        </div>
+      </div>
+
+      <div class="card media-card media-copy">
+        <h2 class="section-title">Engineering Focus</h2>
+        <p>
+          The value of this project is in how closely it mirrors real automation thinking: define operating modes, understand where the machine is, know what action comes next, verify that conditions are safe, and then execute the correct sequence. That means the project is as much about control architecture and systems thinking as it is about the physical model itself.
+        </p>
+        <p>
+          Even in a scaled format, the project reflects real-world automation concerns like communication status, state transitions, interlocks, and consistent sequence execution.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card content-card">
+        <h2 class="section-title">My Contributions</h2>
+        <p>
+          My work on the project includes helping translate the real process into a scaled engineering prototype, contributing to the automation concept, and supporting the control logic and integration side of the system. That includes thinking through how the model should move, how states should be tracked, how the control flow should sequence, and how the prototype can clearly demonstrate industrial automation concepts in a physical build.
+        </p>
+        <p>
+          Because the public version stays high level, I present this project as evidence of my experience with electromechanical systems, automation planning, controls-focused problem solving, and adapting real industrial requirements into a working prototype.
+        </p>
+      </div>
+
+      <div class="card content-card">
+        <h2 class="section-title">Controls and Safety Concepts</h2>
+        <ul class="feature-list">
+          <li>Manual override path for non-automatic operation</li>
+          <li>Emergency stop logic built into permissive behavior</li>
+          <li>Home-state logic for known system recovery</li>
+          <li>Fault response when communication conditions are not valid</li>
+          <li>Stop-and-resume handling for object detection scenarios</li>
+          <li>State-based output control rather than uncontrolled motion</li>
+          <li>Prototype design intended to reflect industrial control priorities</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card timeline-card">
+      <h2 class="section-title">Capstone Development Approach</h2>
+      <div class="timeline">
+        <div class="timeline-step">
+          <strong>1. Process Translation</strong>
+          <span>Break down the real system into portfolio-safe mechanical, sequencing, and controls concepts that can be represented in a scaled model.</span>
+        </div>
+        <div class="timeline-step">
+          <strong>2. Scaled Model Design</strong>
+          <span>Design the physical structure and motion concept so the prototype can clearly demonstrate travel, positioning, and operation states.</span>
+        </div>
+        <div class="timeline-step">
+          <strong>3. Control Logic Planning</strong>
+          <span>Define system states, transitions, interlocks, and sequence behavior for safe movement and repeatable operation.</span>
+        </div>
+        <div class="timeline-step">
+          <strong>4. Integration and Validation</strong>
+          <span>Connect the mechanical model, control hardware, and sensing concepts into a system that demonstrates the intended automation workflow.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card footer-card">
+      <h2 class="section-title">Project Summary</h2>
+      <p>
+        This capstone represents the kind of engineering work I am most interested in: taking a real process, breaking it into control problems, building a physical system around it, and using automation logic to make the prototype behave in a structured and reliable way. Even without sharing confidential details, the project highlights systems thinking, electromechanical design, and industrial automation experience.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#overview">Back to Top Sections</a>
+        <a class="btn btn-secondary" href="../../index.html">Return to Portfolio</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
